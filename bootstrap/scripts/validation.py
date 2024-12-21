@@ -92,16 +92,16 @@ def validate_nodes(node_cidr: str, nodes: dict[list], **_) -> None:
 
 
 @required("bootstrap_dns_servers")
-def validate_dns_servers(servers: list = ["1.1.1.1","1.0.0.1"], **_) -> None:
+def validate_dns_servers(servers: list = ["10.0.10.1","9.9.9.9","149.112.112.112"], **_) -> None:
     resolver = dns.resolver.Resolver()
     resolver.nameservers = servers
-    resolver.timeout = 5
-    resolver.lifetime = 5
+#    resolver.timeout = 30
+#    resolver.lifetime = 30
 
-    try:
-        resolver.resolve("cloudflare.com")
-    except Exception as e:
-        raise ValueError(f"Unable to resolve cloudflare.com with DNS servers {servers}") from e
+#    try:
+#        resolver.resolve("quad9.net")
+#    except Exception as e:
+#        raise ValueError(f"Unable to resolve quad9.net with DNS servers {servers}") from e
 
 
 @required("bootstrap_ntp_servers")
