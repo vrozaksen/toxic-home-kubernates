@@ -3,15 +3,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: redis-gatus-ep
+  name: dragonfly-gatus-ep
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: redis
+      - name: dragonfly
         group: internal
-        url: tcp://redis.databases.svc.cluster.local:6379
+        url: tcp://dragonfly.databases.svc.cluster.local:6379
         interval: 1m
         conditions: ["[CONNECTED] == true"]
         alerts: [{ type: pushover }]

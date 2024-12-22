@@ -16,4 +16,3 @@ resources:
   - ./ingress-nginx.yaml
   - ./k8s-gateway.yaml
   - ./cloudnative-pg.yaml
-#  - ./bitnami.yaml
