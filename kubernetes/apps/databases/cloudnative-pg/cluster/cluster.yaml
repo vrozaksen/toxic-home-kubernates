@@ -50,37 +50,14 @@ spec:
         secretAccessKey:
           name: cloudnative-pg
           key: aws-secret-access-key
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-    # s3 instance recovery
-    - name: &previousCluster postgres-v1
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
-    # running instance
-    #- name: postgres
-    #  connectionParameters:
-    #    host: 10.1.0.23
-    #    user: postgres
-    #    dbname: postgres
-    #    sslmode: require
-    #  password:
-    #    name: cloudnative-pg
-    #    key: password
-
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
-    # s3 instance recovery
     recovery:
-      source: *previousCluster
-    # recover from another running instance
-    #initdb:
-    #  import:
-    #    type: monolith
-    #    databases:
-    #      - "*"
-    #    roles:
-    #      - "*"
-    #    source:
-    #      externalCluster: postgres
+      source: &previousCluster postgres16-v1
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
