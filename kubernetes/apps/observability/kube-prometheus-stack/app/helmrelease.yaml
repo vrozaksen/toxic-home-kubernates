@@ -29,7 +29,7 @@ spec:
     - name: prometheus-operator-crds
       namespace: observability
     - name: openebs-hostpath
-      namespace: openebs-system
+      namespace: openebs-hostpath
   values:
     crds:
       enabled: false
