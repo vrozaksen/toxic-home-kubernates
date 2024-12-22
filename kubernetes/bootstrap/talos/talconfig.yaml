@@ -26,11 +26,11 @@ nodes:
   - hostname: "kube-ctrl-01"
     ipAddress: "10.0.10.51"
     installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/c87ad562f9cd0f7ed23c69d3ca860375d282ca763cbf5dfafb6417a57e00fbf4
+    talosImageURL: factory.talos.dev/installer/95d432d6bb450a67e801a6ae77c96a67e38820b62ba4159ae7e997e1695207f7
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:b5:56:cb"
+          hardwareAddr: "bc:24:11:69:59:67"
         dhcp: false
         addresses:
           - "10.0.10.51/24"
@@ -43,11 +43,11 @@ nodes:
   - hostname: "kube-ctrl-02"
     ipAddress: "10.0.10.52"
     installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/c87ad562f9cd0f7ed23c69d3ca860375d282ca763cbf5dfafb6417a57e00fbf4
+    talosImageURL: factory.talos.dev/installer/95d432d6bb450a67e801a6ae77c96a67e38820b62ba4159ae7e997e1695207f7
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:0b:32:4d"
+          hardwareAddr: "bc:24:11:d4:d0:e7"
         dhcp: false
         addresses:
           - "10.0.10.52/24"
@@ -60,11 +60,11 @@ nodes:
   - hostname: "kube-ctrl-03"
     ipAddress: "10.0.10.53"
     installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/c87ad562f9cd0f7ed23c69d3ca860375d282ca763cbf5dfafb6417a57e00fbf4
+    talosImageURL: factory.talos.dev/installer/95d432d6bb450a67e801a6ae77c96a67e38820b62ba4159ae7e997e1695207f7
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:df:59:cd"
+          hardwareAddr: "bc:24:11:69:59:67"
         dhcp: false
         addresses:
           - "10.0.10.53/24"
@@ -77,11 +77,11 @@ nodes:
   - hostname: "kube-work-01"
     ipAddress: "10.0.10.61"
     installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/c87ad562f9cd0f7ed23c69d3ca860375d282ca763cbf5dfafb6417a57e00fbf4
+    talosImageURL: factory.talos.dev/installer/95d432d6bb450a67e801a6ae77c96a67e38820b62ba4159ae7e997e1695207f7
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:e0:85:51"
+          hardwareAddr: "bc:24:11:60:82:f3"
         dhcp: false
         addresses:
           - "10.0.10.61/24"
@@ -92,29 +92,14 @@ nodes:
   - hostname: "kube-work-02"
     ipAddress: "10.0.10.62"
     installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/c87ad562f9cd0f7ed23c69d3ca860375d282ca763cbf5dfafb6417a57e00fbf4
+    talosImageURL: factory.talos.dev/installer/95d432d6bb450a67e801a6ae77c96a67e38820b62ba4159ae7e997e1695207f7
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "bc:24:11:85:74:0d"
+          hardwareAddr: "bc:24:11:22:c8:97"
         dhcp: false
         addresses:
           - "10.0.10.62/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.10.1"
-        mtu: 1500
-  - hostname: "kube-work-03"
-    ipAddress: "10.0.10.63"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/c87ad562f9cd0f7ed23c69d3ca860375d282ca763cbf5dfafb6417a57e00fbf4
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:22:a1:7c"
-        dhcp: false
-        addresses:
-          - "10.0.10.63/24"
         routes:
           - network: 0.0.0.0/0
             gateway: "10.0.10.1"
