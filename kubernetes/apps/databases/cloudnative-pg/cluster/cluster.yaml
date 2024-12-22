@@ -5,8 +5,8 @@ kind: Cluster
 metadata:
   name: postgres
 spec:
-  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.6@sha256:d7822fa6eba284a6d3d035d51a51de22147bc5e72d87aa93e7dd9fa87455ed5c
+  instances: 3
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -16,17 +16,13 @@ spec:
   enableSuperuserAccess: true
   postgresql:
     parameters:
-      max_connections: "600"
-      max_slot_wal_keep_size: 10GB
-      shared_buffers: 512MB
-  nodeMaintenanceWindow:
-    inProgress: false
-    reusePVC: true
+      max_connections: "250"
+      shared_buffers: 128MB
   resources:
     requests:
       cpu: 500m
-      memory: 2Gi
     limits:
+      hugepages-2Mi: 2Gi # Requires sysctl set on the host
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
@@ -38,7 +34,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: "s3://cloudnative-pg"
+      destinationPath: s3://cloudnative-pg/
       endpointURL: https://018e06e568a4c8fc72f1b05604114870.r2.cloudflarestorage.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
