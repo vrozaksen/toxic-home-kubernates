@@ -161,5 +161,5 @@ spec:
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     grafana:
-      enabled: false
+      enabled: true
       forceDeployDashboards: true
