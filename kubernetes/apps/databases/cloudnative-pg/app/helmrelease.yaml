@@ -24,7 +24,7 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: openebs
+    - name: openebs-hostpath
       namespace: openebs-system
   values:
     crds:
