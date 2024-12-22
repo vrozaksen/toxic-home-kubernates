@@ -22,7 +22,7 @@ spec:
     requests:
       cpu: 500m
     limits:
-      hugepages-2Mi: 2Gi # Requires sysctl set on the host
+  #    hugepages-2Mi: 2Gi # Requires sysctl set on the host
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
@@ -48,12 +48,12 @@ spec:
           key: aws-secret-access-key
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
-  bootstrap:
-    recovery:
-      source: &previousCluster postgres-v1
+  #bootstrap:
+  #  recovery:
+  #    source: &previousCluster postgres-v1
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+  #externalClusters:
+  #  - name: *previousCluster
+  #    barmanObjectStore:
+  #      <<: *barmanObjectStore
+  #      serverName: *previousCluster
