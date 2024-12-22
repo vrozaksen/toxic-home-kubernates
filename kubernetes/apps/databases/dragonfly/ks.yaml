@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/database/dragonfly/app
+  path: ./kubernetes/main/apps/databases/dragonfly/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -34,7 +34,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly-operator
-  path: ./kubernetes/main/apps/database/dragonfly/cluster
+  path: ./kubernetes/main/apps/databases/dragonfly/cluster
   prune: true
   sourceRef:
     kind: GitRepository

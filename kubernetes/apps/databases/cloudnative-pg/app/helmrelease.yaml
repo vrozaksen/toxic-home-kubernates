@@ -25,7 +25,6 @@ spec:
       retries: 3
   dependsOn:
     - name: openebs-hostpath
-      namespace: openebs-hostpath
   values:
     crds:
       create: true
