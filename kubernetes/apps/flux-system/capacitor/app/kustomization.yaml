@@ -1,8 +1,9 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: flux-system
 resources:
-  - ./namespace.yaml
-  - ./cloudnative-pg/ks.yaml
-#  - ./redis/ks.yaml
+- ./serviceaccount.yaml
+- ./clusterrole.yaml
+- ./clusterrolebinding.yaml
+- ./helmrelease.yaml

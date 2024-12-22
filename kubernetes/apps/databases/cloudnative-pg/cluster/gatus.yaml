@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: postgres-gatus-ep
   labels:
-    gatus.io/enabled: "false"
+    gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
