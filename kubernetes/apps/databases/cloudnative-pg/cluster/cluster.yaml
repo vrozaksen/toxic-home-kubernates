@@ -26,26 +26,26 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore: &barmanObjectStore
-      data:
-        compression: bzip2
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cloudnative-pg/
-      endpointURL: https://018e06e568a4c8fc72f1b05604114870.r2.cloudflarestorage.com
-      # Note: serverName version needs to be incremented
-      # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres-v1
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg
-          key: aws-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg
-          key: aws-secret-access-key
+  #backup:
+  #  retentionPolicy: 30d
+  #  barmanObjectStore: &barmanObjectStore
+  #    data:
+  #      compression: bzip2
+  #    wal:
+  #      compression: bzip2
+  #      maxParallel: 8
+  #    destinationPath: s3://cloudnative-pg/
+  #    endpointURL: https://018e06e568a4c8fc72f1b05604114870.r2.cloudflarestorage.com
+  #    # Note: serverName version needs to be incremented
+  #    # when recovering from an existing cnpg cluster
+  #    serverName: &currentCluster postgres-v1
+  #    s3Credentials:
+  #      accessKeyId:
+  #        name: cloudnative-pg
+  #        key: aws-access-key-id
+  #      secretAccessKey:
+  #        name: cloudnative-pg
+  #        key: aws-secret-access-key
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   #bootstrap:
