@@ -5,31 +5,29 @@ kind: HelmRelease
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: cloudnative-pg
-      version: 0.22.1
+      version: 0.23.0
       sourceRef:
         kind: HelmRepository
-        name: cloudnative-pg
+        name: cloudnative-pg-charts
         namespace: flux-system
+  maxHistory: 3
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
-  dependsOn:
-    - name: openebs-hostpath
-      namespace: storage
+  uninstall:
+    keepHistory: false
   values:
     crds:
       create: true
-    replicaCount: 2
-    monitoring:
-      podMonitorEnabled: false
-      grafanaDashboard:
-        create: true
+    config:
+      data:
+        INHERITED_LABELS: app.kubernetes.io/*

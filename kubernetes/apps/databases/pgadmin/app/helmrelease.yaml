@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app pgadmin
+  namespace: databases
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      annotations:
+        reloader.stakater.com/auto: 'true'
+      securityContext:
+        runAsUser: 5050
+        runAsGroup: 5050
+        fsGroup: 5050
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      pgadmin:
+        type: statefulset
+        containers:
+          app:
+            image:
+              repository: dpage/pgadmin4
+              tag: '8.14'
+              env:
+                - name: PGADMIN_DEFAULT_EMAIL
+                  valueFrom:
+                    secretKeyRef:
+                      name: pgadmin
+                      key: email
+                - name: PGADMIN_DEFAULT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: pgadmin
+                      key: password
+            resources:
+              requests:
+                cpu: 15m
+                memory: 164M
+              limits:
+                memory: 236M
+        pod:
+          securityContext:
+            runAsUser: 5050
+            runAsGroup: 5050
+            fsGroup: 5050
+            fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 80
+    ingress:
+      enabled: true
+      className: internal
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+      hosts:
+        - host: &host 'pgadmin.${SECRET_DOMAIN}'
+          paths:
+            - path: /
+              service:
+                identifier: app
+                port: http
+      tls:
+        - hosts: [*host]
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /var/lib/pgadmin
+      server-json:
+        enabled: true
+        type: configMap
+        name: servers-json
+        globalMounts:
+          - path: /pgadmin4/servers.json
+            subPath: servers.json
