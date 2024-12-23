@@ -5,8 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./grafana-dashboard.yaml
-  - ./clusterrole.yaml
-  - ./clusterrolebinding.yaml
+  - ./rbac.yaml
   - ./helmrelease.yaml
   - ../../../../templates/gatus/external
 configMapGenerator:
@@ -15,3 +14,5 @@ configMapGenerator:
       - config.yaml=./resources/config.yaml
 generatorOptions:
   disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

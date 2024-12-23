@@ -28,13 +28,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: *app
+          #init-db:
+          #  image:
+          #    repository: ghcr.io/onedr0p/postgres-init
+          #    tag: 16
+          #  envFrom: &envFrom
+          #    - secretRef:
+          #        name: *app
           init-config:
             dependsOn: init-db
             image:
@@ -131,7 +131,8 @@ spec:
       name: *app
     persistence:
       config:
-        type: emptyDir
+        existingClaim: gatus
+        #type: emptyDir
       config-file:
         type: configMap
         name: gatus-configmap
