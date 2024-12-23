@@ -22,7 +22,7 @@ spec:
     requests:
       cpu: 500m
     limits:
-  #    hugepages-2Mi: 2Gi # Requires sysctl set on the host
+      hugepages-2Mi: 2Gi # Requires sysctl set on the host
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
@@ -38,7 +38,7 @@ spec:
       endpointURL: https://018e06e568a4c8fc72f1b05604114870.r2.cloudflarestorage.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres-v2
+      serverName: &currentCluster postgres-v1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg
@@ -50,7 +50,7 @@ spec:
   # cluster when recovering from an existing cnpg cluster
   #bootstrap:
   #  recovery:
-  #    source: &previousCluster postgres-v1
+  #    source: &previousCluster postgres16-v7
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   #externalClusters:
   #  - name: *previousCluster

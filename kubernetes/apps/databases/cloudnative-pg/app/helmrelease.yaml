@@ -8,7 +8,6 @@ spec:
   interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://cloudnative-pg.github.io/charts
       chart: cloudnative-pg
       version: 0.22.1
       sourceRef:
@@ -23,9 +22,13 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: openebs-hostpath
+      namespace: storage
   values:
     crds:
       create: true
+    replicaCount: 2
     monitoring:
       podMonitorEnabled: false
       grafanaDashboard:
