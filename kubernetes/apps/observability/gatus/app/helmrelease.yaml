@@ -28,15 +28,15 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          #init-db:
-          #  image:
-          #    repository: ghcr.io/onedr0p/postgres-init
-          #    tag: 16
-          #  envFrom:
-          #    - secretRef:
-          #        name: *app
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom:
+              - secretRef:
+                  name: *app
           init-config:
-            #dependsOn: init-db
+            dependsOn: init-db
             image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
               tag: 1.28.4@sha256:20caf4e241e1f9f9231527db5e75b735aa7b0da7bee3d262cbe369bb9b33469f
@@ -133,8 +133,8 @@ spec:
       name: *app
     persistence:
       config:
-        existingClaim: gatus
-        #type: emptyDir
+        #existingClaim: gatus
+        type: emptyDir
       config-file:
         type: configMap
         name: gatus-configmap
