@@ -42,17 +42,9 @@ spec:
             image:
               repository: dpage/pgadmin4
               tag: '8.14'
-            env:
-              - name: PGADMIN_DEFAULT_EMAIL
-                valueFrom:
-                  secretKeyRef:
-                    name: pgadmin
-                    key: email
-              - name: PGADMIN_DEFAULT_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: pgadmin
-                    key: password
+            envFrom:
+              - secretRef:
+                  name: *app
             resources:
               requests:
                 cpu: 15m
@@ -73,6 +65,7 @@ spec:
             port: 80
     ingress:
       main:
+        enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
