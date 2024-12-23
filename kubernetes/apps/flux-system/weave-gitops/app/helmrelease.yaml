@@ -29,14 +29,14 @@ spec:
       username: admin
     ingress:
       enabled: true
-      className: internal
+      ingressClassName: internal
       annotations:
         external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/group: Infrastructure
-        gethomepage.dev/name: Weave-gitops
-        gethomepage.dev/icon: flux-cd
-        gethomepage.dev/description: Flux Dashboard
+        #gethomepage.dev/enabled: "true"
+        #gethomepage.dev/group: Infrastructure
+        #gethomepage.dev/name: Weave-gitops
+        #gethomepage.dev/icon: flux-cd
+        #gethomepage.dev/description: Flux Dashboard
       hosts:
         - host: "gitops.${SECRET_DOMAIN}"
           paths:
