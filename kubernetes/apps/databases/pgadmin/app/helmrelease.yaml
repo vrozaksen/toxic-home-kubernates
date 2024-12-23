@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -42,17 +42,17 @@ spec:
             image:
               repository: dpage/pgadmin4
               tag: '8.14'
-              env:
-                - name: PGADMIN_DEFAULT_EMAIL
-                  valueFrom:
-                    secretKeyRef:
-                      name: pgadmin
-                      key: email
-                - name: PGADMIN_DEFAULT_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: pgadmin
-                      key: password
+            env:
+              - name: PGADMIN_DEFAULT_EMAIL
+                valueFrom:
+                  secretKeyRef:
+                    name: pgadmin
+                    key: email
+              - name: PGADMIN_DEFAULT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: pgadmin
+                    key: password
             resources:
               requests:
                 cpu: 15m
@@ -72,19 +72,17 @@ spec:
           http:
             port: 80
     ingress:
-      enabled: true
-      className: internal
-      annotations:
-        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-      hosts:
-        - host: &host 'pgadmin.${SECRET_DOMAIN}'
-          paths:
-            - path: /
-              service:
-                identifier: app
-                port: http
-      tls:
-        - hosts: [*host]
+      main:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        className: internal
+        hosts:
+          - host: &host 'pgadmin.${SECRET_DOMAIN}'
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         enabled: true
