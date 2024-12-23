@@ -38,7 +38,7 @@ spec:
       endpointURL: https://018e06e568a4c8fc72f1b05604114870.r2.cloudflarestorage.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres-v2
+      serverName: &currentCluster postgres-v1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg
