@@ -18,3 +18,4 @@ resources:
   - ./cloudnative-pg.yaml
   - ./dragonfly.yaml
   - ./grafana.yaml
+  - ./weave-gitops.yaml
