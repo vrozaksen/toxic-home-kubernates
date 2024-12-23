@@ -6,7 +6,7 @@ metadata:
   name: postgres-lb
   annotations:
     external-dns.alpha.kubernetes.io/hostname: postgres.${SECRET_DOMAIN}
-    lbipam.cilium.io/ips: "${SVC_POSTGRES_ADDR}"
+    io.cilium/lb-ipam-ips: "${SVC_POSTGRES_ADDR}"
 spec:
   type: LoadBalancer
   ports:
@@ -16,4 +16,53 @@ spec:
       targetPort: 5432
   selector:
     cnpg.io/cluster: postgres
-    cnpg.io/instanceRole: primary
+    role: primary
+---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-r
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: postgres
+    cnpg.io/podRole: instance
+---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-ro
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: postgres
+    role: replica
+---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/service-v1.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-rw
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: postgres
+    role: primary
+  sessionAffinity: None
