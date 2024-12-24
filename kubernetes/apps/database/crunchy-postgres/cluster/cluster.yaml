@@ -127,9 +127,9 @@ spec:
       stanza: db
       configuration: *backupConfig
       global: *backupFlag
-      #repo:
-      #  name: repo1
-      #  s3: *minio
+      repo:
+        name: repo2
+        s3: *r2
   proxy:
     pgBouncer:
       service:
