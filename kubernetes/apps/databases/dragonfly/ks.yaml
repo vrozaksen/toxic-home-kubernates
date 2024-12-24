@@ -6,13 +6,13 @@ metadata:
   name: &app dragonfly-operator
   namespace: flux-system
 spec:
-  targetNamespace: databases
+  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/apps/databases/dragonfly/app
+  path: ./kubernetes/apps/database/dragonfly/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -28,13 +28,13 @@ metadata:
   name: &app dragonfly-cluster
   namespace: flux-system
 spec:
-  targetNamespace: databases
+  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly-operator
-  path: ./kubernetes/apps/databases/dragonfly/cluster
+  path: ./kubernetes/apps/database/dragonfly/cluster
   prune: true
   sourceRef:
     kind: GitRepository

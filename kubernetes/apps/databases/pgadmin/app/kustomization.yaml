@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: databases
+namespace: database
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
@@ -15,4 +15,4 @@ generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 metadata:
-  namespace: databases
+  namespace: database

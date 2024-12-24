@@ -6,13 +6,13 @@ metadata:
   name: &app pgadmin
   namespace: flux-system
 spec:
-  targetNamespace: databases
+  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/apps/databases/pgadmin/app
+  path: ./kubernetes/apps/database/pgadmin/app
   prune: true
   sourceRef:
     kind: GitRepository

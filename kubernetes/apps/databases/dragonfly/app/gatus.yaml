@@ -11,7 +11,7 @@ data:
     endpoints:
       - name: dragonfly
         group: internal
-        url: tcp://dragonfly.databases.svc.cluster.local:6379
+        url: tcp://dragonfly.database.svc.cluster.local:6379
         interval: 1m
         conditions: ["[CONNECTED] == true"]
         alerts: [{ type: pushover }]
