@@ -20,3 +20,4 @@ resources:
   - ./grafana.yaml
   - ./weave-gitops.yaml
   - ./crunchydata.yaml
+  - ./userinit-controller.yaml
