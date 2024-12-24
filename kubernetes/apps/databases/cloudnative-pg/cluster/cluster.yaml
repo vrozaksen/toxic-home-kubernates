@@ -5,11 +5,11 @@ kind: Cluster
 metadata:
   name: postgres
 spec:
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.2@sha256:fe4efc6901dda0d952306fd962643d8022d7bb773ffe13fe8a21551b9276e50c
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.6
   instances: 3
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
+    size: 5Gi
     storageClass: openebs-hostpath
   superuserSecret:
     name: cloudnative-pg
