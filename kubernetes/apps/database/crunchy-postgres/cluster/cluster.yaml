@@ -122,14 +122,14 @@ spec:
         #    full: "15 1 * * 0" # Sunday at 01:15
         #    differential: "15 1 * * 1-6" # Mon-Sat at 01:15
         #    incremental: "15 3-23 * * *" # Every hour except 01:30-2:30
-  dataSource:
-    pgbackrest:
-      stanza: db
-      configuration: *backupConfig
-      global: *backupFlag
-      repo:
-        name: repo2
-        s3: *r2
+  #dataSource:
+  #  pgbackrest:
+  #    stanza: db
+  #    configuration: *backupConfig
+  #    global: *backupFlag
+  #    repo:
+  #      name: repo2
+  #      s3: *r2
   proxy:
     pgBouncer:
       service:
