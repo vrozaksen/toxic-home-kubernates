@@ -25,18 +25,14 @@ spec:
   values:
     controllers:
       gatus:
+        replicas: 2
+        strategy: RollingUpdate
+        labels:
+          postgres: "true"
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom:
-              - secretRef:
-                  name: *app
           init-config:
-            dependsOn: init-db
             image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
               tag: 1.28.4@sha256:20caf4e241e1f9f9231527db5e75b735aa7b0da7bee3d262cbe369bb9b33469f
@@ -57,15 +53,15 @@ spec:
           app:
             image:
               repository: ghcr.io/twin/gatus
-              tag: v5.14.0
+              tag: v5.14.0@sha256:acc0c116458a8d65ce48f7caea13881afa20bf5a405bb95230c51430eb9e2313
             env:
-              TZ: "${TIMEZONE}"
+              TZ: ${TIMEZONE}
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               WEB_PORT: &port 80
             envFrom:
-              - secretRef:
-                  name: *app
+            - secretRef:
+                name: gatus-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -90,8 +86,8 @@ spec:
           - { name: ndots, value: "1" }
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 100
         fsGroup: 65534
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
@@ -110,19 +106,25 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+            metricRelabelings:
+              - action: labeldrop
+                regex: (pod)
+              - action: replace
+                sourceLabels: ["service"]
+                targetLabel: instance
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        className: external
+        #annotations:
           #gethomepage.dev/enabled: "true"
           #gethomepage.dev/group: Observability
           #gethomepage.dev/name: Gatus
-          #gethomepage.dev/icon: gatus
+          #gethomepage.dev/icon: gatus.png
+          #gethomepage.dev/description: Status Page
           #gethomepage.dev/widget.type: gatus
           #gethomepage.dev/widget.url: http://gatus.observability
-        className: external
         hosts:
-          - host: "status.${SECRET_DOMAIN}"
+          - host: status.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -133,7 +135,6 @@ spec:
       name: *app
     persistence:
       config:
-        #existingClaim: gatus
         type: emptyDir
       config-file:
         type: configMap

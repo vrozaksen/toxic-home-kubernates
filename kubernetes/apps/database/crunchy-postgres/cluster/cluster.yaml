@@ -55,7 +55,7 @@ spec:
         type: AlphaNumeric
     # Applications
     - name: "gatus"
-      databases: ["gatus_pg"]
+      databases: ["gatus"]
       password:
         type: AlphaNumeric
   backups:
