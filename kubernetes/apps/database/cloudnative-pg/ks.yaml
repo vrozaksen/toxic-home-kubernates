@@ -26,7 +26,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg-cluster
+  name: &app crunchy-postgres-operator-cluster
   namespace: flux-system
 spec:
   targetNamespace: database

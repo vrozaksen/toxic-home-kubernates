@@ -19,3 +19,4 @@ resources:
   - ./dragonfly.yaml
   - ./grafana.yaml
   - ./weave-gitops.yaml
+  - ./crunchydata.yaml
