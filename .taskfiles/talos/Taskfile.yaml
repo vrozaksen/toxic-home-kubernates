@@ -7,6 +7,7 @@ vars:
   TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml'
   TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml'
   TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
+  TALOS_ENV: '{{.KUBERNETES_DIR}}/bootstrap/talos/cluster.env'
 
 env:
   TALOSCONFIG: '{{.TALOSCONFIG}}'
@@ -97,3 +98,51 @@ tasks:
     cmd: flux --namespace flux-system resume kustomization --all
     preconditions:
       - which flux
+
+  reboot-node:
+    desc: Reboot Talos on a single node [HOSTNAME=required]
+    cmds:
+      - task: down
+      - talosctl --nodes {{.HOSTNAME}} reboot
+      - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
+      - task: up
+    requires:
+      vars: [HOSTNAME]
+    preconditions:
+      - talosctl --nodes {{.HOSTNAME}} get machineconfig
+      - talosctl config info
+      - test -f {{.TALOS_ENV}}
+      - test -f {{.TALHELPER_CONFIG_FILE}}
+      - which talosctl
+
+  reboot-cluster:
+    desc: Reboot Talos across the whole cluster
+    prompt: This will reboot all of the cluster nodes. Are you sure you want to continue?
+    vars:
+      HOSTNAMES:
+        sh: kubectl get nodes --output=jsonpath='{.items[*].metadata.name}'
+    cmds:
+      - for: { var: HOSTNAMES }
+        task: reboot-node
+        vars:
+          HOSTNAME: '{{.ITEM}}'
+      - task: :kubernetes:delete-failed-pods
+    preconditions:
+      - talosctl config info
+      - test -f {{.TALOS_ENV}}
+      - test -f {{.TALHELPER_CONFIG_FILE}}
+      - test -f {{.TALOSCONFIG}}
+
+  shutdown-cluster:
+    desc: Shutdown Talos across the whole cluster
+    prompt: Shutdown the Talos cluster ... continue?
+    cmd: talosctl shutdown --nodes {{.HOSTNAMES}} --force
+    vars:
+      HOSTNAMES:
+        sh: kubectl get nodes --output=jsonpath='{.items[*].metadata.name}'
+    preconditions:
+      - talosctl --nodes {{.NODES}} get machineconfig
+      - talosctl config info
+      - test -f {{.TALHELPER_CONFIG_FILE}}
+      - test -f {{.TALOSCONFIG}}
+      - which talosctl
