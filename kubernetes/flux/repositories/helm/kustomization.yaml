@@ -21,3 +21,4 @@ resources:
   - ./weave-gitops.yaml
   - ./crunchydata.yaml
   - ./userinit-controller.yaml
+  - ./authentik-charts.yaml
