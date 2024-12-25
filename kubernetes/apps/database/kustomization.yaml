@@ -7,4 +7,3 @@ resources:
   - ./dragonfly/ks.yaml
   - ./cloudnative-pg/ks.yaml # lets go
 #  - ./pgadmin/ks.yaml
-#  - ./crunchy-postgres/ks.yaml
