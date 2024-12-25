@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./dragonfly/ks.yaml
-#  - ./cloudnative-pg/ks.yaml #bye for now
+  - ./cloudnative-pg/ks.yaml # lets go
 #  - ./pgadmin/ks.yaml
 #  - ./crunchy-postgres/ks.yaml
