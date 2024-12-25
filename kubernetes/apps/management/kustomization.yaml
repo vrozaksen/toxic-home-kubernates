@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./namespace.yaml
+  - ./cloudbeaver/ks.yaml
+#  - ./pgadmin/ks.yaml
+  - ./pgbackweb/ks.yaml
+#  - ./rustdesk/ks.yaml
+  - ./sshwifty/ks.yaml
+configMapGenerator:
+  - name: authelia-ingress-hv
+    namespace: management
+    files:
+      - values.yaml=../security/authelia/app/resources/authelia-ingress-hv.yaml
+generatorOptions:
+  disableNameSuffixHash: true

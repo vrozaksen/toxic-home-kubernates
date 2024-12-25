@@ -1,0 +1,176 @@
+---
+authentication_backend:
+  password_reset:
+    disable: true
+  refresh_interval: 1m
+  #ldap:
+  #  address: "ldaps://${SECRET_QNAP_HOSTNAME}:636"
+  #  implementation: custom
+  #  timeout: 5s
+  #  base_dn: "${SECRET_LDAP_BASE_DN}"
+  #  additional_users_dn: ou=people
+  #  users_filter: (&({username_attribute}={input})(objectClass=person))
+  #  additional_groups_dn: ou=group
+  #  groups_filter: (&(memberUid={username})(objectClass=*))
+  #  group_search_mode: filter
+  #  user: "{{ .LDAP_SEARCH_BIND_DN }}"
+  #  password: "{{ .LDAP_SEARCH_PASSWORD }}"
+  #  attributes:
+  #    username: uid
+  #    display_name: gecos
+  #    mail: mail
+  #    group_name: cn
+  file:
+    path: '/config/users.yml'
+    watch: false
+    search:
+      email: false
+      case_insensitive: false
+    password:
+      algorithm: 'argon2'
+      argon2:
+        variant: 'argon2id'
+        iterations: 3
+        memory: 65536
+        parallelism: 4
+        key_length: 32
+        salt_length: 16
+      scrypt:
+        iterations: 16
+        block_size: 8
+        parallelism: 1
+        key_length: 32
+        salt_length: 16
+      pbkdf2:
+        variant: 'sha512'
+        iterations: 310000
+        salt_length: 16
+      sha2crypt:
+        variant: 'sha512'
+        iterations: 50000
+        salt_length: 16
+      bcrypt:
+        variant: 'standard'
+        cost: 12
+
+log:
+  level: "info"
+  format: "text"
+  file_path: ""
+  keep_stdout: false
+
+session:
+  secret: "{{ .SESSION_SECRET }}"
+  same_site: lax
+  expiration: 1h
+  inactivity: 5m
+  remember_me: 1M
+  cookies:
+    - name: "${SECRET_DOMAIN}.session"
+      domain: "${SECRET_DOMAIN}"
+      authelia_url: "https://auth.${SECRET_DOMAIN}"
+      default_redirection_url: "https://${SECRET_DOMAIN}"
+  redis:
+    host: dragonfly.database.svc.cluster.local
+    database_index: 1
+
+storage:
+  encryption_key: "{{ .STORAGE_ENCRYPTION_KEY }}"
+  postgres:
+    address: postgres-rw.database.svc.cluster.local
+    database: authelia
+    username: "{{ .AUTHELIA_POSTGRES_USERNAME }}"
+    password: "{{ .AUTHELIA_POSTGRES_PASSWORD }}"
+
+#notifier:
+#  disable_startup_check: true
+#  smtp:
+#    address: mail.smtp2go.com:2525
+#    sender: "Authelia <authelia@${SECRET_DOMAIN}>"
+#    username: "{{ .SMTP_USER }}"
+#    password: "{{ .SMTP_PASS }}"
+
+access_control:
+  default_policy: deny
+  networks:
+    - name: internal
+      networks: [ "${LAN_CIDR}", "${CLUSTER_CIDR}", "${SERVICE_CIDR}" ]
+    - name: cluster
+      networks: [ "${CLUSTER_CIDR}" ]
+  rules:
+    # Allow free access from cluster network
+    - domain: "*.${SECRET_DOMAIN}"
+      networks:
+        - "cluster"
+      policy: bypass
+    # 2FA if not on cluster network
+    - domain: "*.${SECRET_DOMAIN}"
+      policy: two_factor
+
+totp:
+  disable: false
+  issuer: "Authelia (${SECRET_DOMAIN})"
+
+webauthn:
+  disable: false
+  display_name: "Authelia (${SECRET_DOMAIN})"
+  attestation_conveyance_preference: indirect
+  user_verification: preferred
+  timeout: 60s
+
+duo_api:
+  disable: true
+  #hostname: api-31d53ca6.duosecurity.com
+  #integration_key: "{{ .DUO_INTEGRATION_KEY }}"
+  #secret_key: "{{ .DUO_SECRET_KEY }}"
+
+identity_providers:
+  oidc:
+    hmac_secret: "{{ .OIDC_HMAC_SECRET }}"
+    cors:
+      endpoints: ["authorization", "pushed-authorization-request", "token", "revocation", "introspection", "userinfo"]
+      allowed_origins_from_client_redirect_uris: true
+#    clients:
+#      - client_id: "{{ .WEAVE_OIDC_CLIENT_ID }}"
+#        client_name: Weave GitOps
+#        client_secret: "{{ .WEAVE_OIDC_CLIENT_SECRET }}"
+#        pre_configured_consent_duration: 1y
+#        redirect_uris: ["https://gitops.${SECRET_DOMAIN}/oauth2/callback"]
+#
+#      - client_id: "{{ .GRAFANA_OIDC_CLIENT_ID }}"
+#        client_name: Grafana
+#        client_secret: "{{ .GRAFANA_OIDC_CLIENT_SECRET }}"
+#        pre_configured_consent_duration: 1y
+#        redirect_uris: ["https://grafana.${SECRET_DOMAIN}/login/generic_oauth"]
+#
+#      - client_id: "{{ .GATUS_OIDC_CLIENT_ID }}"
+#        client_name: Gatus
+#        client_secret: "{{ .GATUS_OIDC_CLIENT_SECRET }}"
+#        pre_configured_consent_duration: 1y
+#        redirect_uris: ["https://status.${SECRET_DOMAIN}/authorization-code/callback"]
+#        scopes: ["openid"]
+#        token_endpoint_auth_method: client_secret_post
+#
+#      - client_id: kubeapi
+#        client_name: Kubeapi
+#        client_secret: "{{ .KUBEAPI_OIDC_CLIENT_SECRET }}"
+#        redirect_uris: ["https://che.${SECRET_DOMAIN}/oauth/callback"]
+#        scopes: ["openid", "profile", "groups", "email", "offline_access"]
+#        grant_types: ["refresh_token", "authorization_code"]
+#        response_types: ["code"]
+#
+#      - client_name: pgAdmin
+#        client_id: "{{ .PGADMIN_OIDC_CLIENT_ID }}"
+#        client_secret: '{{ .PGADMIN_OIDC_CLIENT_SECRET }}'
+#        pre_configured_consent_duration: 1y
+#        redirect_uris: ["https://pgadmin.${SECRET_DOMAIN}/oauth2/authorize"]
+#        scopes: ["openid", "profile", "email"]
+#        response_types: ["code"]
+#
+#      - client_name: Coder
+#        client_id: "{{ .CODER_OIDC_CLIENT_ID }}"
+#        client_secret: "{{ .CODER_OIDC_CLIENT_SECRET }}"
+#        pre_configured_consent_duration: 1y
+#        redirect_uris: ["https://coder.${SECRET_DOMAIN}/api/v2/users/oidc/callback"]
+#        scopes: ["openid", "profile", "groups", "email", "offline_access"]
+#
