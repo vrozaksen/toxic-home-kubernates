@@ -17,13 +17,7 @@
   #    group_name: cn
 
 
-#notifier:
-#  disable_startup_check: true
-#  smtp:
-#    address: mail.smtp2go.com:2525
-#    sender: "Authelia <authelia@${SECRET_DOMAIN}>"
-#    username: "{{ .SMTP_USER }}"
-#    password: "{{ .SMTP_PASS }}"
+
 
 
 duo-api

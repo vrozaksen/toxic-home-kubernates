@@ -96,10 +96,17 @@ webauthn:
 duo_api:
   disable: true
 
+notifier:
+  disable_startup_check: true
+  smtp:
+    address: "{{ .SMTP_HOST }}"
+    sender: "Authelia <authelia@${SECRET_DOMAIN}>"
+    username: "{{ .SMTP_USER }}"
+    password: "{{ .SMTP_PASS }}"
 
-identity_providers:
-  oidc:
-    hmac_secret: "{{ .OIDC_HMAC_SECRET }}"
-    cors:
-      endpoints: ["authorization", "pushed-authorization-request", "token", "revocation", "introspection", "userinfo"]
-      allowed_origins_from_client_redirect_uris: true
+#identity_providers:
+#  oidc:
+#    hmac_secret: "{{ .OIDC_HMAC_SECRET }}"
+#    cors:
+#      endpoints: ["authorization", "pushed-authorization-request", "token", "revocation", "introspection", "userinfo"]
+#      allowed_origins_from_client_redirect_uris: true

@@ -145,12 +145,12 @@ spec:
               - subPath: private_key.pem
                 path: /oidc_issuer/private_key.pem
                 readOnly: true
-      #trusted-certs:
-      #  type: configMap
-      #  name: letsencrypt-certs
-      #  advancedMounts:
-      #    authelia:
-      #      app:
-      #        - subPath: letsencrypt-certs.pem
-      #          path: /trusted_certs/letsencrypt-certs.pem
-      #          readOnly: true
+      trusted-certs:
+        type: configMap
+        name: letsencrypt-certs
+        advancedMounts:
+          authelia:
+            app:
+              - subPath: letsencrypt-certs.pem
+                path: /trusted_certs/letsencrypt-certs.pem
+                readOnly: true
