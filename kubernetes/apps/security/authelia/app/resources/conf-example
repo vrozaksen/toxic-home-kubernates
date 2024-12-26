@@ -25,6 +25,16 @@ duo-api
   #integration_key: "{{ .DUO_INTEGRATION_KEY }}"
   #secret_key: "{{ .DUO_SECRET_KEY }}"
 
+
+
+
+
+#identity_providers:
+#  oidc:
+#    hmac_secret: "{{ .OIDC_HMAC_SECRET }}"
+#    cors:
+#      endpoints: ["authorization", "pushed-authorization-request", "token", "revocation", "introspection", "userinfo"]
+#      allowed_origins_from_client_redirect_uris: true
 #    clients:
 #      - client_id: "{{ .WEAVE_OIDC_CLIENT_ID }}"
 #        client_name: Weave GitOps
