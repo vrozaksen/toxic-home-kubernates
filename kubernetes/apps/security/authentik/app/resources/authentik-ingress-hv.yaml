@@ -1,8 +1,0 @@
-ingress:
-  app:
-    annotations:
-      nginx.ingress.kubernetes.io/auth-method: GET
-      nginx.ingress.kubernetes.io/auth-url: http://authentik.security.svc.cluster.local/api/v1/authentication/verify
-      nginx.ingress.kubernetes.io/auth-signin: https://sso.${SECRET_DOMAIN}/ui/flow/
-      nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-      nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
