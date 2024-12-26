@@ -44,8 +44,9 @@ spec:
             enabled: true
       ingress:
         enabled: true
-        ingressClassName: external
+        className: external
         annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           #gethomepage.dev/enabled: "true"
           #gethomepage.dev/icon: authentik.png
           #gethomepage.dev/name: Authentik
@@ -56,8 +57,12 @@ spec:
           #gethomepage.dev/widget.url: http://authentik-server.security
           #gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
         hosts:
-          - sso.${SECRET_DOMAIN}
-        https: false
+          - host: "sso.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     worker:
       autoscaling:
         enabled: true
