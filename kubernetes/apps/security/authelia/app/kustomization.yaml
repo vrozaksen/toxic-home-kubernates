@@ -11,8 +11,8 @@ configMapGenerator:
   - name: authelia
     files:
       - configuration.yaml=./resources/configuration.yaml
-  #- name: letsencrypt-certs
-  #  files:
-  #    - letsencrypt-certs.pem=./resources/letsencrypt-certs.pem
+  - name: letsencrypt-certs
+    files:
+      - letsencrypt-certs.pem=./resources/letsencrypt-certs.pem
 generatorOptions:
   disableNameSuffixHash: true
