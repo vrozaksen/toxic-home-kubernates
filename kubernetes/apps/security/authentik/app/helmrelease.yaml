@@ -34,6 +34,8 @@ spec:
     authentik:
       redis:
         host: dragonfly.database.svc.cluster.local
+      outposts:
+        container_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
     server:
       autoscaling:
         enabled: true
@@ -44,7 +46,7 @@ spec:
             enabled: true
       ingress:
         enabled: true
-        className: external
+        ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           #gethomepage.dev/enabled: "true"
@@ -57,12 +59,10 @@ spec:
           #gethomepage.dev/widget.url: http://authentik-server.security
           #gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
         hosts:
-          - host: "sso.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+          - &host sso.${SECRET_DOMAIN}
+        paths:
+          - /
+        tls: [hosts: [*host]]
     worker:
       autoscaling:
         enabled: true
