@@ -10,9 +10,9 @@ resources:
 #  - ./rustdesk/ks.yaml
   - ./sshwifty/ks.yaml
 configMapGenerator:
-  - name: authelia-ingress-hv
+  - name: authentik-ingress-hv
     namespace: management
     files:
-      - values.yaml=../security/authelia/app/resources/authelia-ingress-hv.yaml
+      - values.yaml=../security/authentik/app/resources/authentik-ingress-hv.yaml
 generatorOptions:
   disableNameSuffixHash: true
