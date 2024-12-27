@@ -26,3 +26,4 @@ resources:
   - ./piraeus.yaml
   - ./csi-driver-nfs.yaml
   - ./backube.yaml
+  - ./kyverno.yaml
