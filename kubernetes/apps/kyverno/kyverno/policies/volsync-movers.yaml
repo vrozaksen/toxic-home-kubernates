@@ -46,7 +46,7 @@ spec:
                   - name: repository
                     nfs:
                       server: &server 10.0.20.10
-                      path: &server-path /mnt/user/kubernates
+                      path: &server-path /mnt/user/kubernetes
     - name: mutate-volsync-dst-movers
       match:
         any:
