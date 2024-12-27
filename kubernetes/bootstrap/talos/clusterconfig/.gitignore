@@ -1,7 +1,3 @@
-toxic-home-kubernates-kube-ctrl-01.yaml
-toxic-home-kubernates-kube-ctrl-02.yaml
-toxic-home-kubernates-kube-ctrl-03.yaml
-toxic-home-kubernates-kube-work-01.yaml
-toxic-home-kubernates-kube-work-02.yaml
-toxic-home-kubernates-kube-work-03.yaml
 talosconfig
+toxic-home-kubernates-alfheim.yaml
+toxic-home-kubernates-alne.yaml

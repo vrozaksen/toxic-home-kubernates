@@ -10,8 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  #dependsOn:
-  #  - name: volsync
+  dependsOn:
+    - name: volsync
   path: ./kubernetes/apps/management/pgadmin/app
   prune: true
   sourceRef:

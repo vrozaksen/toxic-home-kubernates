@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/clusterrole-rbac-v1.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: volsync-src-fixer
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims", "pods"]
+    verbs: ["get", "list", "delete"]

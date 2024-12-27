@@ -3,15 +3,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../../templates/volsync
-  - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/gatus/guarded
+  - ./clusterrole.yaml
+  - ./clusterrolebinding.yaml
 configMapGenerator:
-  - name: cloudbeaver
+  - name: volsync-src-fixer
     files:
-      - ./configs/cloudbeaver.conf
-      - ./configs/initial-data-sources.conf
-      - ./configs/initial-data.conf
+      - volsync-src-fixer.sh=./resources/volsync-src-fixer.sh
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
 generatorOptions:
   disableNameSuffixHash: true
