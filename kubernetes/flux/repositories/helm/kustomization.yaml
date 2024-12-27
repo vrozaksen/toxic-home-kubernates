@@ -25,3 +25,4 @@ resources:
   - ./longhorn.yaml
   - ./piraeus.yaml
   - ./csi-driver-nfs.yaml
+  - ./backube.yaml
