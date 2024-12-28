@@ -12,7 +12,7 @@ data:
             - icon: discord.png
               href: 'https://discord.com/app'
         - Protonmail:
-            - icon: protonmail.png
+            - icon: proton-mail.png
               href: 'https://mail.proton.me/'
     - Media:
         - YouTube:
@@ -36,20 +36,16 @@ data:
   kubernetes.yaml: |
     mode: cluster
   services.yaml: |
-    - Infrastructure:
-        - Gatus:
-            description: Application Status
-            icon: gatus.png
-            widget:
-              type: gatus
-              url: http://gatus.monitor.svc.cluster.local:8080
-        - Unraid:
-            description: Aincrad NAS
-            icon: unraid.png
-            href: https://aincrad.lan.vrozaksen.eu
-            ping: https://aincrad.lan.vrozaksen.eu
-            siteMonitor: https://aincrad.lan.vrozaksen.eu
     - Network:
+        - OPNSense:
+            href: https://opnsense.lan.vrozaksen.eu:8443
+            icon: opnsense.png
+            description: OPNsense Firewall
+            widget:
+              type: opnsense
+              url: https://opnsense.lan.vrozaksen.eu:8443
+              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
         - Cloudflared:
             href: https://dash.cloudflare.com/
             icon: cloudflare-zero-trust.png
@@ -60,15 +56,17 @@ data:
               tunnelid: {{HOMEPAGE_VAR_CLOUDFLARED_TUNNELID}}
               key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
               fields: ["status"]
-        - OPNSense:
-            href: https://opnsense.lan.vrozaksen.eu:8443
-            icon: opnsense.png
-            description: OPNsense Firewall
-            widget:
-              type: opnsense
-              url: https://opnsense.lan.vrozaksen.eu:8443
-              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
-              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+    - Infrastructure:
+#        - MeshCentral:
+#            href: https://mesh.${PI_DOMAIN}
+#            icon: meshcentral.png
+#            description: MeshCentral Dashboard
+#        - Unraid:
+#            description: Unraid NAS
+#            icon: unraid.png
+#            href: https://aincrad.lan.vrozaksen.eu
+#            ping: https://aincrad.lan.vrozaksen.eu
+#            siteMonitor: https://aincrad.lan.vrozaksen.eu
 #    - Observability:
 #        - Prometheus:
 #            href: https://prometheus.io/
@@ -105,7 +103,7 @@ data:
     useEqualHeights: true
     theme: dark
     background:
-      image: https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/101518784_p0.jpg
+      image: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/101518784_p0.jpg
       opacity: 20
     color: slate
     headerStyle: clean
@@ -151,9 +149,9 @@ data:
         icon: mdi-download-circle
   widgets.yaml: |
     - logo:
-        icon: https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/lds-transparent.png
+        icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/lds-transparent.png
     - search:
-        provider: [google, duckduckgo]
+        provider: [duckduckgo, google]
         focus: false
         target: _blank
     - greeting:
@@ -174,7 +172,7 @@ data:
         label: Home
         latitude: ${LATITUDE}
         longitude: ${LONGITUDE}
-        units: imperial
+        units: metric
         cache: 5
     - datetime:
         text_size: l
