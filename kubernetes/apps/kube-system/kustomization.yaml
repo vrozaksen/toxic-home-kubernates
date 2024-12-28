@@ -9,3 +9,10 @@ resources:
   - ./reloader/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./spegel/ks.yaml
+configMapGenerator:
+  - name: authentik-ingress-hv
+    namespace: management
+    files:
+      - values.yaml=../security/authentik/app/resources/authentik-ingress-hv.yaml
+generatorOptions:
+  disableNameSuffixHash: true

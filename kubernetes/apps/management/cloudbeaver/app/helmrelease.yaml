@@ -22,6 +22,9 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  valuesFrom:
+    - kind: ConfigMap
+      name: authentik-ingress-hv
   values:
     controllers:
       cloudbeaver:

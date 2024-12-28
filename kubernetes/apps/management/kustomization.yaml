@@ -9,5 +9,10 @@ resources:
   - ./pgbackweb/ks.yaml
   - ./rustdesk/ks.yaml
   - ./sshwifty/ks.yaml
+configMapGenerator:
+  - name: authentik-ingress-hv
+    namespace: management
+    files:
+      - values.yaml=../security/authentik/app/resources/authentik-ingress-hv.yaml
 generatorOptions:
   disableNameSuffixHash: true
