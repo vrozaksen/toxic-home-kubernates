@@ -67,8 +67,8 @@ data:
             widget:
               type: opnsense
               url: https://opnsense.lan.vrozaksen.eu:8443
-              username: {{OPNSENSE_USER}}
-              password: {{OPNSENSE_PASS}}
+              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
 #    - Observability:
 #        - Prometheus:
 #            href: https://prometheus.io/
