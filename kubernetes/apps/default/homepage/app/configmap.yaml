@@ -18,8 +18,11 @@ data:
         - YouTube:
             - icon: youtube.png
               href: 'https://youtube.com/feed/subscriptions'
+        - Spotify:
+            - icon: spotify.png
+              href: 'http://open.spotify.com'
         - Youtube Music:
-            - icon: https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/youtube-music.png
+            - icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/youtube-music.png
               href: 'https://music.youtube.com'
     - Reading:
         - Reddit:
