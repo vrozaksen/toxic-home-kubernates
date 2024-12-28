@@ -57,16 +57,16 @@ data:
               key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
               fields: ["status"]
     - Infrastructure:
+        - Unraid:
+            description: Unraid NAS
+            icon: unraid.png
+            href: https://aincrad.lan.vrozaksen.eu
+            ping: https://aincrad.lan.vrozaksen.eu
+            siteMonitor: https://aincrad.lan.vrozaksen.eu
 #        - MeshCentral:
 #            href: https://mesh.${PI_DOMAIN}
 #            icon: meshcentral.png
 #            description: MeshCentral Dashboard
-#        - Unraid:
-#            description: Unraid NAS
-#            icon: unraid.png
-#            href: https://aincrad.lan.vrozaksen.eu
-#            ping: https://aincrad.lan.vrozaksen.eu
-#            siteMonitor: https://aincrad.lan.vrozaksen.eu
 #    - Observability:
 #        - Prometheus:
 #            href: https://prometheus.io/
