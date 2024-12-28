@@ -40,21 +40,24 @@ spec:
                 key: adguard-password
           - name: DRY_RUN
             value: "false"
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http-webhook
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: http-webhook
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /healthz
+                port: 8081
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
         securityContext:
           readOnlyRootFilesystem: true
     extraArgs:
+      - --health-probe-bind-address=:8081
+      - --metrics-bind-address=:8080
       - --ignore-ingress-tls-spec
       - --ingress-class=internal
     policy: sync
