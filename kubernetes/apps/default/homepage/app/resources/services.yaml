@@ -1,11 +1,11 @@
 - Infrastructure:
     - OPNSense:
         icon: opnsense
-        href: https://opnsense.lan.vrozaksen.eu
+        href: https://opnsense.lan.vrozaksen.eu:8443
         description: OPNSense
         widget:
           type: opnsense
-          url: https://opnsense.lan.vrozaksen.eu
+          url: https://opnsense.lan.vrozaksen.eu:8443
           username: {{ .OPNSENSE_USER }}
           password: {{ .OPNSENSE_PASS }}
 - Observability:
