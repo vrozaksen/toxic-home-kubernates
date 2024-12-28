@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gha-runner-scale-set
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gha-runner-scale-set
+      version: 0.9.2
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: gha-runner-scale-set-controller
+      namespace: actions-runner-system
+  valuesFrom:
+    - kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: github_token
+      targetPath: githubConfigSecret.github_token
+  values:
+    nameOverride: gha-runner-scale-set
+    runnerScaleSetName: gha-runner-scale-set
+    githubConfigUrl: https://github.com/vrozaksen/toxic-home-kubernates
+    minRunners: 1
+    maxRunners: 10
+    containerMode:
+      type: dind
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/joryirving/actions-runner:2.316.1@sha256:f35d795cbfd9043420571a6d587d991a1fa9e1707ce0dd441ae287aa7aa06841
+            command: ["/home/runner/run.sh"]
+    controllerServiceAccount:
+      name: gha-runner-scale-set-controller
+      namespace: actions-runner-system
