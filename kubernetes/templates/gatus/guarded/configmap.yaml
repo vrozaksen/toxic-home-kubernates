@@ -23,11 +23,3 @@ data:
           - "len([BODY]) == 0"
         alerts:
           - type: pushover
-      - name: "${APP}"
-        group: internal
-        url: "https://${APP}.${SECRET_DOMAIN}${GATUS_PATH:-/}"
-        interval: 1m
-        conditions:
-          - "[STATUS] == ${GATUS_STATUS:-200}"
-        alerts:
-          - type: pushover
