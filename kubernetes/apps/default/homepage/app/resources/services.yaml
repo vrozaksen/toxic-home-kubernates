@@ -1,0 +1,29 @@
+- Infrastructure:
+    - OPNSense:
+        icon: opnsense
+        href: https://opnsense.lan.vrozaksen.eu
+        description: OPNSense
+        widget:
+          type: opnsense
+          url: https://opnsense.lan.vrozaksen.eu
+          username: {{ .OPNSENSE_USER }}
+          password: {{ .OPNSENSE_PASS }}
+- Observability:
+    - Gluetun:
+        icon: gluetun
+        description: Gluetun VPN Gateway
+        namespace: network
+        app: pod-gateway
+        widget:
+          type: gluetun
+          url: http://vpn-gateway.network
+          fields: ["public_ip", "region"]
+    - Cloudflared:
+        href: https://dash.cloudflare.com/
+        icon: cloudflare-zero-trust
+        description: Cloudflared Tunnel Status
+        widget:
+          type: cloudflared
+          accountid: {{ .CF_ACCOUNT_ID }}
+          tunnelid: {{ .CF_TUNNEL_ID }}
+          key: {{ .CF_API_TOKEN }}

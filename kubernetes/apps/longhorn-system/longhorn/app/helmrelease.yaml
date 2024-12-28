@@ -44,11 +44,11 @@ spec:
       ingressClassName: internal
       annotations:
         external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        #gethomepage.dev/enabled: "true"
-        #gethomepage.dev/group: Storage
-        #gethomepage.dev/icon: longhorn
-        #gethomepage.dev/name: Longhorn
-        #gethomepage.dev/pod-selector: app.kubernetes.io/name=longhorn
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Storage
+        gethomepage.dev/icon: longhorn
+        gethomepage.dev/name: Longhorn
+        gethomepage.dev/pod-selector: app.kubernetes.io/name=longhorn
         #nginx.ingress.kubernetes.io/auth-method: GET
         #nginx.ingress.kubernetes.io/auth-url: http://authelia.security.svc.cluster.local/api/verify
         #nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}
