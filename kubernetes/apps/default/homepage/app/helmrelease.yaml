@@ -38,7 +38,7 @@ spec:
               TZ: ${TIMEZONE}
             envFrom:
               - secretRef:
-                  name: homepage-secret
+                  name: homepage
             resources:
               requests:
                 cpu: 15m
