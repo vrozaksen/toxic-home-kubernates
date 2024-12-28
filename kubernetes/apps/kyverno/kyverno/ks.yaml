@@ -3,43 +3,40 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app linstor
+  name: &app kyverno
   namespace: flux-system
 spec:
-  targetNamespace: piraeus-datastore
+  targetNamespace: kyverno
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: piraeus-operator
-  path: ./kubernetes/apps/piraeus-datastore/linstor/app
+  path: ./kubernetes/apps/kyverno/kyverno/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
   wait: true
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app linstor-storageclass
+  name: &app kyverno-policies
   namespace: flux-system
 spec:
+  targetNamespace: kyverno
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: linstor
-  path: ./kubernetes/apps/piraeus-datastore/linstor/storageclass
+    - name: kyverno
+  path: ./kubernetes/apps/kyverno/kyverno/policies
   prune: true
-  force: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
   wait: true
   interval: 30m
-  retryInterval: 1m
   timeout: 5m

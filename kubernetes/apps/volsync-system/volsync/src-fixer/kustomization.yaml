@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helmrelease.yaml
+  - ./clusterrole.yaml
+  - ./clusterrolebinding.yaml
+configMapGenerator:
+  - name: volsync-src-fixer
+    files:
+      - volsync-src-fixer.sh=./resources/volsync-src-fixer.sh
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+generatorOptions:
+  disableNameSuffixHash: true

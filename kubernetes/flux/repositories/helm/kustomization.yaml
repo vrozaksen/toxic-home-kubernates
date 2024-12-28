@@ -22,6 +22,8 @@ resources:
   - ./crunchydata.yaml
   - ./userinit-controller.yaml
   - ./authentik-charts.yaml
+  - ./longhorn.yaml
   - ./piraeus.yaml
   - ./csi-driver-nfs.yaml
   - ./backube.yaml
+  - ./kyverno.yaml
