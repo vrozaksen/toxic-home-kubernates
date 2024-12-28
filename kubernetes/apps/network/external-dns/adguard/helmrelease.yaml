@@ -16,32 +16,13 @@ spec:
         name: kubernetes-sigs-external-dns
         namespace: flux-system
   values:
-    extraArgs:
-      - --ignore-ingress-tls-spec
-      - --ingress-class=internal
     provider:
       name: webhook
       webhook:
         image:
           repository: ghcr.io/muhlba91/external-dns-provider-adguard
           tag: v8.0.0
-        ports:
-          - containerPort: 8888
-            name: http
-          - containerPort: 8080
-            name: healthz
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: healthz
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: healthz
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
+          pullPolicy: IfNotPresent
         env:
           - name: DOMAIN_FILTER
             value: "${SECRET_DOMAIN}"
@@ -59,6 +40,23 @@ spec:
                 key: adguard-password
           - name: DRY_RUN
             value: "false"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        securityContext:
+          readOnlyRootFilesystem: true
+    extraArgs:
+      - --ignore-ingress-tls-spec
+      - --ingress-class=internal
     policy: sync
     sources: ["ingress", "service"]
     txtOwnerId: default
