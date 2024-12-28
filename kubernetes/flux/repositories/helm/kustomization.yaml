@@ -27,3 +27,4 @@ resources:
   - ./csi-driver-nfs.yaml
   - ./backube.yaml
   - ./kyverno.yaml
+  - ./kubernetes-sigs-external-dns.yaml

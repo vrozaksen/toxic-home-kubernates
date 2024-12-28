@@ -31,8 +31,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@daily"
-          successfulJobsHistory: 1
-          failedJobsHistory: 1
+          successfulJobsHistory: 0
         containers:
           app:
             image:
@@ -46,6 +45,11 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+            probes:
+              liveness: &noProbes
+                enabled: false
+              readiness: *noProbes
+              startup: *noProbes
             resources:
               requests:
                 cpu: 25m

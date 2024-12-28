@@ -34,15 +34,7 @@ spec:
     authentik:
       redis:
         host: dragonfly.database.svc.cluster.local
-      outposts:
-        container_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
     server:
-      initContainers:
-        - name: init-db
-          image: ghcr.io/onedr0p/postgres-init:16.6@sha256:c1d3a845d47fe1aeebd110fefb5f43f54c4735aec1d2b0c01de8d4d5e8cdd6a4
-          envFrom:
-            - secretRef:
-                name: *secret
       autoscaling:
         enabled: true
         minReplicas: 2
@@ -54,21 +46,18 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: authentik.png
           gethomepage.dev/name: Authentik
           gethomepage.dev/group: Infrastructure
-          gethomepage.dev/app: authentik
           gethomepage.dev/description: OIDC User Management
           gethomepage.dev/widget.type: authentik
-          gethomepage.dev/widget.url: http://authentik-server.security
+          gethomepage.dev/widget.url: https://sso.${SECRET_DOMAIN}
           gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - &host sso.${SECRET_DOMAIN}
-        paths:
-          - /
-        tls: [hosts: [*host]]
+          - sso.${SECRET_DOMAIN}
+        https: false
     worker:
       autoscaling:
         enabled: true

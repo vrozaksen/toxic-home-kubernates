@@ -1,8 +1,10 @@
 ---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ingress-nginx-external
+  namespace: &namespace network
 spec:
   interval: 30m
   chart:
@@ -19,6 +21,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   dependsOn:
     - name: cloudflared
@@ -26,11 +29,11 @@ spec:
   values:
     fullnameOverride: ingress-nginx-external
     controller:
-      allowSnippetAnnotations: true
+      replicaCount: 3
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
           lbipam.cilium.io/ips: "10.0.10.93"
+          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
@@ -42,7 +45,10 @@ spec:
             - key: ingress-class
               operator: In
               values: ["external"]
+      allowSnippetAnnotations: true
+      enableAnnotationValidations: true
       config:
+        block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
@@ -65,12 +71,25 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: true
+          namespace: *namespace
           namespaceSelector:
             any: true
       extraArgs:
         default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-production-tls"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+              app.kubernetes.io/instance: ingress-nginx-external
+              app.kubernetes.io/component: controller
       resources:
         requests:
-          cpu: 100m
+          cpu: 10m
+          memory: 250Mi
         limits:
-          memory: 500Mi
+          memory: 1Gi
+    defaultBackend:
+      enabled: false

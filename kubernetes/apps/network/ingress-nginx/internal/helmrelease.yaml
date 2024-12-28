@@ -1,8 +1,10 @@
 ---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ingress-nginx-internal
+  namespace: &namespace network
 spec:
   interval: 30m
   chart:
@@ -19,14 +21,16 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   values:
     fullnameOverride: ingress-nginx-internal
     controller:
-      allowSnippetAnnotations: true
+      replicaCount: 3
       service:
         annotations:
           lbipam.cilium.io/ips: "10.0.10.91"
+          external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_DOMAIN}"
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
@@ -38,6 +42,8 @@ spec:
             - key: ingress-class
               operator: In
               values: ["internal"]
+      allowSnippetAnnotations: true
+      enableAnnotationValidations: true
       config:
         client-body-buffer-size: 100M
         client-body-timeout: 120
@@ -61,12 +67,25 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: true
+          namespace: *namespace
           namespaceSelector:
             any: true
       extraArgs:
         default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-production-tls"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+              app.kubernetes.io/instance: ingress-nginx-internal
+              app.kubernetes.io/component: controller
       resources:
         requests:
-          cpu: 100m
+          cpu: 10m
+          memory: 250Mi
         limits:
-          memory: 500Mi
+          memory: 1Gi
+    defaultBackend:
+      enabled: false

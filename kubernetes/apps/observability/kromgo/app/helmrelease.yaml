@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app echo-server
+  name: &app kromgo
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 3.5.1
+      version: 3.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -24,27 +24,30 @@ spec:
       retries: 3
   values:
     controllers:
-      echo-server:
+      kromgo:
         replicas: 2
         strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/mendhak/http-https-echo
-              tag: 35
+              repository: ghcr.io/kashalls/kromgo
+              tag: v0.4.3@sha256:c9148045a3e211ad46d416c3e3bb7ffd4c169a8b6f8e56df03ea68ed1ed5571b
             env:
-              HTTP_PORT: &port 8080
-              LOG_WITHOUT_NEWLINE: true
-              LOG_IGNORE_PATH: /healthz
-              PROMETHEUS_ENABLED: true
+              PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090
+              SERVER_HOST: 0.0.0.0
+              SERVER_PORT: &port 80
+              HEALTH_HOST: 0.0.0.0
+              HEALTH_PORT: &healthport 8888
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /healthz
-                    port: *port
+                    path: /readyz
+                    port: *healthport
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -54,46 +57,32 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-              seccompProfile:
-                type: RuntimeDefault
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 64Mi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
-        seccompProfile: { type: RuntimeDefault }
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 100
+            runAsNonRoot: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
     service:
       app:
         controller: *app
         ports:
           http:
             port: *port
-    serviceMonitor:
-      app:
-        serviceName: *app
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
     ingress:
       app:
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -101,3 +90,11 @@ spec:
                 service:
                   identifier: app
                   port: http
+    persistence:
+      config-file:
+        type: configMap
+        name: kromgo-configmap
+        globalMounts:
+          - path: /kromgo/config.yaml
+            subPath: config.yaml
+            readOnly: true

@@ -7,4 +7,3 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./authentik/ks.yaml
-  - ./ks.yaml
