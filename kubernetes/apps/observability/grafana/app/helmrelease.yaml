@@ -34,7 +34,7 @@ spec:
       GF_SECURITY_COOKIE_SAMESITE: *app
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
     envFromSecrets:
-      - name: grafana-secret
+      - name: grafana
     grafana.ini:
       analytics:
         check_for_updates: false
@@ -67,7 +67,7 @@ spec:
       limits:
         memory: 219M
     admin:
-      existingSecret: grafana-secret
+      existingSecret: grafana
       passwordKey: adminPass
       userKey: adminUser
     dashboardProviders:
