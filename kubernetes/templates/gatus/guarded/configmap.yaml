@@ -17,7 +17,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: "${GATUS_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}"
+          query-name: "${APP}.${SECRET_DOMAIN}"
           query-type: A
         conditions:
           - "len([BODY]) == 0"
@@ -25,7 +25,7 @@ data:
           - type: pushover
       - name: "${APP}"
         group: internal
-        url: "https://${GATUS_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}${GATUS_PATH:-/}"
+        url: "https://${APP}.${SECRET_DOMAIN}${GATUS_PATH:-/}"
         interval: 1m
         conditions:
           - "[STATUS] == ${GATUS_STATUS:-200}"
