@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: linstor-api-ca
+spec:
+  commonName: linstor-api-ca
+  secretName: linstor-api-ca
+  duration: 87600h # 10 years
+  isCA: true
+  usages:
+    - signing
+    - key encipherment
+    - cert sign
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: linstor-internal-ca
+spec:
+  commonName: linstor-internal-ca
+  secretName: linstor-internal-ca
+  duration: 87600h # 10 years
+  isCA: true
+  usages:
+    - signing
+    - key encipherment
+    - cert sign
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: linstor-gui-tls
+spec:
+  commonName: linstor-gui-tls
+  dnsNames:
+    - linstor-gui-tls
+  issuerRef:
+    kind: Issuer
+    name: linstor-api-ca
+  secretName: linstor-gui-tls
+  usages:
+    - client auth

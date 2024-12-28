@@ -1,18 +1,17 @@
+#file: noinspection KubernetesUnknownValues
 ---
 # yaml-language-server: $schema=https://kubernetesjsonschema.dev/v1.18.1-standalone-strict/persistentvolumeclaim-v1.json
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: "${VOLSYNC_CLAIM:-${APP}}"
-  labels:
-    app.kubernetes.io/name: "${APP}"
 spec:
   accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
-  dataSourceRef:
+  dataSource:
     kind: ReplicationDestination
     apiGroup: volsync.backube
     name: "${APP}-bootstrap"
   resources:
     requests:
       storage: "${VOLSYNC_CAPACITY:-2Gi}"
-  storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
+  storageClassName: "${VOLSYNC_STORAGECLASS:-linbit-local}"

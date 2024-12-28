@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: piraeus-operator
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://github.com/piraeusdatastore/piraeus-operator
+  ref:
+    tag: v2.7.1
+  ignore: |
+    # exclude all
+    /*
+    # include charts directory
+    !/charts/piraeus/

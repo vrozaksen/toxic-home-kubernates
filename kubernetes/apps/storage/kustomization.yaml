@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./ks.yaml
-  - ./openebs-hostpath/ks.yaml
   - ./csi-driver-nfs/ks.yaml
