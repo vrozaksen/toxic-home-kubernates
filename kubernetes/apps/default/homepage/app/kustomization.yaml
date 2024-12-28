@@ -3,17 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./rbac.yaml
+  - ./configmap.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-configMapGenerator:
-  - name: homepage
-    files:
-      - bookmarks.yaml=./resources/bookmarks.yaml
-      - docker.yaml=./resources/docker.yaml
-      - kubernetes.yaml=./resources/kubernetes.yaml
-      - services.yaml=./resources/services.yaml
-      - settings.yaml=./resources/settings.yaml
-      - widgets.yaml=./resources/widgets.yaml
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./rbac.yaml
+  - ../../../../templates/gatus/guarded

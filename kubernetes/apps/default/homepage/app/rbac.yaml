@@ -2,7 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: homepage
+  name: &app homepage
+  labels:
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
 rules:
   - apiGroups:
       - ""
@@ -18,6 +21,13 @@ rules:
       - networking.k8s.io
     resources:
       - ingresses
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - traefik.containo.us
+    resources:
+      - ingressroutes
     verbs:
       - get
       - list
@@ -40,11 +50,14 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: &app homepage
+  labels:
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: homepage
+  name: *app
 subjects:
   - kind: ServiceAccount
     name: *app
-    namespace: default
+    namespace: default # keep
