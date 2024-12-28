@@ -11,7 +11,7 @@ resources:
   - ./spegel/ks.yaml
 configMapGenerator:
   - name: authentik-ingress-hv
-    namespace: management
+    namespace: kube-system
     files:
       - values.yaml=../security/authentik/app/resources/authentik-ingress-hv.yaml
 generatorOptions:
