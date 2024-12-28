@@ -4,10 +4,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-#  - ./cloudbeaver/ks.yaml
+  - ./cloudbeaver/ks.yaml
   - ./pgadmin/ks.yaml
   - ./pgbackweb/ks.yaml
-  - ./rustdesk/ks.yaml
+#  - ./rustdesk/ks.yaml
   - ./sshwifty/ks.yaml
 configMapGenerator:
   - name: authentik-ingress-hv
