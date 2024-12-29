@@ -7,4 +7,3 @@ resources:
   - https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.1.8/manifests/crd.yaml
   - ./helmrelease.yaml
   - ./rbac.yaml
-  - ./gatus.yaml
