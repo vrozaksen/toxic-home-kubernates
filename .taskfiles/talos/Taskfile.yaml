@@ -3,11 +3,11 @@
 version: '3'
 
 vars:
-  TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig'
-  TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml'
-  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml'
+  TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/clusterconfig'
+  TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/talconfig.yaml'
+  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/talsecret.sops.yaml'
   TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
-  TALOS_ENV: '{{.KUBERNETES_DIR}}/bootstrap/talos/cluster.env'
+  TALOS_ENV: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/cluster.env'
 
 env:
   TALOSCONFIG: '{{.TALOSCONFIG}}'
@@ -81,7 +81,7 @@ tasks:
 
   reset:
     desc: Resets nodes back to maintenance mode
-    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    dir: "{{.KUBERNETES_DIR}}/main/bootstrap/talos"
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
     cmd: talhelper gencommand reset --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
   preconditions:
