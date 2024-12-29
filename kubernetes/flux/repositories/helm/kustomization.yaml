@@ -28,3 +28,5 @@ resources:
   - ./backube.yaml
   - ./kyverno.yaml
   - ./kubernetes-sigs-external-dns.yaml
+  - ./actions-runner-controller.yaml
+  - ./homepage.yaml
