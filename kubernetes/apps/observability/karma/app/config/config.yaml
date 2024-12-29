@@ -2,7 +2,7 @@
 alertmanager:
   interval: 60s
   servers:
-    - name: home
+    - name: main
       uri: http://alertmanager-operated.observability.svc.cluster.local:9093
       timeout: 10s
       healthcheck:
