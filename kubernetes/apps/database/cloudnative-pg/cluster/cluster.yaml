@@ -43,7 +43,7 @@ spec:
       endpointURL: https://018e06e568a4c8fc72f1b05604114870.r2.cloudflarestorage.com
       # Note: serverName version needs to be incremented or changed
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres-v1
+      serverName: &currentCluster postgres-v2
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg
@@ -52,12 +52,12 @@ spec:
           name: cloudnative-pg
           key: s3-secret-key
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  #externalClusters:
+  externalClusters:
     # s3 instance recovery
-    #- name: &previousCluster postgres-v1
-    #  barmanObjectStore:
-    #    <<: *barmanObjectStore
-    #    serverName: *previousCluster
+    - name: &previousCluster postgres-v1
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
     # running instance
     #- name: postgres
     #  connectionParameters:
@@ -71,10 +71,10 @@ spec:
 
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
-  #bootstrap:
+  bootstrap:
     # s3 instance recovery
-    #recovery:
-    #  source: *previousCluster
+    recovery:
+      source: *previousCluster
     # recover from another running instance
     #initdb:
     #  import:
