@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://lds-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gha-runner-scale-set
-      version: 0.9.2
+      version: 0.10.1
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
@@ -42,7 +42,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/joryirving/actions-runner:2.316.1@sha256:f35d795cbfd9043420571a6d587d991a1fa9e1707ce0dd441ae287aa7aa06841
+            image: ghcr.io/joryirving/actions-runner:2.321.0@sha256:4a11ad0cda33fba7e3fc76effdfdb1ae74b054cd0376e1fbe0b9c9f4e1440da6
             command: ["/home/runner/run.sh"]
     controllerServiceAccount:
       name: gha-runner-scale-set-controller

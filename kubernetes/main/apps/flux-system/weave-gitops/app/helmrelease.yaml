@@ -1,14 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app weave-gitops
+  name: weave-gitops
 spec:
   interval: 30m
   chart:
     spec:
-      chart: *app
+      chart: weave-gitops
       version: 4.0.36
       sourceRef:
         kind: HelmRepository
@@ -31,12 +31,12 @@ spec:
       enabled: true
       className: internal
       annotations:
-        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Infrastructure
         gethomepage.dev/name: Weave-gitops
-        gethomepage.dev/icon: flux-cd
+        gethomepage.dev/icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/weave.png
         gethomepage.dev/description: Flux Dashboard
+        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
       hosts:
         - host: "gitops.${SECRET_DOMAIN}"
           paths:

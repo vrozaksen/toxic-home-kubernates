@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./addons/ks.yaml
+  - ./clickops/ks.yaml
   - ./weave-gitops/ks.yaml

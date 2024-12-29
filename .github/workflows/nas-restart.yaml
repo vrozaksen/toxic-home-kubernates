@@ -1,0 +1,76 @@
+---
+  # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+  name: "Deployment Restart"
+
+  on:
+    workflow_dispatch:
+    repository_dispatch:
+      types: [nas-restart]
+
+  jobs:
+    sync:
+      name: Deployment Restart
+      runs-on: ["gha-runner-scale-set"]
+      strategy:
+        matrix:
+          cluster: ["main", "utility"]
+      steps:
+        - name: Get Secrets
+          uses: bitwarden/sm-action@v2
+          with:
+            access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+            secrets: |
+              a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+              e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+              ffadfa6f-6e02-4873-a7d6-b2550100efb7 > KUBECONFIG
+
+        - name: Generate Token
+          uses: actions/create-github-app-token@v1
+          id: app-token
+          with:
+            app-id: ${{ env.BOT_APP_ID }}
+            private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            token: ${{ steps.app-token.outputs.token }}
+
+        - name: Setup Homebrew
+          uses: Homebrew/actions/setup-homebrew@master
+
+        - name: Setup Workflow Tools
+          shell: bash
+          run: brew install kubernetes-cli
+
+        - name: Write kubeconfig
+          id: kubeconfig
+          uses: timheuer/base64-to-file@v1
+          with:
+            encodedString: ${{ env.KUBECONFIG }}
+            fileName: kubeconfig
+
+        - name: Restart NFS Deployments
+          env:
+            KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
+          shell: bash
+          run: |
+            kubectl \
+                --context ${{ matrix.cluster }} \
+                get deployments \
+                --all-namespaces \
+                -l nfsMount=true \
+                -o custom-columns="NAMESPACE:.metadata.namespace,NAME:.metadata.name" \
+                --no-headers | \
+                awk '{print "kubectl --context ${{ matrix.cluster }} rollout restart deployment/"$2" -n "$1}' | \
+                sh
+
+        - name: Restart Database Deployments
+          if: matrix.cluster == 'main'
+          env:
+            KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
+          shell: bash
+          run: |
+            kubectl \
+                --context ${{ matrix.cluster }} \
+                rollout restart statefulset postgres-repo-host -n database

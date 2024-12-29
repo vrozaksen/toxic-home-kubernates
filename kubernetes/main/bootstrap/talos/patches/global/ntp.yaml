@@ -1,5 +1,0 @@
-machine:
-  time:
-    disabled: false
-    servers:
-      - 10.0.10.1

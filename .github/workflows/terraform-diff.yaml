@@ -1,0 +1,131 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Terraform Diff"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main"]
+    paths: ["terraform/**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changed-terraform:
+    name: Changed Terraform
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.changed-terraform.outputs.all_changed_and_modified_files }}
+    steps:
+      - name: Get Secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.BOT_APP_ID }}
+          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Get Changed Terraform
+        id: changed-terraform
+        uses: tj-actions/changed-files@v45
+        with:
+          files: terraform/**
+          dir_names: true
+          dir_names_max_depth: 2
+          matrix: true
+
+      - name: List All Changed Terraform
+        run: echo ${{ steps.changed-terraform.outputs.all_changed_and_modified_files }}
+
+  sync:
+    name: Terraform Diff
+    runs-on: ["gha-runner-scale-set"] #Backend is stored on local minio with no external ingress
+    needs: ["changed-terraform"]
+    strategy:
+      matrix:
+        paths: ${{ fromJSON(needs.changed-terraform.outputs.matrix) }}
+      max-parallel: 4
+      fail-fast: false
+    steps:
+      - name: Get Secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+            a5b29a46-d96f-4f0f-8444-b2550101c379 > MINIO_ACCESS_KEY
+            a1e8d332-cb30-4c96-a5d4-b2550101d1c8 > MINIO_SECRET_KEY
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.BOT_APP_ID }}
+          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Workflow Tools
+        shell: bash
+        run: brew install opentofu
+
+      - name: Install 1Password CLI
+        uses: 1password/install-cli-action@v1
+
+      - name: Tofu fmt
+        id: fmt
+        working-directory: ${{ matrix.paths }}
+        run: tofu fmt -check
+        continue-on-error: true
+
+      - name: Tofu Init
+        id: init
+        working-directory: ${{ matrix.paths }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ env.MINIO_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.MINIO_SECRET_KEY }}
+        run: |
+          tofu init \
+            -backend-config="access_key=$AWS_ACCESS_KEY_ID" \
+            -backend-config="secret_key=$AWS_SECRET_ACCESS_KEY"
+
+      - name: Tofu Validate
+        id: validate
+        working-directory: ${{ matrix.paths }}
+        run: tofu validate -no-color
+
+      - name: Tofu Plan
+        working-directory: ${{ matrix.paths }}
+        run: tofu plan -lock=false -var "onepassword_sa_token=${{ secrets.ONEPASS_SA_TOKEN }}" -out .planfile | grep -v "Refreshing state...\|Reading...\|Read complete after"
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: borchero/terraform-plan-comment@v2
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          planfile: .planfile
+          terraform-cmd: tofu
+          header: "📝 Terraform Plan for ${{ matrix.paths }}"
+          working-directory: ${{ matrix.paths }}

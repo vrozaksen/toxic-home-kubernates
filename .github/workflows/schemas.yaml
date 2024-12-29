@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Schemas"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight
+  push:
+    branches: ["main"]
+    paths: [".github/workflows/schemas.yaml"]
+
+jobs:
+  publish:
+    name: Schemas
+    runs-on: ["gha-runner-scale-set"]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Get Secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+            ffadfa6f-6e02-4873-a7d6-b2550100efb7 > KUBECONFIG
+            3f64c843-529c-42bf-8888-b25501021966 > CLOUDFLARE_API_TOKEN
+            46580ab1-41fe-4c55-9e5f-b25501022356 > CLOUDFLARE_ACCOUNT_ID
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.BOT_APP_ID }}
+          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Workflow Tools
+        shell: bash
+        run: brew install kubectl
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Write kubeconfig
+        id: kubeconfig
+        uses: timheuer/base64-to-file@v1
+        with:
+          encodedString: "${{ env.KUBECONFIG }}"
+          fileName: kubeconfig
+
+      - name: Download and run crd-extractor
+        env:
+          KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
+        shell: bash
+        run: |
+          curl -fsSL -o $GITHUB_WORKSPACE/crd-extractor.sh \
+              https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/Utilities/crd-extractor.sh
+          chmod +x $GITHUB_WORKSPACE/crd-extractor.sh
+          bash $GITHUB_WORKSPACE/crd-extractor.sh
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: /home/runner/.datree/crdSchemas
+          command: pages deploy --project-name=kube-schemas --branch main .

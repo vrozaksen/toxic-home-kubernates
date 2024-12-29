@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.5.1
+      version: 3.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -36,11 +36,18 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/kubanetics
-              tag: 2024.12.2@sha256:ee207e744afe4b398c5a53542ce4905b8b1a1a3003f9549d25e2bbbc58a9f8d8
+              tag: 2024.12.4@sha256:4941a46bd7c05ce1de1f0f2e98137db44cf116312b33d9c7d0e3619679250bd4
             env:
               SCRIPT_NAME: alertmanager-silencer.sh
               ALERTMANAGER_URL: http://alertmanager-operated.observability.svc.cluster.local:9093
-              MATCHERS_0: alertname=NodeMemoryHighUtilization
+              MATCHERS_0: alertname=CephNodeInconsistentMTU
+              MATCHERS_1: alertname=CephNodeNetworkPacketErrors
+              MATCHERS_2: alertname=CephMonClockSkew
+              MATCHERS_3: alertname=CephNodeNetworkPacketDrops
+              MATCHERS_4: alertname=CephNodeDiskspaceWarning device=/dev/sda6
+              MATCHERS_5: alertname=CephNodeDiskspaceWarning mountpoint=/etc/nfsmount.conf
+              MATCHERS_6: alertname=KubePersistentVolumeFillingUp persistentvolumeclaim=data-thanos-compact-0
+              MATCHERS_7: alertname=CephNodeDiskspaceWarning device=/dev/sdb6 #Installing from USB sucks
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -58,6 +65,6 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 100
         seccompProfile: { type: RuntimeDefault }

@@ -1,14 +1,24 @@
 # Trash
 .DS_Store
 Thumbs.db
+# Brew
+/.private/
+/.task/
+Brewfile.lock.json
 # k8s
 kubeconfig
 talosconfig
 .decrypted~*.yaml
+.decrypted~*
+*.secret.env
+*.secret.yaml
 .config.env
 *.agekey
 *.pub
 *.key
+*.pem
+# Other
+*.psql
 # Private
 .private
 .bin
@@ -16,8 +26,6 @@ talosconfig
 .venv*
 # Taskfile
 .task
-# Brew
-Brewfile.lock.json
 # intellij
 .idea
 # wiki
@@ -26,3 +34,12 @@ wiki
 /config.yaml
 /private.pem
 /public.pem
+# Terraform
+.terraform
+.terraform.tfstate*
+.terraform.lock.hcl
+terraform.tfstate*
+*.tfvars
+
+#Teehee
+*-STEAL*

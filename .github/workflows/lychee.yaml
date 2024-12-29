@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Lychee"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths: [".github/workflows/lychee.yaml"]
+  schedule:
+    - cron: "0 0 * * *"
+
+env:
+  LYCHEE_OUTPUT: lychee/out.md
+  WORKFLOW_ISSUE_TITLE: "Link Checker Dashboard 🔗"
+
+jobs:
+  lychee:
+    name: Lychee
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.BOT_APP_ID }}
+          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Scan for broken links
+        uses: lycheeverse/lychee-action@v2
+        id: lychee
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          args: --verbose --no-progress --exclude-mail './**/*.md'
+          output: ${{ env.LYCHEE_OUTPUT }}
+          debug: true
+
+      - name: Find Link Checker Issue
+        id: find-issue
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          issue_number=$( \
+              gh issue list \
+                  --search "in:title ${{ env.WORKFLOW_ISSUE_TITLE }}" \
+                  --state open \
+                  --json number \
+                  | jq --raw-output '.[0].number' \
+          )
+          echo "issue-number=${issue_number}" >> $GITHUB_OUTPUT
+          echo "${issue_number}"
+
+      - name: Create or Update Issue
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          title: ${{ env.WORKFLOW_ISSUE_TITLE }}
+          issue-number: ${{ steps.find-issue.outputs.issue-number || '' }}
+          content-filepath: ${{ env.LYCHEE_OUTPUT }}

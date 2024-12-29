@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -6,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  path: ./kubernetes/apps
+  path: ./kubernetes/main/apps
   prune: true
   sourceRef:
     kind: GitRepository
@@ -17,15 +18,17 @@ spec:
       name: sops-age
   postBuild:
     substituteFrom:
-      - kind: ConfigMap
-        name: cluster-settings
-      - kind: Secret
-        name: cluster-secrets
-      - kind: ConfigMap
-        name: cluster-user-settings
+      - name: cluster-settings
+        kind: ConfigMap
         optional: true
-      - kind: Secret
-        name: cluster-user-secrets
+      - name: cluster-settings-main
+        kind: ConfigMap
+        optional: true
+      - name: cluster-secrets
+        kind: Secret
+        optional: true
+      - name: cluster-secrets-main
+        kind: Secret
         optional: true
   patches:
     - patch: |-
@@ -40,15 +43,17 @@ spec:
               name: sops-age
           postBuild:
             substituteFrom:
-              - kind: ConfigMap
-                name: cluster-settings
-              - kind: Secret
-                name: cluster-secrets
-              - kind: ConfigMap
-                name: cluster-user-settings
+              - name: cluster-settings
+                kind: ConfigMap
                 optional: true
-              - kind: Secret
-                name: cluster-user-secrets
+              - name: cluster-settings-main
+                kind: ConfigMap
+                optional: true
+              - name: cluster-secrets
+                kind: Secret
+                optional: true
+              - name: cluster-secrets-main
+                kind: Secret
                 optional: true
       target:
         group: kustomize.toolkit.fluxcd.io

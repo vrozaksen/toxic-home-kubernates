@@ -1,3 +1,7 @@
 ---
 providerRegex: ^(alfheim|alne)$
 bypassDnsResolution: true
+metrics:
+  enable: true
+  serviceMonitor:
+    enabled: true

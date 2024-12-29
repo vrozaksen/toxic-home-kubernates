@@ -3,117 +3,114 @@
 version: '3'
 
 vars:
-  GITHUB_DEPLOY_KEY_FILE: '{{.KUBERNETES_DIR}}/main/bootstrap/main/flux/github-deploy-key.sops.yaml'
-  TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/clusterconfig'
-  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/talsecret.sops.yaml'
-  TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/main/bootstrap/talos/talconfig.yaml'
-
-env:
-  TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
+  BOOTSTRAP_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/bootstrap/resources'
 
 tasks:
 
-  talos:
-    desc: Bootstrap the Talos cluster
-    dir: '{{.KUBERNETES_DIR}}/main/bootstrap/talos'
+  quick-strap:
+    desc: Do a bunch of commands in a row because I'm really tired of this shit
     cmds:
-      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}talhelper gensecret > {{.TALHELPER_SECRET_FILE}}{{end}}'
-      - '{{if eq .TALHELPER_SECRET_EXISTS "false"}}sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}{{end}}'
-      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
-      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
-      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
-      - until talhelper gencommand kubeconfig --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
+      - task: apply-config
+      - task: talos
       - task: apps
-      - talosctl health --server=false
-    vars:
-      TALHELPER_SECRET_EXISTS:
-        sh: test -f {{.TALHELPER_SECRET_FILE}} && echo true || echo false
-    preconditions:
-      - test -f {{.SOPS_CONFIG_FILE}}
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.TALHELPER_CONFIG_FILE}}
-      - which talhelper sops
+      - task: rook
+    requires:
+      vars: [CLUSTER]
 
-  flux:
-    desc: Bootstrap Flux into the Talos cluster
+  gen-secrets:
+    desc: Generate the Talos secrets
     cmds:
-      - '{{if eq .GITHUB_DEPLOY_KEY_EXISTS "true"}}kubectl create namespace flux-system --dry-run=client -o yaml | kubectl apply --filename -{{end}}'
-      - '{{if eq .GITHUB_DEPLOY_KEY_EXISTS "true"}}sops exec-file {{.GITHUB_DEPLOY_KEY_FILE}} "kubectl apply --server-side --filename {}"{{end}}'
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/main/bootstrap/flux
-      - '{{if eq .SOPS_SECRET_EXISTS "false"}}cat {{.SOPS_AGE_KEY_FILE}} | kubectl --namespace flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin{{end}}'
-      - sops exec-file {{.KUBERNETES_DIR}}/main/flux/vars/cluster-secrets.sops.yaml "kubectl apply --server-side --filename {}"
-      - kubectl apply --server-side --filename {{.KUBERNETES_DIR}}/main/flux/vars/cluster-settings.yaml
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/main/flux/config
-    vars:
-      GITHUB_DEPLOY_KEY_EXISTS:
-        sh: test -f {{.GITHUB_DEPLOY_KEY_FILE}} && echo true || echo false
-      SOPS_SECRET_EXISTS:
-        sh: kubectl --namespace flux-system get secret sops-age &>/dev/null && echo true || echo false
+      - talhelper -f {{.CLUSTER_DIR}}/talos/talconfig.yaml gensecret > {{.CLUSTER_DIR}}/talos/talsecret.sops.yaml
+      - task: :sops:.encrypt-file
+        vars:
+          FILE: "{{.CLUSTER_DIR}}/talos/talsecret.sops.yaml"
+    requires:
+      vars: [CLUSTER]
     preconditions:
-      - test -f {{.KUBECONFIG}}
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - which flux kubectl sops
+      - test -f {{.CLUSTER_DIR}}/talos/talconfig.yaml
+    status:
+      - test -f "{{.CLUSTER_DIR}}/talos/talsecret.sops.yaml"
+
+  gen-config:
+    desc: Generate the Talos configs
+    cmd: talhelper -c {{.CLUSTER_DIR}}/talos/talconfig.yaml genconfig -s {{.CLUSTER_DIR}}/talos/talsecret.sops.yaml -o {{.CLUSTER_DIR}}/talos/clusterconfig
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - test -f {{.CLUSTER_DIR}}/talos/talconfig.yaml
+      - test -f {{.CLUSTER_DIR}}/talos/talsecret.sops.yaml
+
+  apply-config:
+    desc: Apply the Talos config on a nodes for a new cluster
+    dir: "{{.CLUSTER_DIR}}/talos/"
+    cmd: talhelper gencommand apply --extra-flags=--insecure | bash
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - test -f {{.CLUSTER_DIR}}/talos/talconfig.yaml
+      - test -f {{.CLUSTER_DIR}}/talos/talsecret.sops.yaml
+
+  talos:
+    desc: Bootstrap Talos [CLUSTER=main]
+    cmds:
+      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
+      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name {{.CLUSTER}} {{.CLUSTER_DIR}}
+    vars:
+      TALOS_CONTROLLER:
+        sh: talosctl config info --output json --context {{.CLUSTER}} | jq --raw-output '.endpoints[]' | shuf -n 1
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - talosctl config info
+      - test -f {{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig
+      - which talosctl
 
   apps:
-    internal: true
-    dir: '{{.KUBERNETES_DIR}}/main/bootstrap/talos'
+    desc: Bootstrap Apps [CLUSTER=main]
     cmds:
-      - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --file {{.KUBERNETES_DIR}}/main/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
+      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
+      - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - until kubectl wait nodes --for=condition=Ready --all --timeout=10m; do sleep 5; done
+    requires:
+      vars: [CLUSTER]
     preconditions:
-      - test -f {{.KUBECONFIG}}
-      - test -f {{.KUBERNETES_DIR}}/main/bootstrap/helmfile.yaml
+      - talosctl config info
+      - test -f {{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig
+      - test -f {{.CLUSTER_DIR}}/bootstrap/apps/helmfile.yaml
       - which helmfile kubectl
 
-  age-keygen:
-    desc: Bootstrap the Sops Age key
-    cmd: age-keygen --output {{.SOPS_AGE_KEY_FILE}}
-    status:
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-    preconditions:
-      - which age-keygen
-
-  template:
-    internal: true
-    cmd: '{{.VIRTUAL_ENV}}/bin/makejinja'
-    preconditions:
-      - test -d {{.VIRTUAL_ENV}}
-      - test -f {{.BOOTSTRAP_CONFIG_FILE}}
-      - test -f {{.BOOTSTRAP_DIR}}/scripts/plugin.py
-      - test -f {{.MAKEJINJA_CONFIG_FILE}}
-
-  secrets:
-    internal: true
+  rook:
+    desc: Bootstrap Rook-Ceph [CLUSTER=main] [MODEL=required]
     cmds:
-      - for: { var: SECRET_FILES }
-        cmd: |
-          if sops filestatus "{{.ITEM}}" | jq --exit-status ".encrypted == false" &>/dev/null; then
-              sops --encrypt --in-place "{{.ITEM}}"
-          fi
-    vars:
-      SECRET_FILES:
-        sh: find "{{.KUBERNETES_DIR}}" -type f -name "*.sops.*"
+      - minijinja-cli {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2 | kubectl apply --server-side --filename -
+      - until kubectl --namespace default get job/wipe-rook &>/dev/null; do sleep 5; done
+      - kubectl --namespace default wait job/wipe-rook --for=condition=complete --timeout=5m
+      - stern --namespace default job/wipe-rook --no-follow
+      - kubectl --namespace default delete job wipe-rook
+    env:
+      NODES:
+        sh: talosctl config info --output json | jq --raw-output '.nodes | length'
     preconditions:
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.SOPS_CONFIG_FILE}}
-      - which sops
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2
+      - which kubectl minijinja-cli stern talosctl
 
-  clean:
-    desc: Clean files and directories no longer needed after cluster bootstrap
+
+  flux:
+    desc: Bootstrap Flux [CLUSTER=main]
     cmds:
-      # Create backup directory
-      - mkdir -p {{.ROOT_DIR}}/.private
-      # Clean up CI
-      - rm -rf {{.ROOT_DIR}}/.github/tests
-      - rm -rf {{.ROOT_DIR}}/.github/workflows/e2e.yaml
-      # Move bootstrap directory to gitignored directory
-      - mv {{.BOOTSTRAP_DIR}} {{.ROOT_DIR}}/.private/bootstrap-{{.TS}}
-      - mv {{.MAKEJINJA_CONFIG_FILE}} {{.ROOT_DIR}}/.private/makejinja-{{.TS}}.toml
-      # Update renovate.json5
-      - sed -i {{if eq OS "darwin"}}''{{end}} 's/(..\.j2)\?//g' {{.ROOT_DIR}}/.github/renovate.json5
+      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/apps
+      - for: { var: TEMPLATES }
+        cmd: bws run --project-id a4bea614-3330-4b3e-9809-b101004332c3 -- 'minijinja-cli --env {{.ITEM}}' | kubectl apply --server-side --filename -
+      - kubectl apply --server-side --filename {{.CLUSTER_DIR}}/flux/vars/cluster-settings.yaml
+      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/config
     vars:
-      TS: '{{now | unixEpoch}}'
+      TEMPLATES:
+        sh: ls {{.CLUSTER_DIR}}/bootstrap/apps/*.j2
+    env:
+      VAULT: '{{if eq .CLUSTER "main"}}kubernetes{{else}}{{.CLUSTER}}{{end}}' # ¯\_(ツ)_/¯
+      FLUX_GITHUB_PUBLIC_KEYS:
+        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
+    requires:
+      vars: [CLUSTER]
     preconditions:
-      - test -d {{.BOOTSTRAP_DIR}}
-      - test -f {{.ROOT_DIR}}/.github/renovate.json5
+      - which curl flux kubectl ls bws

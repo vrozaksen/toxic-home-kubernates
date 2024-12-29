@@ -12,26 +12,85 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changed-clusters:
+    name: Changed Clusters
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.changed-clusters.outputs.all_changed_and_modified_files }}
+    steps:
+      - name: Get Secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.BOT_APP_ID }}
+          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Get Changed Clusters
+        id: changed-clusters
+        uses: tj-actions/changed-files@v45
+        with:
+          files: kubernetes/**
+          files_ignore: kubernetes/shared/**
+          dir_names: true
+          dir_names_max_depth: 2
+          matrix: true
+
+      - name: List All Changed Clusters
+        run: echo ${{ steps.changed-clusters.outputs.all_changed_and_modified_files }}
+
   flux-diff:
     name: Flux Diff
     runs-on: ubuntu-latest
+    needs: ["changed-clusters"]
     permissions:
-      contents: read
       pull-requests: write
     strategy:
       matrix:
-        paths: ["kubernetes"]
+        paths: ${{ fromJSON(needs.changed-clusters.outputs.matrix) }}
         resources: ["helmrelease", "kustomization"]
+      max-parallel: 4
+      fail-fast: false
     steps:
+      - name: Get Secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          secrets: |
+            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
+            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.BOT_APP_ID }}
+          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           path: pull
 
       - name: Checkout Default Branch
         uses: actions/checkout@v4
         with:
-          ref: "${{ github.event.repository.default_branch }}"
+          token: ${{ steps.app-token.outputs.token }}
+          ref: ${{ github.event.repository.default_branch }}
           path: default
 
       - name: Diff Resources
@@ -51,18 +110,38 @@ jobs:
       - name: Generate Diff
         id: diff
         run: |
-          cat diff.patch
-          echo "diff<<EOF" >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          cat diff.patch;
+          {
+            echo 'diff<<EOF'
+            cat diff.patch
+            echo EOF
+          } >> "$GITHUB_OUTPUT";
+          {
+            echo "### Diff"
+            echo '```diff'
+            cat diff.patch
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add comment
         uses: mshick/add-pr-comment@v2
         with:
-          message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
+          repo-token: ${{ steps.app-token.outputs.token }}
+          message-id: ${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}
           message-failure: Diff was not successful
           message: |
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
+
+  # Summarize matrix https://github.community/t/status-check-for-a-matrix-jobs/127354/7
+  flux-diff-success:
+    if: ${{ always() }}
+    needs: ["flux-diff"]
+    name: Flux Diff Successful
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        name: Check matrix status
+        run: exit 1

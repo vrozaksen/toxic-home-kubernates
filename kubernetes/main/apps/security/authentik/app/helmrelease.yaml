@@ -25,12 +25,12 @@ spec:
   values:
     global:
       podAnnotations:
-        secret.reloader.stakater.com/reload: &secret authentik-secret
+        secret.reloader.stakater.com/reload: authentik-secret
       deploymentStrategy:
         type: RollingUpdate
       envFrom:
         - secretRef:
-            name: *secret
+            name: authentik-secret
     authentik:
       redis:
         host: dragonfly.database.svc.cluster.local
@@ -50,11 +50,11 @@ spec:
           gethomepage.dev/icon: authentik.png
           gethomepage.dev/name: Authentik
           gethomepage.dev/group: Infrastructure
+          gethomepage.dev/app: authentik
           gethomepage.dev/description: OIDC User Management
           gethomepage.dev/widget.type: authentik
-          gethomepage.dev/widget.url: https://sso.${SECRET_DOMAIN}
+          gethomepage.dev/widget.url: http://authentik-server.security
           gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - sso.${SECRET_DOMAIN}
         https: false

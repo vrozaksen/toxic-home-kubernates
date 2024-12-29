@@ -1,53 +1,37 @@
 ---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: '3'
+version: "3"
 
 set: [pipefail]
 shopt: [globstar]
 
 vars:
-  BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
-  KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
-  SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
-  BOOTSTRAP_CONFIG_FILE: '{{.ROOT_DIR}}/config.yaml'
-  MAKEJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/makejinja.toml'
-  SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
+  CLUSTER: '{{.CLUSTER | default "main"}}'
+  CLUSTER_DIR: '{{.ROOT_DIR}}/kubernetes/{{.CLUSTER}}'
 
 env:
-  KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
+  KUBECONFIG: '{{.CLUSTER_DIR}}/kubeconfig'
+  MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
+  TALOSCONFIG: '{{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig'
 
 includes:
-#  bitwarden: .taskfiles/bitwarden
   bootstrap: .taskfiles/bootstrap
+  bitwarden: .taskfiles/bitwarden
   kubernetes: .taskfiles/kubernetes
+  sops: .taskfiles/sops
   talos: .taskfiles/talos
-#  volsync: .taskfiles/volsync
-  user:
-    taskfile: .taskfiles/User
-    optional: true
+  volsync: .taskfiles/volsync
+  workstation: .taskfiles/workstation
 
 tasks:
 
-  default: task --list
+  default:
+    cmd: task --list
+    silent: true
 
-  init:
-    desc: Initialize configuration files
-    cmd: cp {{.BOOTSTRAP_CONFIG_FILE | replace ".yaml" ".sample.yaml"}} {{.BOOTSTRAP_CONFIG_FILE}}
-    status:
-      - test -f {{.BOOTSTRAP_CONFIG_FILE}}
-
-  configure:
-    desc: Render and validate configuration files
-    prompt: Any conflicting files in the kubernetes directory will be overwritten... continue?
-    cmds:
-      - task: bootstrap:template
-      - task: bootstrap:secrets
-      - task: kubernetes:kubeconform
-      - >
-        {{if eq .HOME_SOPS_AGE_KEY_FILE_EXISTS "true"}}
-        echo "WARNING: SOPS Age key found in home directory, this may cause conflicts."
-        {{end}}
-    vars:
-      HOME_SOPS_AGE_KEY_FILE_EXISTS:
-        sh: test -f ~/.config/sops/age/keys.txt && echo true || echo false
+  # Ref: https://github.com/go-task/task/issues/608
+  noop:
+    internal: true
+    silent: true
+    cmd: noop() { :; }
