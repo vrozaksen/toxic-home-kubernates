@@ -8,7 +8,7 @@ on:
     paths: ["kubernetes/utility/**"]
 
 env:
-  GITHUB_TOKEN: ${{ secrets.MISE_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+  MISE_GITHUB_TOKEN: ${{ secrets.MISE_GITHUB_TOKEN }}
 
 jobs:
   sync:
