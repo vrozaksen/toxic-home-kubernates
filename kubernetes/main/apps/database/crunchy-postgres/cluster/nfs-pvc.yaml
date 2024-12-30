@@ -9,7 +9,7 @@ spec:
   accessModes: ["ReadWriteMany"]
   storageClassName: nfs-slow #csi-driver-nfs
   nfs:
-    server: voyager.internal
+    server: 10.0.20.10
     path: ${SECRET_NFS_POSTGRES:=temp}
   mountOptions:
     - nfsvers=4.2
