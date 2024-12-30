@@ -52,8 +52,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cert-manager-issuers
   path: ./kubernetes/main/apps/cert-manager/cert-manager/selfsigned
   prune: true
   sourceRef:
