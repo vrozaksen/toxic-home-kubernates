@@ -22,4 +22,4 @@ metadata:
   name: l2-pool
 spec:
   blocks:
-    - cidr: "${NODE_CIDR}"
+    - cidr: "10.0.10.0/24"
