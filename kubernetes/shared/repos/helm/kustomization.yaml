@@ -25,3 +25,4 @@ resources:
   - ./stakater.yaml
   - ./weave-gitops.yaml
   - ./kubernetes-sigs-external-dns.yaml
+  - ./external-secrets.yaml
