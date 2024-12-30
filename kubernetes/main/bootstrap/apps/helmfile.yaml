@@ -49,8 +49,8 @@ releases:
     needs: ["kube-system/coredns"]
 
   - name: spegel
-    namespace: kube-system
+    namespace: kube-tools
     chart: oci://ghcr.io/spegel-org/helm-charts/spegel
     version: v0.0.28
-    values: ["../../apps/kube-system/spegel/app/helm-values.yaml"]
+    values: ["../../apps/kube-tools/spegel/app/helm-values.yaml"]
     needs: ["kube-system/kubelet-csr-approver"]

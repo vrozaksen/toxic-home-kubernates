@@ -32,12 +32,14 @@ spec:
           args:
             - |
               apk add --no-cache findutils nvme-cli;
-              echo "Finding {{ ENV.MODEL }}";
+              #echo "Finding {{ ENV.MODEL }}";
               #DISK=$(find /dev/disk/by-id/ -iname "*{{ ENV.MODEL }}*" -not -name "*-part[0-9+]");
               DISK="/dev/nvme0n1"
               echo "=== Wiping $DISK ===";
-              nvme format --block-size=4096 $DISK --force;
-              nvme format --lbaf=1 $DISK --force;
+              #dd if=/dev/zero of=$DISK bs=4096;
+              nvme format --lbaf=0 $DISK --force;
+              nvme format --block-size=512 $DISK --force;
+              echo "=== Finished wiping $DISK ===";
           securityContext:
             privileged: true
           volumeMounts:
