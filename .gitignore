@@ -40,6 +40,5 @@ wiki
 .terraform.lock.hcl
 terraform.tfstate*
 *.tfvars
-
 #Teehee
 *-STEAL*
