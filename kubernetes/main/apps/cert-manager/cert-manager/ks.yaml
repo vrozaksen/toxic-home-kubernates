@@ -52,7 +52,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/cert-manager/cert-manager/selfsigned
+  path: ./kubernetes/main/apps/cert-manager/cert-manager/selfsigned-issuers
   prune: true
   sourceRef:
     kind: GitRepository
