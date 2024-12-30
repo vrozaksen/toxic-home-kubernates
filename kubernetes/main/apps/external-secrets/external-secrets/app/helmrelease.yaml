@@ -25,14 +25,14 @@ spec:
   values:
     installCRDs: true
     image:
-      repository: ghcr.io/external-secrets
+      repository: ghcr.io/external-secrets/external-secrets
     bitwarden-sdk-server:
       enabled: true
       podAnnotations:
         secret.reloader.stakater.com/reload: "bitwarden-css-certs,bitwarden-secrets-manager,bitwarden-tls-certs"
     certController:
       image:
-        repository: ghcr.io/external-secrets
+        repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
         interval: 1m
@@ -47,7 +47,7 @@ spec:
       interval: 1m
     webhook:
       image:
-        repository: ghcr.io/external-secrets
+        repository: ghcr.io/external-secrets/external-secrets
       serviceMonitor:
         enabled: true
         interval: 1m
