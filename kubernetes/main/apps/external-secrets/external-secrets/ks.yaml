@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/external-secrets/certificates
+  path: ./kubernetes/main/apps/external-secrets/external-secrets/certificates
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,6 +22,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -32,18 +33,19 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets-certs
-  path: ./kubernetes/main/apps/external-secrets/app
+  path: ./kubernetes/main/apps/external-secrets/external-secrets/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
   wait: true
+  dependsOn:
+    - name: external-secrets-certs
   interval: 30m
   retryInterval: 1m
   timeout: 5m
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -56,7 +58,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets
-  path: ./kubernetes/main/apps/external-secrets/stores
+  path: ./kubernetes/main/apps/external-secrets/external-secrets/stores
   prune: true
   sourceRef:
     kind: GitRepository
