@@ -42,6 +42,8 @@ spec:
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
+              - secretRef:
+                  name: "{{ .Release.Name }}-db-secret"
             resources:
               requests:
                 cpu: 15m
@@ -71,8 +73,8 @@ spec:
           gethomepage.dev/description: Car Service Tracking
           gethomepage.dev/widget.type: lubelogger
           gethomepage.dev/widget.url: http://lubelog.self-hosted:8080
-          gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_LUBELOG_USERNAME}}` }}"
-          gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_LUBELOG_PASSWORD}}` }}"
+          #gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_LUBELOG_USERNAME}}` }}"
+          #gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_LUBELOG_PASSWORD}}` }}"
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
