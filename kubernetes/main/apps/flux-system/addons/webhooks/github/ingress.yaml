@@ -3,10 +3,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: webhook-receiver
-spec:
-  ingressClassName: external
   annotations:
     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+spec:
+  ingressClassName: external
   rules:
     - host: flux-webhook.${SECRET_DOMAIN}
       http:
