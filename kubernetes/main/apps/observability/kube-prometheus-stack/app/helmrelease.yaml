@@ -45,7 +45,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: linbit-replicated
+              storageClassName: linbit-local
               resources:
                 requests:
                   storage: 1Gi
@@ -169,7 +169,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: linbit-replicated
+              storageClassName: linbit-local
               resources:
                 requests:
                   storage: 75Gi

@@ -30,3 +30,13 @@ spec:
       replicaCount: 2
       serviceMonitor:
         create: true
+      args:
+        enableDistributedSnapshotting: true
+      volumeSnapshotClasses:
+        - name: linstor-snapclass
+          annotations:
+            snapshot.storage.kubernetes.io/is-default-class: "true"
+          driver: linstor.csi.linbit.com
+          deletionPolicy: Delete
+    webhook:
+      enabled: false

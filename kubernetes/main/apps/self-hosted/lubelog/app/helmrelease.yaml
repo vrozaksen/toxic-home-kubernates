@@ -24,7 +24,6 @@ spec:
       retries: 3
   dependsOn:
     - name: linstor
-      namespace: piraeus-datastore
   values:
     controllers:
       lubelog:
@@ -42,8 +41,6 @@ spec:
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-              - secretRef:
-                  name: "{{ .Release.Name }}-db-secret"
             resources:
               requests:
                 cpu: 15m

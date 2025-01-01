@@ -23,7 +23,6 @@ spec:
       retries: 3
   dependsOn:
   - name: linstor
-    namespace: piraeus-datastore
   - name: volsync
     namespace: storage
   values:
