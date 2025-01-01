@@ -43,9 +43,9 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Rook-Ceph Group"],
-      "groupName": "Rook-Ceph",
-      "matchPackagePatterns": ["rook.ceph"],
+      "description": ["Linstor Group"],
+      "groupName": "Linstor",
+      "matchPackagePatterns": ["linstor"],
       "matchDatasources": ["helm"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"

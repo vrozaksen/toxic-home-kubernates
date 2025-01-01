@@ -22,8 +22,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+  - name: linstor
+    namespace: piraeus-datastore
   - name: volsync
     namespace: storage
   values:

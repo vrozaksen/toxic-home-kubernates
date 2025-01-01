@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 data:
   CLUSTER: main
-  PVC_VOLSYNC_STORAGECLASS: ceph-block
-  VOLSYNC_SNAPSHOTCLASS: csi-ceph-blockpool
-  VOLSYNC_CACHE_SNAPSHOTCLASS: ceph-block
-  VOLSYNC_STORAGECLASS: ceph-block
+  PVC_VOLSYNC_STORAGECLASS: linbit-replicated
+  VOLSYNC_SNAPSHOTCLASS: linstor-snapclass
+  VOLSYNC_CACHE_SNAPSHOTCLASS: linbit-snapshot
+  VOLSYNC_STORAGECLASS: linbit-snapshot
