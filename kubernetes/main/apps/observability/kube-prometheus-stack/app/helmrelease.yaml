@@ -27,8 +27,6 @@ spec:
   dependsOn:
     - name: prometheus-operator-crds
       namespace: observability
-    - name: linstorcluster
-      namespace: piraeus-datastore
   values:
     crds:
       enabled: false
