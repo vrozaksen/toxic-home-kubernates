@@ -31,14 +31,19 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              apk add --no-cache findutils nvme-cli;
+              apk add --no-cache device-mapper findutils nvme-cli parted sgdisk util-linux util-linux-misc zfs;
               #echo "Finding {{ ENV.MODEL }}";
               #DISK=$(find /dev/disk/by-id/ -iname "*{{ ENV.MODEL }}*" -not -name "*-part[0-9+]");
               DISK="/dev/nvme0n1"
               echo "=== Wiping $DISK ===";
-              nvme format --lbaf=1 $DISK --force;
-              nvme format --block-size=4096 $DISK --force;
+              sgdisk --zap-all $DISK;
+              dd if=/dev/zero of="$DISK" bs=1M count=100 oflag=direct;
+              blkdiscard $DISK;
+              wipefs -a $DISK;
+              partprobe $DISK;
+              zpool create -f data $DISK;
               echo "=== Finished wiping $DISK ===";
+              zpool status;
           securityContext:
             privileged: true
           volumeMounts:
