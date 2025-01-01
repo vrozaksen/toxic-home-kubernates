@@ -9,13 +9,13 @@ spec:
     certManager:
       name: linstor-internal-ca
       kind: Issuer
-  storagePools:
-  - name: data
-    lvmThinPool:
-      thinPool: data
-    source:
-      hostDevices:
-        - /dev/nvme0n1
+  #storagePools:
+  #- name: data
+  #  lvmThinPool:
+  #    thinPool: data
+  #  source:
+  #    hostDevices:
+  #      - /dev/nvme0n1
   patches:
     - target:
         kind: DaemonSet
