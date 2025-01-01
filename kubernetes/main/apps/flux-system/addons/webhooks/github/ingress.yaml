@@ -5,6 +5,8 @@ metadata:
   name: webhook-receiver
 spec:
   ingressClassName: external
+  annotations:
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   rules:
     - host: flux-webhook.${SECRET_DOMAIN}
       http:
