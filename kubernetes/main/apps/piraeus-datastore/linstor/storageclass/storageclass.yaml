@@ -5,7 +5,7 @@ metadata:
   name: linbit-local
 provisioner: linstor.csi.linbit.com
 parameters:
-  linstor.csi.linbit.com/storagePool: "data"
+  linstor.csi.linbit.com/storagePool: "data_lvm"
   linstor.csi.linbit.com/layerList: "storage"
   linstor.csi.linbit.com/allowRemoteVolumeAccess: "false"
 volumeBindingMode: WaitForFirstConsumer
@@ -19,7 +19,7 @@ metadata:
     storageclass.kubernetes.io/is-default-class: "true"
 provisioner: linstor.csi.linbit.com
 parameters:
-  linstor.csi.linbit.com/storagePool: "data"
+  linstor.csi.linbit.com/storagePool: "data_lvm"
   linstor.csi.linbit.com/autoPlace: "2"
   linstor.csi.linbit.com/layerList: "drbd storage"
   linstor.csi.linbit.com/allowRemoteVolumeAccess: "true"
@@ -37,7 +37,7 @@ metadata:
 reclaimPolicy: Delete
 provisioner: linstor.csi.linbit.com
 parameters:
-  linstor.csi.linbit.com/storagePool: "data"
+  linstor.csi.linbit.com/storagePool: "data_lvm"
   linstor.csi.linbit.com/layerList: "storage"
   linstor.csi.linbit.com/allowRemoteVolumeAccess: "false"
 allowVolumeExpansion: true

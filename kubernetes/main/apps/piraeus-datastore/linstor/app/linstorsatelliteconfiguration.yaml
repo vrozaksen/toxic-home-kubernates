@@ -10,7 +10,7 @@ spec:
       name: linstor-internal-ca
       kind: Issuer
   storagePools:
-    - name: data
+    - name: data_lvm
       lvmThinPool:
         volumeGroup: linstor_data
         thinPool: thin
