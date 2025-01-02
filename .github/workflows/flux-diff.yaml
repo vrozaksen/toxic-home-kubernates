@@ -80,10 +80,10 @@ jobs:
           app-id: ${{ env.BOT_APP_ID }}
           private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
 
-      - name: Checkout
+      - name: Checkout Pull Request Branch
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: "${{ steps.app-token.outputs.token }}"
           path: pull
 
       - name: Checkout Default Branch
@@ -94,13 +94,13 @@ jobs:
           path: default
 
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:v7.0.0
+        uses: docker://ghcr.io/allenporter/flux-local:v7.0.0@sha256:abf237e31d20de26f8a4b08e588cc927cb0a9f0ecf90d04bada00f393b919354
         with:
           args: >-
             diff ${{ matrix.resources }}
             --unified 6
-            --path /github/workspace/pull/${{ matrix.paths }}/flux
-            --path-orig /github/workspace/default/${{ matrix.paths }}/flux
+            --path /github/workspace/pull/kubernetes/main/flux
+            --path-orig /github/workspace/default/kubernetes/main/flux
             --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
             --limit-bytes 10000
             --all-namespaces
@@ -112,15 +112,15 @@ jobs:
         run: |
           cat diff.patch;
           {
-            echo 'diff<<EOF'
-            cat diff.patch
-            echo EOF
+              echo 'diff<<EOF'
+              cat diff.patch
+              echo EOF
           } >> "$GITHUB_OUTPUT";
           {
-            echo "### Diff"
-            echo '```diff'
-            cat diff.patch
-            echo '```'
+              echo "### Diff"
+              echo '```diff'
+              cat diff.patch
+              echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - if: ${{ steps.diff.outputs.diff != '' }}

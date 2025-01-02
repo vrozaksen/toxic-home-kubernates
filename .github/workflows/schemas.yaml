@@ -10,6 +10,10 @@ on:
     branches: ["main"]
     paths: [".github/workflows/schemas.yaml"]
 
+env:
+  HOMEBREW_NO_ANALYTICS: "1"
+  UV_SYSTEM_PYTHON: "1"
+
 jobs:
   publish:
     name: Schemas
@@ -25,7 +29,7 @@ jobs:
           secrets: |
             a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
             e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
-            7888f846-9c9d-4849-8ee4-b256018a3883 > KUBECONFIG
+            7888f846-9c9d-4849-8ee4-b256018a3883 > KUBECONFIG_BASE64
             3f64c843-529c-42bf-8888-b25501021966 > CLOUDFLARE_API_TOKEN
             46580ab1-41fe-4c55-9e5f-b25501022356 > CLOUDFLARE_ACCOUNT_ID
 
@@ -43,26 +47,31 @@ jobs:
 
       - name: Setup Homebrew
         uses: Homebrew/actions/setup-homebrew@master
+        with:
+          stable: true
 
       - name: Setup Workflow Tools
         shell: bash
-        run: brew install kubectl
+        run: brew install kubectl uv
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.x
+          python-version: 3.12.x
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 22.x
+
+      - name: Install Python Dependencies
+        run: uv pip install pyyaml
 
       - name: Write kubeconfig
         id: kubeconfig
         uses: timheuer/base64-to-file@v1
         with:
-          encodedString: "${{ env.KUBECONFIG }}"
+          encodedString: "${{ env.KUBECONFIG_BASE64 }}"
           fileName: kubeconfig
 
       - name: Download and run crd-extractor
