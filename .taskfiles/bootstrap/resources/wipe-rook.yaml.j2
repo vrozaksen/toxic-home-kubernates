@@ -7,7 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/name: *app
 spec:
-  parallelism: {{ ENV.NODE_COUNT }}
+  parallelism: {{ ENV.NODES }}
   template:
     metadata:
       labels:
@@ -32,23 +32,35 @@ spec:
           args:
             - |
               apk add --no-cache device-mapper findutils nvme-cli parted sgdisk util-linux util-linux-misc zfs;
-              #echo "Finding {{ ENV.MODEL }}";
-              #DISK=$(find /dev/disk/by-id/ -iname "*{{ ENV.MODEL }}*" -not -name "*-part[0-9+]");
               DISK="/dev/nvme0n1"
               echo "=== Wiping $DISK ===";
+
+              # Remove partitions and metadata
               sgdisk --zap-all $DISK;
+
+              # Write zeros to the beginning of the disk
               dd if=/dev/zero of="$DISK" bs=1M count=100 oflag=direct;
-              blkdiscard $DISK;
-              wipefs -a $DISK;
-              partprobe $DISK;
-              zpool create -f data $DISK;
-              echo "=== Finished wiping $DISK ===";
+
+              # Discard remaining data (if supported)
+              blkdiscard $DISK || echo "blkdiscard not supported or disk is busy";
+
+              # Wipe filesystem signatures
+              wipefs -a $DISK || echo "Wipefs failed";
+
+              # Inform the kernel of partition changes
+              partprobe $DISK || echo "Kernel not updated, you might need a reboot";
+
+              # Create a new ZFS pool
+              zpool create -f data $DISK || echo "ZFS pool creation failed";
+
+              echo "=== Finished wiping and preparing $DISK ===";
               zpool status;
+
           securityContext:
             privileged: true
           volumeMounts:
             - name: host-dev
-              mountPath: /dev/disk/by-id
+              mountPath: /dev
           resources: {}
       volumes:
         - name: host-var
@@ -56,7 +68,7 @@ spec:
             path: /var
         - name: host-dev
           hostPath:
-            path: /dev/disk/by-id
+            path: /dev
             type: Directory
       topologySpreadConstraints:
         - maxSkew: 1
