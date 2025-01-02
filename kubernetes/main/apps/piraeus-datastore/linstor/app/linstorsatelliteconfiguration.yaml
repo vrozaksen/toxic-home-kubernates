@@ -10,11 +10,10 @@ spec:
       name: linstor-internal-ca
       kind: Issuer
   storagePools:
-  - name: data
-    zfsPool: {}
-    #source:
-    #  hostDevices:
-    #    - /dev/nvme0n1
+    - name: data
+      lvmThinPool:
+        volumeGroup: linstor_data
+        thinPool: thin
   patches:
     - target:
         kind: DaemonSet

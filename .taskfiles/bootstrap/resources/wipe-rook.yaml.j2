@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: &app wipe-rook
+  name: &app wipe-lvm
   namespace: default
   labels:
     app.kubernetes.io/name: *app
@@ -31,30 +31,27 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              apk add --no-cache device-mapper findutils nvme-cli parted sgdisk util-linux util-linux-misc zfs;
+              apk add --no-cache device-mapper util-linux lvm2;
               DISK="/dev/nvme0n1"
+              VG_NAME="linstor_data"
+              THIN_POOL_NAME="thin"
+
               echo "=== Wiping $DISK ===";
-
-              # Remove partitions and metadata
               sgdisk --zap-all $DISK;
-
-              # Write zeros to the beginning of the disk
               dd if=/dev/zero of="$DISK" bs=1M count=100 oflag=direct;
-
-              # Discard remaining data (if supported)
               blkdiscard $DISK || echo "blkdiscard not supported or disk is busy";
-
-              # Wipe filesystem signatures
               wipefs -a $DISK || echo "Wipefs failed";
-
-              # Inform the kernel of partition changes
               partprobe $DISK || echo "Kernel not updated, you might need a reboot";
 
-              # Create a new ZFS pool
-              zpool create -f data $DISK || echo "ZFS pool creation failed";
+              echo "=== Setting up LVM on $DISK ===";
+              pvcreate $DISK;
+              vgcreate $VG_NAME $DISK;
+              lvcreate --type thin-pool -L 100%FREE -n $THIN_POOL_NAME $VG_NAME;
 
-              echo "=== Finished wiping and preparing $DISK ===";
-              zpool status;
+              echo "=== LVM Configuration Complete ===";
+              pvs;
+              vgs;
+              lvs;
 
           securityContext:
             privileged: true
