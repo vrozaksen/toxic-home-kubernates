@@ -12,9 +12,9 @@ spec:
   storagePools:
   - name: data
     zfsPool: {}
-    source:
-      hostDevices:
-        - /dev/nvme0n1
+    #source:
+    #  hostDevices:
+    #    - /dev/nvme0n1
   patches:
     - target:
         kind: DaemonSet
