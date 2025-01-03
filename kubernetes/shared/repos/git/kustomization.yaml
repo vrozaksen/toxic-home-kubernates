@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ./kyoo.yaml
-  - ./piraeus-operator.yaml
+#  - ./piraeus-operator.yaml
