@@ -10,4 +10,3 @@ spec:
   url: https://github.com/piraeusdatastore/piraeus-operator
   ref:
     tag: v2.7.1
-    
