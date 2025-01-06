@@ -8,7 +8,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: ./charts/piraeus
+      chart: charts/piraeus
       version: 2.7.1
       sourceRef:
         kind: GitRepository
