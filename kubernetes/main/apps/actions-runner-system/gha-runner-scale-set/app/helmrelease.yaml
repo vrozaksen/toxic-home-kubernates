@@ -33,7 +33,7 @@ spec:
   values:
     nameOverride: gha-runner-scale-set
     runnerScaleSetName: gha-runner-scale-set
-    githubConfigUrl: https://github.com/vrozaksen/toxic-home-kubernates
+    githubConfigUrl: https://github.com/vrozaksen/home-ops
     minRunners: 1
     maxRunners: 10
     containerMode:

@@ -5,10 +5,10 @@
     "github>vrozaksen/renovate-config",
     "github>vrozaksen/renovate-config:autoMergeDocker",
     "github>vrozaksen/renovate-config:autoMergeGithubActions",
-    "github>vrozaksen/toxic-home-kubernates//.github/renovate/customManagers.json5",
-    "github>vrozaksen/toxic-home-kubernates//.github/renovate/grafanaDashboards.json5",
-    "github>vrozaksen/toxic-home-kubernates//.github/renovate/groups.json5",
-    "github>vrozaksen/toxic-home-kubernates//.github/renovate/packageRules.json5"
+    "github>vrozaksen/home-ops//.github/renovate/customManagers.json5",
+    "github>vrozaksen/home-ops//.github/renovate/grafanaDashboards.json5",
+    "github>vrozaksen/home-ops//.github/renovate/groups.json5",
+    "github>vrozaksen/home-ops//.github/renovate/packageRules.json5"
   ],
   "ignorePaths": ["**/*.sops.*", "**/.archive/**", "**/resources/**"],
   "flux": {
