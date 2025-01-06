@@ -9,9 +9,4 @@ spec:
   interval: 5m
   url: https://github.com/piraeusdatastore/piraeus-operator
   ref:
-    tag: v2.7.1
-  ignore: |
-    # exclude all
-    /*
-    # include charts directory
-    !/charts/piraeus/
+    branch: v2

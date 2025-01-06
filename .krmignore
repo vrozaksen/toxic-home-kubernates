@@ -1,5 +1,0 @@
-.git
-git
-kubernetes/shared/repos/git
-charts
-kubernetes/main/apps/piraeus-datastore/piraeus-operator/app/charts

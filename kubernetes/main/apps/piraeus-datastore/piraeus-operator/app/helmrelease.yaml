@@ -9,7 +9,6 @@ spec:
   chart:
     spec:
       chart: ./charts/piraeus
-      version: 2.7.1
       sourceRef:
         kind: GitRepository
         name: piraeus-operator
