@@ -61,11 +61,6 @@ spec:
               key: CODER_OIDC_ALLOWED_GROUPS
         - name: CODER_OIDC_USERNAME_FIELD
           value: preferred_username
-        #- name: CODER_OIDC_EMAIL_DOMAIN
-        #  valueFrom:
-        #    secretKeyRef:
-        #      name: *secret
-        #      key: CODER_OIDC_EMAIL_DOMAIN
         - name: CODER_OIDC_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -78,8 +73,6 @@ spec:
               key: CODER_OIDC_CLIENT_SECRET
         - name: CODER_OIDC_SIGN_IN_TEXT
           value: Sign in with Authenik
-        - name: CODER_OIDC_ICON_URL
-          value: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/authelia.svg
       serviceAccount:
         workspacePerms: true
         enableDeployments: true

@@ -37,13 +37,7 @@ spec:
     minRunners: 1
     maxRunners: 10
     containerMode:
-      type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: linbit-local
-        resources:
-          requests:
-            storage: 20Gi
+      type: dind
     template:
       spec:
         containers:
