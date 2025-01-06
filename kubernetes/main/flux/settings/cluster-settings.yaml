@@ -8,5 +8,5 @@ data:
   CLUSTER: main
   PVC_VOLSYNC_STORAGECLASS: linbit-local
   VOLSYNC_SNAPSHOTCLASS: linstor-snapclass
-  VOLSYNC_CACHE_SNAPSHOTCLASS: openebs-hostpath
+  VOLSYNC_CACHE_SNAPSHOTCLASS: local-hostpath
   VOLSYNC_STORAGECLASS: linbit-snapshot
