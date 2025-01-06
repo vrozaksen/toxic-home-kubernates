@@ -11,15 +11,9 @@ data:
         - Discord:
             - icon: discord.png
               href: 'https://discord.com/app'
-        - Gmail:
-            - icon: gmail.png
-              href: 'http://gmail.com'
-        - Google Calendar:
-            - icon: google-calendar.png
-              href: 'https://calendar.google.com'
-        - Outlook:
-            - icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/outlook.png
-              href: 'https://outlook.com'
+        - Protonmail:
+            - icon: proton-mail.png
+              href: 'https://mail.proton.me/'
     - Media:
         - YouTube:
             - icon: youtube.png
@@ -31,12 +25,6 @@ data:
             - icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/youtube-music.png
               href: 'https://music.youtube.com'
     - Reading:
-        - Beyond:
-            - icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/beyond.png
-              href: 'https://forums.beyond.ca/search.php?do=getnew&contenttype=vBForum_Post'
-        - Western Subaru Club:
-            - icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/wsc.png
-              href: 'http://westernsubaruclub.com/smf/index.php?action=unread'
         - Reddit:
             - icon: reddit.png
               href: 'https://reddit.com'
@@ -44,14 +32,21 @@ data:
         - kubesearch:
             - icon: kubernetes-dashboard.png
               href: 'https://kubesearch.dev/'
-        - home-ops:
-            - icon: github.png
               href: 'https://github.com/joryirving/home-ops'
   docker.yaml: ""
   kubernetes.yaml: |
     mode: cluster
   services.yaml: |
     - Network:
+        - OPNSense:
+            href: https://opnsense.lan.vrozaksen.eu:8443
+            icon: opnsense.png
+            description: OPNsense Firewall
+            widget:
+              type: opnsense
+              url: https://opnsense.lan.vrozaksen.eu:8443
+              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
         - Cloudflared:
             href: https://dash.cloudflare.com/
             icon: cloudflare-zero-trust.png
@@ -71,15 +66,6 @@ data:
               url: https://healthchecks.io/
               key: {{HOMEPAGE_VAR_HEALTHCHECK_TOKEN}}
               uuid: {{HOMEPAGE_VAR_HEALTHCHECK_UUID}}
-        - Unifi:
-            href: https://unifi.ui.com
-            icon: unifi.png
-            description: Unifi Dashboard
-            widget:
-              type: unifi
-              url: https://unifi.${SECRET_DOMAIN}
-              username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
-              password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - Games:
         - Create:
             icon: minecraft.png
@@ -116,28 +102,12 @@ data:
                   service_group: Downloads # group name where widget exists
                   service_name: Readarr # service name for that widget
     - Infrastructure:
-        - Portainer:
-            href: &url https://portainer.${SECRET_DOMAIN}
-            icon: portainer.png
-            description: Docker Container Management
-            widget:
-              type: portainer
-              url: http://voyager.internal:9090
-              env: 1
-              key: {{HOMEPAGE_VAR_PORTAINER_TOKEN}}
         - Unraid:
-            href: https://nas.${SECRET_DOMAIN}
-            icon: unraid.png
             description: Unraid NAS
-    - Home:
-        - Home-Assistant:
-            href: https://hass.${SECRET_DOMAIN}
-            icon: home-assistant.png
-            description: Home Automation Software
-            widget:
-              type: homeassistant
-              url: https://hass.${SECRET_DOMAIN}
-              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
+            icon: unraid.png
+            href: https://aincrad.lan.vrozaksen.eu
+            ping: https://aincrad.lan.vrozaksen.eu
+            siteMonitor: https://aincrad.lan.vrozaksen.eu
   settings.yaml: |
     title: Dashboard
     favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
@@ -221,7 +191,3 @@ data:
           timeStyle: short
           dateStyle: short
           hourCycle: h23
-    - unifi_console:
-        url: https://192.168.1.1:443
-        username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
-        password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
