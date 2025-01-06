@@ -32,7 +32,7 @@ kubeRbacProxy:
   image:
     repository: gcr.io/kubebuilder/kube-rbac-proxy
     pullPolicy: IfNotPresent
-    tag: v0.13.1
+    tag: v0.16.0
   options:
     logtostderr: "true"
     v: 0
