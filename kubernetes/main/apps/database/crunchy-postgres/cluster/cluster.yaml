@@ -74,6 +74,10 @@ spec:
       databases: ["grafana"]
       password:
         type: AlphaNumeric
+    - name: "coder"
+      databases: ["coder"]
+      password:
+        type: AlphaNumeric
   #  - name: "bazarr"
   #    databases: ["bazarr"]
   #    password:

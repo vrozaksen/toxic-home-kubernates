@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app coder
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: *app
+      version: 2.17.2
+      sourceRef:
+        kind: HelmRepository
+        name: *app
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    podAnnotations:
+      secret.reloader.stakater.com/reload: &secret coder-secret
+    coder:
+      #initContainers:
+      #  - name: 01-init-db
+      #    image: ghcr.io/onedr0p/postgres-init:16.6
+      #    envFrom:
+      #      - secretRef:
+      #          name: *app
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 71m
+      env:
+        # DB
+        - name: CODER_PG_CONNECTION_URL
+          valueFrom:
+            secretKeyRef:
+              name: *secret
+              key: CODER_PG_CONNECTION_URL
+        # App
+        - name: CODER_ACCESS_URL
+          value: "https://coder.${SECRET_DOMAIN}"
+        - name: CODER_WILDCARD_ACCESS_URL
+          value: "*.coder.${SECRET_DOMAIN}"
+        - name: CODER_TELEMETRY
+          value: "false"
+        - name: CODER_DISABLE_PASSWORD_AUTH
+          value: "true"
+        # OIDC
+        - name: CODER_OIDC_ISSUER_URL
+          value: "https://sso.${SECRET_DOMAIN}"
+        - name: CODER_OIDC_SCOPES
+          value: "openid,profile,email,groups,offline_access"
+        - name: CODER_OIDC_ALLOWED_GROUPS
+          valueFrom:
+            secretKeyRef:
+              name: *secret
+              key: CODER_OIDC_ALLOWED_GROUPS
+        #- name: CODER_OIDC_EMAIL_DOMAIN
+        #  valueFrom:
+        #    secretKeyRef:
+        #      name: *secret
+        #      key: CODER_OIDC_EMAIL_DOMAIN
+        - name: CODER_OIDC_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: *secret
+              key: CODER_OIDC_CLIENT_ID
+        - name: CODER_OIDC_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: *secret
+              key: CODER_OIDC_CLIENT_SECRET
+        - name: CODER_OIDC_SIGN_IN_TEXT
+          value: Sign in with Authenik
+        - name: CODER_OIDC_ICON_URL
+          value: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/authelia.svg
+      ingress:
+        enable: true
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection upgrade;
+        hosts:
+          - coder.${SECRET_DOMAIN}
+        https: false
