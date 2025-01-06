@@ -32,7 +32,6 @@ data:
         - kubesearch:
             - icon: kubernetes-dashboard.png
               href: 'https://kubesearch.dev/'
-              href: 'https://github.com/joryirving/home-ops'
   docker.yaml: ""
   kubernetes.yaml: |
     mode: cluster
