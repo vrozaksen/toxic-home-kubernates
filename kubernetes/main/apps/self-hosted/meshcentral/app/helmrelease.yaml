@@ -23,8 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: linstor
-      namespace: piraeus-datastore
+    - name: volsync
   values:
     controllers:
       meshcentral:
