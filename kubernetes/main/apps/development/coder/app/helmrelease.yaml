@@ -81,22 +81,18 @@ spec:
         - name: CODER_OIDC_ICON_URL
           value: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/authelia.svg
       ingress:
-        app:
-          className: external
-          annotations:
-            external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-            gethomepage.dev/enabled: "true"
-            gethomepage.dev/icon: coder.png
-            gethomepage.dev/name: Coder
-            gethomepage.dev/group: Development
-            gethomepage.dev/app: coder
-            gethomepage.dev/description: OIDC User Management
-            gethomepage.dev/widget.type: coder
-            gethomepage.dev/widget.url: http://coder.development
-          hosts:
-            - host: coder.${SECRET_DOMAIN}
-              paths:
-                - path: /
-                  service:
-                    identifier: app
-                    port: http
+        enabled: true
+        ingressClassName: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: coder.png
+          gethomepage.dev/name: Coder
+          gethomepage.dev/group: Development
+          gethomepage.dev/app: coder
+          gethomepage.dev/description: OIDC User Management
+          gethomepage.dev/widget.type: coder
+          gethomepage.dev/widget.url: http://coder.development
+        hosts:
+          - coder.${SECRET_DOMAIN}
+        https: false
