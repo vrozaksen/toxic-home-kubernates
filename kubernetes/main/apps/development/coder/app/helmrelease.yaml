@@ -57,7 +57,7 @@ spec:
           value: "true"
         # OIDC
         - name: CODER_OIDC_ISSUER_URL
-          value: "https://sso.${SECRET_DOMAIN}"
+          value: "https://sso.${SECRET_DOMAIN}/application/o/coder/"
         - name: CODER_OIDC_SCOPES
           value: "openid,profile,email,groups,offline_access"
         - name: CODER_OIDC_ALLOWED_GROUPS
@@ -65,6 +65,8 @@ spec:
             secretKeyRef:
               name: *secret
               key: CODER_OIDC_ALLOWED_GROUPS
+        - name: CODER_OIDC_USERNAME_FIELD
+          value: preferred_username
         #- name: CODER_OIDC_EMAIL_DOMAIN
         #  valueFrom:
         #    secretKeyRef:
