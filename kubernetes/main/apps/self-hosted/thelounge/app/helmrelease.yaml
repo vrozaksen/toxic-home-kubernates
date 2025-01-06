@@ -24,6 +24,7 @@ spec:
       retries: 3
   dependsOn:
     - name: linstor
+      namespace: piraeus-datastore
   values:
     controllers:
       thelounge:
