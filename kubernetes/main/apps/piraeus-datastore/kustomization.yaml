@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   - ./piraeus-operator/ks.yaml
   - ./linstor/ks.yaml
+  - ./snapshot-controller/ks.yaml

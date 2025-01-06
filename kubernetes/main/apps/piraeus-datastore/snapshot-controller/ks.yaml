@@ -6,13 +6,13 @@ metadata:
   name: &app snapshot-controller
   namespace: flux-system
 spec:
-  targetNamespace: storage
+  targetNamespace: piraeus-datastore
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: linstor
-  path: ./kubernetes/main/apps/storage/snapshot-controller/app
+    - name: piraeus-operator
+  path: ./kubernetes/main/apps/piraeus-datastore/snapshot-controller/app
   prune: true
   sourceRef:
     kind: GitRepository

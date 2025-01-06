@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 data:
   CLUSTER: main
-  PVC_VOLSYNC_STORAGECLASS: linbit-local
+  PVC_VOLSYNC_STORAGECLASS: linbit-replicated
   VOLSYNC_SNAPSHOTCLASS: linstor-snapclass
   VOLSYNC_CACHE_SNAPSHOTCLASS: local-hostpath
   VOLSYNC_STORAGECLASS: linbit-snapshot
