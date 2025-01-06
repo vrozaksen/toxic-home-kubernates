@@ -30,9 +30,9 @@ spec:
     coder:
       resources:
         limits:
-          memory: 1Gi
+          memory: 2Gi
         requests:
-          cpu: 71m
+          cpu: 1000m
       env:
         # DB
         - name: CODER_PG_CONNECTION_URL
@@ -80,11 +80,24 @@ spec:
           value: Sign in with Authenik
         - name: CODER_OIDC_ICON_URL
           value: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/authelia.svg
+      serviceAccount:
+        workspacePerms: true
+        enableDeployments: true
+        name: coder
+        disableCreate: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        readOnlyRootFilesystem: null
+        seccompProfile:
+          type: RuntimeDefault
+        allowPrivilegeEscalation: false
       ingress:
         enabled: true
         ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: coder.png
           gethomepage.dev/name: Coder
@@ -93,6 +106,5 @@ spec:
           gethomepage.dev/description: OIDC User Management
           gethomepage.dev/widget.type: coder
           gethomepage.dev/widget.url: http://coder.development
-        hosts:
-          - coder.${SECRET_DOMAIN}
-        https: false
+        host: "coder.${SECRET_DOMAIN}"
+        wildcardHost: "*.coder.${SECRET_DOMAIN}"
