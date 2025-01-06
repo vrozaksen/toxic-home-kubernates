@@ -28,12 +28,6 @@ spec:
     podAnnotations:
       secret.reloader.stakater.com/reload: &secret coder-secret
     coder:
-      #initContainers:
-      #  - name: 01-init-db
-      #    image: ghcr.io/onedr0p/postgres-init:16.6
-      #    envFrom:
-      #      - secretRef:
-      #          name: *app
       resources:
         limits:
           memory: 1Gi
@@ -88,7 +82,7 @@ spec:
           value: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/authelia.svg
       ingress:
         enable: true
-        className: external
+        ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/configuration-snippet: |
