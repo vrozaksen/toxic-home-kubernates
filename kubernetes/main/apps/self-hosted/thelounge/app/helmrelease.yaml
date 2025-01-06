@@ -24,7 +24,7 @@ spec:
       retries: 3
   dependsOn:
     - name: volsync
-      namespace: flux-system
+      namespace: storage
   values:
     controllers:
       thelounge:
