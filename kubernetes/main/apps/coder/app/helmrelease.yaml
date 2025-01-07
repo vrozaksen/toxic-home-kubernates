@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     podAnnotations:
-      secret.reloader.stakater.com/reload: &secret coder-secret
+      secret.reloader.stakater.com/reload: coder-secret
     coder:
       resources:
         limits:
@@ -38,14 +38,14 @@ spec:
         - name: CODER_PG_CONNECTION_URL
           valueFrom:
             secretKeyRef:
-              name: *secret
+              name: coder-secret
               key: CODER_PG_CONNECTION_URL
         # App
         - name: CODER_ACCESS_URL
           value: "https://coder.${SECRET_DOMAIN}"
         - name: CODER_WILDCARD_ACCESS_URL
           value: "*.coder.${SECRET_DOMAIN}"
-        - name: CODER_TELEMETRY
+        - name: CODER_TELEMETRY_ENABLE
           value: "false"
         - name: CODER_DISABLE_PASSWORD_AUTH
           value: "true"
@@ -57,19 +57,19 @@ spec:
         - name: CODER_OIDC_ALLOWED_GROUPS
           valueFrom:
             secretKeyRef:
-              name: *secret
+              name: coder-secret
               key: CODER_OIDC_ALLOWED_GROUPS
         - name: CODER_OIDC_USERNAME_FIELD
           value: preferred_username
         - name: CODER_OIDC_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: *secret
+              name: coder-secret
               key: CODER_OIDC_CLIENT_ID
         - name: CODER_OIDC_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: *secret
+              name: coder-secret
               key: CODER_OIDC_CLIENT_SECRET
         - name: CODER_OIDC_SIGN_IN_TEXT
           value: Sign in with Authenik
