@@ -79,12 +79,21 @@ spec:
         count: 2 # 2 Node
       placement:
         mgr: &placement
+          #nodeAffinity:
+          #  requiredDuringSchedulingIgnoredDuringExecution:
+          #    nodeSelectorTerms:
+          #      - matchExpressions:
+          #          - key: node-role.kubernetes.io/control-plane
+          #            operator: Exists
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
                 - matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - alfheim
+                        - alne
         mon: *placement
     cephBlockPools:
       - name: ceph-blockpool
