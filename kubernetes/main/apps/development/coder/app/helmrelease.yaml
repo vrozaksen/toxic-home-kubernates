@@ -89,7 +89,7 @@ spec:
         allowPrivilegeEscalation: false
       ingress:
         enabled: true
-        ingressClassName: external
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           gethomepage.dev/enabled: "true"
@@ -100,6 +100,7 @@ spec:
           gethomepage.dev/description: OIDC User Management
           gethomepage.dev/widget.type: coder
           gethomepage.dev/widget.url: http://coder.development
-        hosts:
-          - "coder.${SECRET_DOMAIN}"
-          - "*.coder.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection upgrade;
+        host: "coder.${SECRET_DOMAIN}"
