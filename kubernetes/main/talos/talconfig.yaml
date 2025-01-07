@@ -22,7 +22,7 @@ nodes:
   - hostname: "alfheim"
     ipAddress: "10.0.10.11"
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/a7cab67f2f8ce39c01452f652affa2c590c37525b8113a631c1aac91444aa23d
+    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -34,7 +34,7 @@ nodes:
   - hostname: "alne"
     ipAddress: "10.0.10.12"
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/a7cab67f2f8ce39c01452f652affa2c590c37525b8113a631c1aac91444aa23d
+    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
