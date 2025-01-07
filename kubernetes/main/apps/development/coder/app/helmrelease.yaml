@@ -73,6 +73,7 @@ spec:
               key: CODER_OIDC_CLIENT_SECRET
         - name: CODER_OIDC_SIGN_IN_TEXT
           value: Sign in with Authenik
+      envUseClusterAccessURL: false
       serviceAccount:
         workspacePerms: true
         enableDeployments: true
@@ -88,7 +89,7 @@ spec:
         allowPrivilegeEscalation: false
       ingress:
         enabled: true
-        ingressClassName: external
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           gethomepage.dev/enabled: "true"
