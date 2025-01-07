@@ -27,3 +27,4 @@ resources:
   - ./kubernetes-sigs-external-dns.yaml
   - ./external-secrets.yaml
   - ./wiremind.yaml
+  - ./fluxcd-community.yaml
