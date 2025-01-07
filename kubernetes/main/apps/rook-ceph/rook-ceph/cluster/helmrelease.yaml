@@ -75,8 +75,10 @@ spec:
         deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
+          allowSingleFailureDomain: true # 2 Node
       placement:
         mgr: &placement
+          count: 2 # 2 Node
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
@@ -87,9 +89,9 @@ spec:
     cephBlockPools:
       - name: ceph-blockpool
         spec:
-          failureDomain: host
+          failureDomain: osd # 2 Node
           replicated:
-            size: 2
+            size: 2 # 2 Node
         storageClass:
           enabled: true
           name: ceph-block
@@ -118,11 +120,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 2
+              size: 2 # 2 Node
           dataPools:
-            - failureDomain: host
+            - failureDomain: osd # 2 Node
               replicated:
-                size: 2
+                size: 2 # 2 Node
               name: data0
           metadataServer:
             activeCount: 1
