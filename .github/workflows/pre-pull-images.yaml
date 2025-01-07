@@ -169,9 +169,9 @@ jobs:
         id: set_talosconfig_uuid
         run: |
           if [ "${{ env.cluster }}" == "MAIN" ]; then
-            echo "TALOSCONFIG_UUID=76bf4533-0884-4b90-8490-b25601879083" >> $GITHUB_ENV
+            echo "TALOSCONFIG_UUID=3e024961-ec9a-46e4-b288-b25e0176d5ad" >> $GITHUB_ENV
           elif [ "${{ env.cluster }}" == "UTILITY" ]; then
-            echo "TALOSCONFIG_UUID=fc932a13-0221-488d-8dc4-b2560187daf5" >> $GITHUB_ENV
+            echo "TALOSCONFIG_UUID=9d84521d-69b6-4f2a-b533-b25e0176dee7" >> $GITHUB_ENV
           else
             echo "TALOSCONFIG_UUID=default-uuid" >> $GITHUB_ENV
           fi
