@@ -75,9 +75,10 @@ spec:
         deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
+      mon:
+        count: 2 # 2 Node
       placement:
         mgr: &placement
-          count: 2 # 2 Node
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
