@@ -75,7 +75,6 @@ spec:
         deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
-          allowSingleFailureDomain: true # 2 Node
       placement:
         mgr: &placement
           count: 2 # 2 Node
