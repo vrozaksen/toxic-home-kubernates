@@ -3,17 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kube-prometheus-stack
+  name: &app rook-ceph
   namespace: flux-system
 spec:
-  targetNamespace: observability
+  targetNamespace: rook-ceph
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/observability/kube-prometheus-stack/app
-  prune: true
+  path: ./kubernetes/main/apps/rook-ceph/rook-ceph/app
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -25,18 +25,18 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kube-prometheus-stack-crds
+  name: &app rook-ceph-cluster
   namespace: flux-system
 spec:
-  targetNamespace: observability
+  targetNamespace: rook-ceph
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/observability/kube-prometheus-stack/crds
+  path: ./kubernetes/main/apps/rook-ceph/rook-ceph/cluster
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
   wait: false # no flux ks dependents
   interval: 30m
-  timeout: 5m
+  timeout: 15m

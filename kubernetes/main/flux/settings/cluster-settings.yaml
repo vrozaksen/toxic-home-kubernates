@@ -5,8 +5,9 @@ metadata:
   name: cluster-settings-main
   namespace: flux-system
 data:
+  ## Main cluster settings
   CLUSTER: main
-  PVC_VOLSYNC_STORAGECLASS: linbit-replicated
-  VOLSYNC_SNAPSHOTCLASS: linstor-snapclass
-  VOLSYNC_CACHE_SNAPSHOTCLASS: local-hostpath
-  VOLSYNC_STORAGECLASS: linbit-snapshot
+  PVC_VOLSYNC_STORAGECLASS: ceph-block
+  VOLSYNC_SNAPSHOTCLASS: csi-ceph-blockpool
+  VOLSYNC_CACHE_SNAPSHOTCLASS: ceph-block
+  VOLSYNC_STORAGECLASS: ceph-block

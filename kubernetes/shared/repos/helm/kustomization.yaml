@@ -26,3 +26,4 @@ resources:
   - ./weave-gitops.yaml
   - ./kubernetes-sigs-external-dns.yaml
   - ./external-secrets.yaml
+  - ./wiremind.yaml

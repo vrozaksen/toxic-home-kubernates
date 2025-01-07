@@ -31,11 +31,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              apk add --no-cache device-mapper util-linux lvm2 zfs;
+              apk add --no-cache device-mapper util-linux zfs;
               DISK="/dev/nvme0n1"
-              VG_NAME="linstor_data"
-              THIN_POOL_NAME="thin"
-
               echo "=== Checking and Destroying Existing ZFS Pools ===";
               for pool in $(zpool list -H -o name 2>/dev/null); do
                 echo "Destroying ZFS pool: $pool";
@@ -53,24 +50,6 @@ spec:
               blkdiscard $DISK || echo "blkdiscard not supported or disk is busy";
               wipefs -a $DISK || echo "Wipefs failed";
               partprobe $DISK || echo "Kernel not updated, you might need a reboot";
-
-              echo "=== Setting up LVM on $DISK ===";
-              pvcreate $DISK;
-              vgcreate $VG_NAME $DISK;
-
-              FREE_SPACE=$(vgs --noheadings -o vg_free --units m $VG_NAME | awk '{print $1}' | sed 's/.$//');
-              if [ "$FREE_SPACE" -eq 0 ]; then
-                echo "No free space in volume group $VG_NAME. Exiting.";
-                exit 1;
-              fi
-
-              lvcreate --type thin-pool -l 100%FREE -n $THIN_POOL_NAME $VG_NAME;
-
-              echo "=== LVM Configuration Complete ===";
-              pvs;
-              vgs;
-              lvs;
-
           securityContext:
             privileged: true
           volumeMounts:
