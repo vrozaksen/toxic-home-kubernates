@@ -100,5 +100,6 @@ spec:
           gethomepage.dev/description: OIDC User Management
           gethomepage.dev/widget.type: coder
           gethomepage.dev/widget.url: http://coder.development
-        host: "coder.${SECRET_DOMAIN}"
-        wildcardHost: "*.coder.${SECRET_DOMAIN}"
+        hosts:
+          - "coder.${SECRET_DOMAIN}"
+          - "*.coder.${SECRET_DOMAIN}"
