@@ -92,6 +92,7 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          lbipam.cilium.io/ips: ${SVC_CODER_EXTERNAL:=temp}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: coder.png
           gethomepage.dev/name: Coder
