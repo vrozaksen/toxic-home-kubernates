@@ -181,7 +181,6 @@ jobs:
         with:
           access_token: ${{ secrets.BW_ACCESS_TOKEN }}
           secrets: |
-            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
             ${{ env.TALOSCONFIG_UUID }} > TALOSCONFIG_BASE64
 
       - name: Write talosconfig
@@ -212,6 +211,6 @@ jobs:
     name: Pre-pull Images Successful
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+      - if: ${{ !contains(needs.*.result, 'success') }}
         name: Check matrix status
         run: exit 1
