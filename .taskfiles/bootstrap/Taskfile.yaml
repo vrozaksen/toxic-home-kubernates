@@ -57,7 +57,7 @@ tasks:
       - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name {{.CLUSTER}} {{.CLUSTER_DIR}}
     vars:
       TALOS_CONTROLLER:
-        sh: talosctl config info --output json --cluster {{.CLUSTER}} | jq --raw-output '.endpoints[]' | shuf -n 1
+        sh: talosctl config info --output json --context {{.CLUSTER}} | jq --raw-output '.endpoints[]' | shuf -n 1
     requires:
       vars: [CLUSTER]
     preconditions:
@@ -97,7 +97,6 @@ tasks:
   flux:
     desc: Bootstrap Flux [CLUSTER=main]
     cmds:
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/apps
       - for: { var: TEMPLATES }
         cmd: bws run --project-id 1c0d7ca7-3598-4fc5-a0f8-b25601333609 -- 'minijinja-cli --env {{.ITEM}}' | kubectl apply --server-side --filename -
       - kubectl apply --server-side --filename {{.CLUSTER_DIR}}/flux/settings/cluster-settings.yaml
@@ -106,10 +105,10 @@ tasks:
       TEMPLATES:
         sh: ls {{.CLUSTER_DIR}}/bootstrap/apps/*.j2
     env:
-      VAULT: '{{if eq .CLUSTER "main"}}kubernetes{{else}}{{.CLUSTER}}{{end}}' # ¯\_(ツ)_/¯
+      VAULT: kubernetes # ¯\_(ツ)_/¯
       FLUX_GITHUB_PUBLIC_KEYS:
         sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
     requires:
       vars: [CLUSTER]
     preconditions:
-      - which curl flux kubectl ls bws
+      - which curl flux kubectl ls bws jq

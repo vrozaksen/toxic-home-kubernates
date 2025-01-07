@@ -49,10 +49,10 @@ releases:
       - kube-system/cilium
 
   - name: spegel
-    namespace: kube-system
+    namespace: kube-tools
     chart: oci://ghcr.io/spegel-org/helm-charts/spegel
     version: v0.0.28
-    values: ["../../apps/kube-system/spegel/app/helm-values.yaml"]
+    values: ["../../apps/kube-tools/spegel/app/helm-values.yaml"]
     needs:
       - kube-system/cilium
 
@@ -80,4 +80,4 @@ releases:
             helm.toolkit.fluxcd.io/namespace: *namespace
     needs:
       - kube-system/coredns
-      - kube-system/spegel
+      - kube-tools/spegel
