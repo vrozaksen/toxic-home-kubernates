@@ -32,7 +32,7 @@ spec:
         limits:
           memory: 2Gi
         requests:
-          cpu: 1000m
+          cpu: 70m
       env:
         # DB
         - name: CODER_PG_CONNECTION_URL
