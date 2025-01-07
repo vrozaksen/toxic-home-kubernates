@@ -6,6 +6,7 @@ namespace: flux-system
 resources:
   - ./actions-runner-controller.yaml
   - ./authentik-charts.yaml
+  - ./coder.yaml
   - ./crunchydata.yaml
   - ./csi-driver-nfs.yaml
   - ./dragonfly.yaml

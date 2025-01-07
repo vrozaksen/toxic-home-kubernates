@@ -56,7 +56,7 @@ tasks:
         cmd: kubectl --namespace {{splitList "," .ITEM | first}} patch --field-manager=flux-client-side-apply replicationsources {{splitList "," .ITEM | last}} --type merge --patch "{\"spec\":{\"restic\":{\"unlock\":\"{{now | unixEpoch}}\"}}}"
     vars:
       SOURCES:
-        sh: kubectl --context {{.CLUSTER}} get replicationsources --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
+        sh: kubectl --cluster {{.CLUSTER}} get replicationsources --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
     requires:
       vars: [CLUSTER]
     preconditions:
@@ -98,21 +98,21 @@ tasks:
     vars:
       NS: '{{.NS | default "default"}}'
       CONTROLLER:
-        sh: kubectl --context {{.CLUSTER}} --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
+        sh: kubectl --cluster {{.CLUSTER}} --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
     env:
       NS: '{{.NS}}'
       APP: '{{.APP}}'
       PREVIOUS: '{{.PREVIOUS}}'
       CLAIM:
-        sh: kubectl --context {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.sourcePVC}"
+        sh: kubectl --cluster {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.sourcePVC}"
       ACCESS_MODES:
-        sh: kubectl --context {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.accessModes}"
+        sh: kubectl --cluster {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.accessModes}"
       STORAGE_CLASS_NAME:
-        sh: kubectl --context {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.storageClassName}"
+        sh: kubectl --cluster {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.storageClassName}"
       PUID:
-        sh: kubectl --context {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.moverSecurityContext.runAsUser}"
+        sh: kubectl --cluster {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.moverSecurityContext.runAsUser}"
       PGID:
-        sh: kubectl --context {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.moverSecurityContext.runAsGroup}"
+        sh: kubectl --cluster {{.CLUSTER}} --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.moverSecurityContext.runAsGroup}"
     requires:
       vars: [CLUSTER, APP, PREVIOUS]
     preconditions:

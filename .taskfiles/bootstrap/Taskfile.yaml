@@ -13,7 +13,7 @@ tasks:
       - task: apply-config
       - task: talos
       - task: apps
-    #  - task: rook
+      - task: rook
     requires:
       vars: [CLUSTER]
 
@@ -57,13 +57,13 @@ tasks:
       - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name {{.CLUSTER}} {{.CLUSTER_DIR}}
     vars:
       TALOS_CONTROLLER:
-        sh: talosctl config info --output json --context {{.CLUSTER}} | jq --raw-output '.endpoints[]' | shuf -n 1
+        sh: talosctl config info --output json --cluster {{.CLUSTER}} | jq --raw-output '.endpoints[]' | shuf -n 1
     requires:
       vars: [CLUSTER]
     preconditions:
       - talosctl config info
       - test -f {{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig
-      - which talosctl
+      - which talosctl jq
 
   apps:
     desc: Bootstrap Apps [CLUSTER=main]
@@ -92,7 +92,7 @@ tasks:
         sh: talosctl config info --output json | jq --raw-output '.nodes | length'
     preconditions:
       - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wipe-rook.yaml.j2
-      - which kubectl minijinja-cli stern talosctl
+      - which kubectl minijinja-cli stern talosctl jq
 
   flux:
     desc: Bootstrap Flux [CLUSTER=main]

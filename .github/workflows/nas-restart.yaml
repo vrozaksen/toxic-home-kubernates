@@ -56,13 +56,13 @@
           shell: bash
           run: |
             kubectl \
-                --context ${{ matrix.cluster }} \
+                --cluster ${{ matrix.cluster }} \
                 get deployments \
                 --all-namespaces \
                 -l nfsMount=true \
                 -o custom-columns="NAMESPACE:.metadata.namespace,NAME:.metadata.name" \
                 --no-headers | \
-                awk '{print "kubectl --context ${{ matrix.cluster }} rollout restart deployment/"$2" -n "$1}' | \
+                awk '{print "kubectl --cluster ${{ matrix.cluster }} rollout restart deployment/"$2" -n "$1}' | \
                 sh
 
         - name: Restart Database Deployments
@@ -72,5 +72,5 @@
           shell: bash
           run: |
             kubectl \
-                --context ${{ matrix.cluster }} \
+                --cluster ${{ matrix.cluster }} \
                 rollout restart statefulset postgres-repo-host -n database
