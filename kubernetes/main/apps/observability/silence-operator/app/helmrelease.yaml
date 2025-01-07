@@ -74,6 +74,6 @@ spec:
             - name: alertname
               value: NodeMemoryHighUtilization
               isRegex: false
-            - name: instance
-              value: voyager.internal:9100
-              isRegex: false
+            #- name: instance
+            #  value: voyager.internal:9100
+            #  isRegex: false
