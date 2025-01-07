@@ -95,6 +95,31 @@ spec:
                         - alfheim
                         - alne
         mon: *placement
+      resources:
+        api:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            memory: "512Mi"
+        mgr:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            memory: "512Mi"
+        mon:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            memory: "512Mi"
+        osd:
+          requests:
+              cpu: "500m"
+              memory: "512Mi"
+          limits:
+            memory: "512Mi"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
