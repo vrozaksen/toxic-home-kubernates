@@ -40,7 +40,8 @@ spec:
               SCRIPT_NAME: fstrim.sh
             resources:
               requests:
-                cpu: 25m
+                cpu: 10m
+                memory: 32Mi
               limits:
                 memory: 128Mi
             securityContext:

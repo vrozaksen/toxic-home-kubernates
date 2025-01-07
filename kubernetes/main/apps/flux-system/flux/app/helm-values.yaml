@@ -17,9 +17,10 @@ helmController:
       - --oom-watch-interval=500ms
   resources:
     requests:
-      cpu: 100m
+      cpu: 50m
+      memory: 128Mi
     limits:
-      memory: 2Gi
+      memory: 512Mi
 
 imageAutomationController:
   create: false
@@ -36,16 +37,18 @@ kustomizeController:
       - --requeue-dependency=5s
   resources:
     requests:
-      cpu: 100m
+      cpu: 50m
+      memory: 128Mi
     limits:
-      memory: 2Gi
+      memory: 512Mi
 
 notificationController:
   resources:
     requests:
-      cpu: 100m
+      cpu: 50m
+      memory: 128Mi
     limits:
-      memory: 2Gi
+      memory: 512Mi
 
 sourceController:
   container:
@@ -61,9 +64,10 @@ sourceController:
       - --requeue-dependency=5s
   resources:
     requests:
-      cpu: 100m
+      cpu: 50m
+      memory: 128Mi
     limits:
-      memory: 2Gi
+      memory: 512Mi
 
 policies:
   create: false

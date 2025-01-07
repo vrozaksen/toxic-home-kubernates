@@ -41,7 +41,7 @@ spec:
               CONFIG_FILE: &config /config/config.yaml
             resources:
               requests:
-                cpu: 100m
+                cpu: 50m
                 memory: 100Mi
               limits:
                 memory: 500Mi

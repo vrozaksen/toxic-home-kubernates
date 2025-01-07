@@ -87,8 +87,9 @@ spec:
               app.kubernetes.io/component: controller
       resources:
         requests:
-          cpu: 100m
+          cpu: 50m
+          memory: 96Mi
         limits:
-          memory: 500Mi
+          memory: 192Mi
     defaultBackend:
       enabled: false

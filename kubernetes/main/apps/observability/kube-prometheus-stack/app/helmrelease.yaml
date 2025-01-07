@@ -161,7 +161,7 @@ spec:
           cluster: ${CLUSTER}
         resources:
           requests:
-            cpu: 100m
+            cpu: 50m
           limits:
             memory: 3000Mi
         ruleSelectorNilUsesHelmValues: false

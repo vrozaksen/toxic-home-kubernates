@@ -42,7 +42,7 @@ spec:
                   name: free-game-notifier
             resources:
               requests:
-                cpu: 5m
+                cpu: 3m
               limits:
                 memory: 128M
       # dec:
