@@ -98,28 +98,28 @@ spec:
       resources:
         api:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 150m
+              memory: 512Mi
           limits:
-            memory: "512Mi"
+            memory: 512Mi
         mgr:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 250m
+              memory: 512Mi
           limits:
-            memory: "512Mi"
+            memory: 2Gi
         mon:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 250m
+              memory: 512Mi
           limits:
-            memory: "512Mi"
+            memory: 2Gi
         osd:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 500m
+              memory: 512Mi
           limits:
-            memory: "512Mi"
+            memory: 2Gi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
