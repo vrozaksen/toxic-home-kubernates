@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ylianst/meshcentral
-              tag: 1.1.35@sha256:171c9b6e5ef8df7dfa2dcfc5d9a1a24b2eade0bce7f73ae1926c3a15855359d0
+              tag: 1.1.37@sha256:caca1ee285c77909d0802343f19162920d73010ed7803a2576ec4cd20b4b9d6e
             env:
               TZ: ${TIMEZONE}
               NODE_ENV: production
