@@ -89,7 +89,12 @@ spec:
           type: RuntimeDefault
         allowPrivilegeEscalation: false
       service:
-        enabled: false
+        enable: true
+        type: ClusterIP
+        sessionAffinity: ClientIP
+        externalTrafficPolicy: Cluster
+        loadBalancerIP: ""
+        annotations: {}
       ingress:
         enabled: true
         className: external
@@ -107,3 +112,7 @@ spec:
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection upgrade;
         host: "coder.${SECRET_DOMAIN}"
+        tls:
+          enable: false
+          secretName: ""
+          wildcardSecretName: ""
