@@ -27,6 +27,7 @@ spec:
   values:
     podAnnotations:
       secret.reloader.stakater.com/reload: coder-secret
+      external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
     coder:
       resources:
         requests:
@@ -99,7 +100,7 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          #external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: coder.png
           gethomepage.dev/name: Coder
