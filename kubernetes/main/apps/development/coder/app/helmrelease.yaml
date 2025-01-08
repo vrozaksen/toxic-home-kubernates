@@ -112,3 +112,4 @@ spec:
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection upgrade;
         host: "coder.${SECRET_DOMAIN}"
+        wildcardHost: "*.coder.${SECRET_DOMAIN}"
