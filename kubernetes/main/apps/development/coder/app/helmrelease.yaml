@@ -27,13 +27,6 @@ spec:
   values:
     podAnnotations:
       secret.reloader.stakater.com/reload: coder-secret
-    coder:
-      resources:
-        requests:
-          cpu: 50m
-          memory: 1Gi
-        limits:
-          memory: 2Gi
     ingress:
       enabled: true
       className: internal
@@ -44,6 +37,13 @@ spec:
           paths:
             - path: /
               pathType: Prefix
+    coder:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 1Gi
+        limits:
+          memory: 2Gi
       env:
         # DB
         - name: CODER_PG_CONNECTION_URL
