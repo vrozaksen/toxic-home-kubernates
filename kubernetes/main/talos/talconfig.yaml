@@ -111,7 +111,17 @@ patches:
             type: bind
             source: /var/openebs/local
             options: ["bind", "rshared", "rw"]
-
+          - destination: /var/lib/longhorn/
+            type: bind
+            source: /var/lib/longhorn/
+            options: ["bind", "rshared", "rw"]
+  # Mount openebs-hostpath in kubelet
+  - |-
+    machine:
+      disks:
+        - device: /dev/nvme0n1
+          partitions:
+            - mountpoint: /var/lib/longhorn/
   # # Performance hacks
   - |-
     machine:
