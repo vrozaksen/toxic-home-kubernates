@@ -28,3 +28,4 @@ resources:
   - ./external-secrets.yaml
   - ./wiremind.yaml
   - ./fluxcd-community.yaml
+  - ./longhorn.yaml
