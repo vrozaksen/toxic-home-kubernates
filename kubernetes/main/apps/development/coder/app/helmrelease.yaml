@@ -96,14 +96,24 @@ spec:
         externalTrafficPolicy: Cluster
         loadBalancerIP: ""
         annotations: {}
-      ingress:
-        enabled: true
-        className: "external"
-        host: "coder.${SECRET_DOMAIN}"
-        wildcardHost: "*.coder.${SECRET_DOMAIN}"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        tls:
-          enable: false
-          secretName: ""
-          wildcardSecretName: ""
+    ingress:
+      enabled: true
+      className: "external"
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/icon: coder.png
+        gethomepage.dev/name: Coder
+        gethomepage.dev/group: Development
+        gethomepage.dev/app: coder
+        gethomepage.dev/description: OIDC User Management
+        gethomepage.dev/widget.type: coder
+        gethomepage.dev/widget.url: http://coder.development
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection upgrade;
+      host: "coder.${SECRET_DOMAIN}"
+      tls:
+        enable: false
+        secretName: ""
+        wildcardSecretName: ""
