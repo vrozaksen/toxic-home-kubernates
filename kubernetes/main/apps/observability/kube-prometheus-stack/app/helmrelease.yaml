@@ -28,6 +28,7 @@ spec:
     - name: kube-prometheus-stack-crds
       namespace: observability
     - name: longhorn
+      namespace: longhorn-system
   values:
     crds:
       enabled: false
