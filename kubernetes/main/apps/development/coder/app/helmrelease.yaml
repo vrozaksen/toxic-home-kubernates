@@ -27,16 +27,6 @@ spec:
   values:
     podAnnotations:
       secret.reloader.stakater.com/reload: coder-secret
-    ingress:
-      enabled: true
-      className: internal
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-      hosts:
-        - host: "coder.${SECRET_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
     coder:
       resources:
         requests:
@@ -126,3 +116,16 @@ spec:
       #    enable: false
       #    secretName: ""
       #    wildcardSecretName: ""
+    ingress:
+      app:
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
