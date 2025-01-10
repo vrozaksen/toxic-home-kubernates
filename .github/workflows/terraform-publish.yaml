@@ -40,7 +40,6 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Workflow Tools
-        shell: bash
         run: brew install fluxcd/tap/flux
 
       - name: Login to GitHub Container Registry
@@ -51,18 +50,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Lowercase repository owner
-        shell: bash
         run: |
           echo "LOWERCASE_REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "${GITHUB_ENV}"
 
       - name: Generate Tag
         id: generate-tag
-        shell: bash
         run: |
           echo "tag=ghcr.io/${LOWERCASE_REPO_OWNER}/manifests/terraform:$(git rev-parse --short HEAD)" >> "${GITHUB_OUTPUT}"
 
       - name: Publish OCI Artifact
-        shell: bash
         run: |
           flux push artifact oci://${{ steps.generate-tag.outputs.tag }} \
               --path="./terraform" \
@@ -70,7 +66,6 @@ jobs:
               --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
 
       - name: Tag OCI Artifact
-        shell: bash
         run: |
           flux tag artifact \
               oci://${{ steps.generate-tag.outputs.tag }} \

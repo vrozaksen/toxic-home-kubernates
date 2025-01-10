@@ -10,9 +10,6 @@ on:
   schedule:
     - cron: "0 0 * * *" # Daily at Midnight
 
-permissions:
-  issues: write
-
 jobs:
   label-sync:
     name: Label Sync

@@ -3,12 +3,10 @@
 name: "Flux Kustomization Sync"
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
     paths: ["kubernetes/utility/**"]
-
-env:
-  MISE_GITHUB_TOKEN: ${{ secrets.MISE_GITHUB_TOKEN }}
 
 jobs:
   sync:
@@ -25,7 +23,7 @@ jobs:
           secrets: |
             a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
             e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
-            7888f846-9c9d-4849-8ee4-b256018a3883 > KUBECONFIG
+            7888f846-9c9d-4849-8ee4-b256018a3883 > KUBECONFIG_BASE64
 
       - name: Generate Token
         uses: actions/create-github-app-token@v1
@@ -38,21 +36,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
 
-      - name: Setup mise
-        uses: jdx/mise-action@v2
-        with:
-          mise_toml: |
-            [tools]
-            "aqua:fluxcd/flux2" = "latest"
-            "aqua:mikefarah/yq" = "latest"
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Workflow Tools
+        run: brew install fluxcd/tap/flux
 
       - name: Write kubeconfig
         id: kubeconfig
         uses: timheuer/base64-to-file@v1
         with:
-          encodedString: ${{ env.KUBECONFIG }}
+          encodedString: ${{ env.KUBECONFIG_BASE64 }}
           fileName: kubeconfig
 
       - name: Sync Kustomization
@@ -61,7 +56,7 @@ jobs:
         shell: bash
         run: |
           flux \
-              --cluster ${{ matrix.cluster }} \
+              --context ${{ matrix.cluster }} \
               --namespace flux-system \
               reconcile ks cluster \
               --with-source
