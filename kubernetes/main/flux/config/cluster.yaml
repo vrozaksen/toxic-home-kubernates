@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: home-kubernetes
+  name: flux-system
   namespace: flux-system
 spec:
   interval: 30m
@@ -30,7 +30,7 @@ spec:
   wait: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   decryption:
     provider: sops
     secretRef:
@@ -59,7 +59,7 @@ spec:
   wait: false
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   decryption:
     provider: sops
     secretRef:
