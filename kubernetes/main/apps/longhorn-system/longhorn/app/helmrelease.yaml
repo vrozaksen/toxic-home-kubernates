@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -15,20 +15,21 @@ spec:
         name: longhorn
         namespace: flux-system
   install:
-    replace: true
     remediation:
       retries: 3
   upgrade:
-    force: true
-    preserveValues: true
     cleanupOnFail: true
     remediation:
       strategy: rollback
       retries: 3
   values:
+    csi:
+      attacherReplicaCount: &replicas 1
+      provisionerReplicaCount: *replicas
+      resizerReplicaCount: *replicas
+      snapshotterReplicaCount: *replicas
     persistence:
-      defaultDiskSelector:
-        enable: false
+      defaultClassReplicaCount: 1
     defaultSettings:
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: true
@@ -40,6 +41,8 @@ spec:
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 3
       orphanAutoDeletion: true
+    longhornUI:
+      replicas: *replicas
     ingress:
       enabled: true
       ingressClassName: internal

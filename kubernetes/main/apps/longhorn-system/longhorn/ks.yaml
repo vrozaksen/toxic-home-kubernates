@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -17,13 +17,12 @@ spec:
     name: flux-system
   wait: false # no flux ks dependents
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
   postBuild:
     substitute:
       APP: *app
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -38,11 +37,9 @@ spec:
     - name: longhorn
   path: ./kubernetes/main/apps/longhorn-system/longhorn/storageclass
   prune: true
-  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: false # no flux ks dependents
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
