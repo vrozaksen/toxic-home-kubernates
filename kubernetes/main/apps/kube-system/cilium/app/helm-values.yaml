@@ -8,6 +8,8 @@ bpf:
   hostLegacyRouting: true
   masquerade: true
   tproxy: true
+#bgpControlPlane:
+#  enabled: true
 cgroup:
   automount:
     enabled: false
@@ -27,7 +29,7 @@ hubble:
   enabled: false
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: "10.69.0.0/16"
+ipv4NativeRoutingCIDR: 10.69.0.0/16
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true
@@ -70,6 +72,8 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+#      - PERFMON
+#      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
