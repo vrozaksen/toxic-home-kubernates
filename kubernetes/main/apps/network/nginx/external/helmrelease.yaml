@@ -29,9 +29,8 @@ spec:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: &hostname external.${SECRET_DOMAIN}
           lbipam.cilium.io/ips: ${SVC_NGINX_EXTERNAL:=temp}
-        externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
         default: false
@@ -42,8 +41,9 @@ spec:
             - key: ingress-class
               operator: In
               values: ["external"]
-      allowSnippetAnnotations: true
       config:
+        allow-snippet-annotations: true
+        annotations-risk-level: Critical
         block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
         client-body-buffer-size: 100M
         client-body-timeout: 120
@@ -75,7 +75,10 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: cert-manager/${SECRET_DOMAIN}-tls
+        publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
+      publishService:
+        enabled: false
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -87,9 +90,8 @@ spec:
               app.kubernetes.io/component: controller
       resources:
         requests:
-          cpu: 50m
-          memory: 96Mi
+          cpu: 100m
         limits:
-          memory: 192Mi
+          memory: 500Mi
     defaultBackend:
       enabled: false
