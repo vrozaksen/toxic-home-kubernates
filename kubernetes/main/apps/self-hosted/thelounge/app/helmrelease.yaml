@@ -36,7 +36,8 @@ spec:
               repository: ghcr.io/thelounge/thelounge
               tag: 4.4.3@sha256:4a0ed50e04ea5300b4015a40126ce9d5eb247d9ef20b493ba26287cecda39ce3
             env:
-              THELOUNGE_HOME: /config
+              # Ref: https://github.com/thelounge/thelounge/issues/2656
+              THELOUNGE_HOME: /config/thelounge
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -80,3 +81,5 @@ spec:
     persistence:
       config:
         existingClaim: *app
+        globalMounts:
+          - path: /config
