@@ -78,6 +78,10 @@ spec:
       databases: ["coder"]
       password:
         type: AlphaNumeric
+    - name: "outline"
+      databases: ["outline"]
+      password:
+        type: AlphaNumeric
   #  - name: "bazarr"
   #    databases: ["bazarr"]
   #    password:

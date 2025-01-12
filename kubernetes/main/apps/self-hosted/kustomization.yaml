@@ -15,3 +15,4 @@ resources:
   - ./free-game-notifier/ks.yaml
   - ./meshcentral/ks.yaml
   - ./thelounge/ks.yaml
+  - ./outline/ks.yaml
