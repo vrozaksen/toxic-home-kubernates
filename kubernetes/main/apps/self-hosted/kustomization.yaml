@@ -9,11 +9,9 @@ resources:
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
   - ./homepage/ks.yaml
-#  - ./actual/ks.yaml
-#  - ./lubelog/ks.yaml
+  - ./lubelog/ks.yaml
 #  - ./paperless/ks.yaml
 #  - ./redlib/ks.yaml
   - ./free-game-notifier/ks.yaml
   - ./meshcentral/ks.yaml
-#  - ./rss-forwarder/ks.yaml
   - ./thelounge/ks.yaml
