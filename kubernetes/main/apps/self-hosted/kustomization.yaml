@@ -16,4 +16,4 @@ resources:
   - ./free-game-notifier/ks.yaml
   - ./meshcentral/ks.yaml
 #  - ./rss-forwarder/ks.yaml
-#  - ./thelounge/ks.yaml
+  - ./thelounge/ks.yaml
