@@ -145,7 +145,7 @@ spec:
         repo3-retention-full: "30" # days
         repo3-retention-full-type: "time"
       manual:
-        repoName: repo2
+        repoName: repo1
         options:
           - --type=full
       metadata:
@@ -155,7 +155,7 @@ spec:
         - name: repo1
           s3: &minio
             bucket: postgresql
-            endpoint: minio.vrozaksen.eu
+            endpoint: 10.0.20.10
             region: eu-ne-aincrad-1
           schedules:
             full: "30 1 * * 0" # Sunday at 01:30
