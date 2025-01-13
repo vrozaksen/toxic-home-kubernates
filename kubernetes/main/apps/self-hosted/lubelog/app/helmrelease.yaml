@@ -44,7 +44,7 @@ spec:
                   name: "{{ .Release.Name }}-secret"
             resources:
               requests:
-                cpu: 10m
+                cpu: 15m
                 memory: 80M
               limits:
                 memory: 256M
@@ -53,6 +53,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
       app:

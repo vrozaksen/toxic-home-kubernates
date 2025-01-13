@@ -3,14 +3,14 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: "${APP}-volsync"
+  name: &name "${APP}-volsync"
 spec:
   secretStoreRef:
     name: bitwarden-secrets-manager
     kind: ClusterSecretStore
   refreshInterval: 15m
   target:
-    name: "${APP}-volsync"
+    name: *name
     template:
       engineVersion: v2
       data:
@@ -23,7 +23,6 @@ spec:
       key: volsync-bucket
   - extract:
       key: volsync-minio-template
-      property: RESTIC_REPOSITORY
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1

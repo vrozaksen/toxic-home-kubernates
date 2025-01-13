@@ -40,7 +40,6 @@
           uses: Homebrew/actions/setup-homebrew@master
 
         - name: Setup Workflow Tools
-          shell: bash
           run: brew install kubernetes-cli
 
         - name: Write kubeconfig
@@ -53,24 +52,22 @@
         - name: Restart NFS Deployments
           env:
             KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
-          shell: bash
           run: |
             kubectl \
-                --cluster ${{ matrix.cluster }} \
+                --context ${{ matrix.cluster }} \
                 get deployments \
                 --all-namespaces \
                 -l nfsMount=true \
                 -o custom-columns="NAMESPACE:.metadata.namespace,NAME:.metadata.name" \
                 --no-headers | \
-                awk '{print "kubectl --cluster ${{ matrix.cluster }} rollout restart deployment/"$2" -n "$1}' | \
+                awk '{print "kubectl --context ${{ matrix.cluster }} rollout restart deployment/"$2" -n "$1}' | \
                 sh
 
         - name: Restart Database Deployments
           if: matrix.cluster == 'main'
           env:
             KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
-          shell: bash
           run: |
             kubectl \
-                --cluster ${{ matrix.cluster }} \
+                --context ${{ matrix.cluster }} \
                 rollout restart statefulset postgres-repo-host -n database

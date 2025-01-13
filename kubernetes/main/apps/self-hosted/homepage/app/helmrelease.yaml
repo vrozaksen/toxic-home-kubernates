@@ -41,7 +41,7 @@ spec:
                   name: homepage-secret
             resources:
               requests:
-                cpu: 10m
+                cpu: 15m
                 memory: 200M
               limits:
                 memory: 2G

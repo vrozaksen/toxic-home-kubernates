@@ -3,7 +3,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ./flux/ks.yaml
+  - ../../../shared/templates/alerts
+  # Flux-Kustomizations
   - ./clickops/ks.yaml
+  - ./flux-operator/ks.yaml
   - ./weave-gitops/ks.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: flux-system
+    unsetOnly: true

@@ -41,7 +41,7 @@ spec:
               CONFIG_FILE: &config /config/config.yaml
             resources:
               requests:
-                cpu: 50m
+                cpu: 100m
                 memory: 100Mi
               limits:
                 memory: 500Mi
@@ -50,6 +50,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
       topologySpreadConstraints:
         - maxSkew: 1

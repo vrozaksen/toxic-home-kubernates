@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ../../../shared/templates/alerts
   # Flux-Kustomizations
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
@@ -16,3 +17,11 @@ resources:
   - ./meshcentral/ks.yaml
   - ./thelounge/ks.yaml
   - ./outline/ks.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: self-hosted
+    unsetOnly: true

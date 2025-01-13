@@ -57,7 +57,7 @@ spec:
                 type: RuntimeDefault
             resources:
               requests:
-                cpu: 5m
+                cpu: 10m
               limits:
                 memory: 64Mi
     defaultPodOptions:
@@ -65,6 +65,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
       topologySpreadConstraints:
         - maxSkew: 1

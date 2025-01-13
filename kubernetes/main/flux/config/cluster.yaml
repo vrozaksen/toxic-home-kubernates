@@ -1,22 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: flux-system
-  namespace: flux-system
-spec:
-  interval: 30m
-  url: "https://github.com/vrozaksen/home-ops.git"
-  ref:
-    branch: "main"
-  ignore: |
-    # exclude all
-    /*
-    # include kubernetes directory
-    !/kubernetes/main
-    !/kubernetes/shared
----
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -24,6 +6,7 @@ metadata:
   name: cluster-shared
   namespace: flux-system
 spec:
+  targetNamespace: flux-system
   interval: 30m
   path: ./kubernetes/shared
   prune: true
@@ -35,28 +18,57 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
-  postBuild:
-    substituteFrom:
-      - name: cluster-settings
-        kind: ConfigMap
-        optional: true
-      - name: cluster-secrets
-        kind: Secret
-        optional: true
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster
+  name: cluster-repos
+  namespace: flux-system
+spec:
+  targetNamespace: flux-system
+  interval: 30m
+  path: ./kubernetes/main/flux/repos
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+spec:
+  targetNamespace: flux-system
+  interval: 30m
+  path: ./kubernetes/main/flux/settings
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps
   namespace: flux-system
 spec:
   interval: 30m
   dependsOn:
+    - name: cluster-repos
     - name: cluster-shared
-  path: ./kubernetes/main/flux
+    - name: cluster-settings
+  path: ./kubernetes/main/apps
   prune: true
-  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -78,3 +90,32 @@ spec:
       - name: cluster-secrets-main
         kind: Secret
         optional: true
+  patches:
+    - patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          decryption:
+            provider: sops
+            secretRef:
+              name: sops-age
+          postBuild:
+            substituteFrom:
+              - name: cluster-settings
+                kind: ConfigMap
+                optional: true
+              - name: cluster-settings-main
+                kind: ConfigMap
+                optional: true
+              - name: cluster-secrets
+                kind: Secret
+                optional: true
+              - name: cluster-secrets-main
+                kind: Secret
+                optional: true
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)
