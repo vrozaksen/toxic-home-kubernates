@@ -27,8 +27,8 @@ spec:
   dependsOn:
     - name: gha-runner-scale-set-controller
       namespace: actions-runner-system
-    - name: longhorn
-      namespace: longhorn-system
+    - name: volsync
+      namespace: storage
   valuesFrom:
     - targetPath: githubConfigSecret.github_token
       kind: Secret
