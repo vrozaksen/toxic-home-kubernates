@@ -94,13 +94,13 @@ jobs:
 
       - name: Tofu fmt
         id: fmt
-        working-directory: ${{ matrix.paths }}
+        working-directory: ${{ matrix.paths | toLower }}
         run: tofu fmt -check
         continue-on-error: true
 
       - name: Tofu Init
         id: init
-        working-directory: ${{ matrix.paths }}
+        working-directory: ${{ matrix.paths | toLower }}
         env:
           AWS_ACCESS_KEY_ID: ${{ env.MINIO_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ env.MINIO_SECRET_KEY }}
@@ -111,11 +111,11 @@ jobs:
 
       - name: Tofu Validate
         id: validate
-        working-directory: ${{ matrix.paths }}
+        working-directory: ${{ matrix.paths | toLower }}
         run: tofu validate -no-color
 
       - name: Tofu Plan
-        working-directory: ${{ matrix.paths }}
+        working-directory: ${{ matrix.paths | toLower }}
         run: tofu plan -lock=false -var "onepassword_sa_token=${{ secrets.ONEPASS_SA_TOKEN }}" -out .planfile | grep -v "Refreshing state...\|Reading...\|Read complete after"
 
       - name: Post PR comment
@@ -126,5 +126,5 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           planfile: .planfile
           terraform-cmd: tofu
-          header: "📝 Terraform Plan for ${{ matrix.paths }}"
-          working-directory: ${{ matrix.paths }}
+          header: "📝 Terraform Plan for ${{ matrix.paths | toLower }}"
+          working-directory: ${{ matrix.paths | toLower }}
