@@ -9,6 +9,7 @@ resources:
   # Flux-Kustomizations
   - ./clickops/ks.yaml
   - ./flux-operator/ks.yaml
+  - ./tofu-controller/ks.yaml
   - ./weave-gitops/ks.yaml
 transformers:
   - |-

@@ -5,7 +5,7 @@ terraform {
     region = "main" # Region validation will be skipped
 
     endpoints = {
-      s3 = "https://s3.jory.dev" # Minio endpoint
+      s3 = "https://minio.vrozaksen.eu" # Minio endpoint
     }
 
     skip_credentials_validation = true

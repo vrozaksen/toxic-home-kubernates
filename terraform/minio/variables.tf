@@ -14,5 +14,5 @@ variable "service_account_json" {
 variable "minio_url" {
   type        = string
   description = "Minio Server URL"
-  default     = "10.0.20.10"
+  default     = "https://minio.vrozaksen.eu"
 }
