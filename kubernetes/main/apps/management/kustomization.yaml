@@ -7,5 +7,5 @@ resources:
 #  - ./cloudbeaver/ks.yaml
   - ./pgadmin/ks.yaml
 #  - ./pgbackweb/ks.yaml
-#  - ./rustdesk/ks.yaml
+  - ./rustdesk/ks.yaml
   - ./sshwifty/ks.yaml
