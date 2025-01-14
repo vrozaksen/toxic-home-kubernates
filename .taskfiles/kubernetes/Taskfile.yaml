@@ -33,6 +33,17 @@ tasks:
     preconditions:
       - kubectl --namespace {{.NS}} get persistentvolumeclaims {{.CLAIM}}
 
+  node-shell:
+    desc: Open a shell to a node [CLUSTER=main] [NODE=required]
+    interactive: true
+    cmd: kubectl node-shell -n kube-system -x {{.NODE}}
+    requires:
+      vars: [CLUSTER, NODE]
+    preconditions:
+      - kubectl get nodes {{.NODE}}
+      - kubectl node-shell --version
+      - which kubectl
+
   sync-secrets:
     desc: Sync all ExternalSecrets [CLUSTER=main]
     cmds:
@@ -73,11 +84,13 @@ tasks:
   upgrade-arc:
     desc: Upgrade the ARC [CLUSTER=main]
     cmds:
-      - helm -n actions-runner-system uninstall gha-runner-scale-set
-      - helm -n actions-runner-system uninstall gha-runner-scale-set-controller
+      - helm -n actions-runner-system uninstall home-ops-runner || true
+      - helm -n actions-runner-system uninstall actions-runner-controller || true
+      - flux delete -s -n actions-runner-system helmrelease home-ops-runner || true
+      - flux delete -s -n actions-runner-system helmrelease actions-runner-controller || true
       - sleep 5
-      - flux -n actions-runner-system reconcile hr gha-runner-scale-set-controller
-      - flux -n actions-runner-system reconcile hr gha-runner-scale-set
+      - flux -n flux-system reconcile ks actions-runner-controller
+      - flux -n flux-system reconcile ks actions-runner-controller-runners
     requires:
       vars: [CLUSTER]
     preconditions:

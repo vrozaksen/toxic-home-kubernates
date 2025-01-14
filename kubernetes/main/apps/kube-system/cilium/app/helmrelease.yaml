@@ -59,7 +59,6 @@ spec:
           enabled: true
           className: internal
           annotations:
-            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
             gethomepage.dev/enabled: "true"
             gethomepage.dev/icon: cilium.png
             gethomepage.dev/name: Hubble

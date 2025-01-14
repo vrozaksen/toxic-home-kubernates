@@ -3,15 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app flux-operator
+  name: &app actions-runner-controller
   namespace: flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: actions-runner-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/flux-system/flux-operator/app
-  prune: false # never should be deleted
+  dependsOn:
+    - name: external-secrets-stores
+  path: ./kubernetes/main/apps/actions-runner-system/actions-runner-controller/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,15 +25,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app flux-instance
+  name: &app actions-runner-controller-runners
   namespace: flux-system
 spec:
-  targetNamespace: flux-system
+  targetNamespace: actions-runner-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/flux-system/flux-operator/instance
-  prune: false # never should be deleted
+  path: ./kubernetes/main/apps/actions-runner-system/actions-runner-controller/runners
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

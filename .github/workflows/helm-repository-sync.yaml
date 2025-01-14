@@ -23,7 +23,7 @@ on:
 jobs:
   sync:
     name: Helm Repository Sync
-    runs-on: ["gha-runner-scale-set"]
+    runs-on: [home-ops-runner]
     steps:
       - name: Get Secrets
         uses: bitwarden/sm-action@v2
