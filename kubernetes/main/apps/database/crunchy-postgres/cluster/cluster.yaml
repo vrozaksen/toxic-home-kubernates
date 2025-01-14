@@ -188,8 +188,9 @@ spec:
       configuration: *backupConfig
       global: *backupFlag
       repo:
-        name: repo1
-        s3: *minio
+        name: repo3
+        volume: *nfs
+  #      s3: *minio
   proxy:
     pgBouncer:
       service:
