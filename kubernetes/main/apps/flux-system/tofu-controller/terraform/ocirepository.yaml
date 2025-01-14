@@ -6,6 +6,6 @@ metadata:
   name: terraform
 spec:
   interval: 1m
-  url: oci://ghcr.io/joryirving/manifests/terraform
+  url: oci://ghcr.io/vrozaksen/manifests/terraform
   ref:
     tag: main
