@@ -4,15 +4,8 @@ variable "bw_access_token" {
   sensitive   = true
 }
 
-variable "service_account_json" {
-  type        = string
-  description = "The path to the service account JSON for Bitwarden."
-  sensitive   = true
-  default     = null
-}
-
 variable "minio_url" {
   type        = string
   description = "Minio Server URL"
-  default     = "https://minio.vrozaksen.eu"
+  default     = "minio.vrozaksen.eu"
 }
