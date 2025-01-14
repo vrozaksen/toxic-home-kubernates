@@ -145,22 +145,22 @@ spec:
         repo3-retention-full: "30" # days
         repo3-retention-full-type: "time"
       manual:
-        repoName: repo3
+        repoName: repo2
         options:
           - --type=full
       metadata:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
-        - name: repo1
-          s3: &minio
-            bucket: postgresql
-            endpoint: 10.0.20.10
-            region: eu-ne-aincrad-1
-          schedules:
-            full: "30 1 * * 0" # Sunday at 01:30
-            differential: "30 1 * * 1-6" # Mon-Sat at 01:30
-            incremental: "30 3-23 * * *" # Every hour except 01:30-2:30
+        # - name: repo1
+        #   s3: &minio
+        #     bucket: postgresql
+        #     endpoint: 10.0.20.10
+        #     region: eu-ne-aincrad-1
+        #   schedules:
+        #     full: "30 1 * * 0" # Sunday at 01:30
+        #     differential: "30 1 * * 1-6" # Mon-Sat at 01:30
+        #     incremental: "30 3-23 * * *" # Every hour except 01:30-2:30
         - name: repo2
           s3: &r2
             bucket: crunchy-pgo
@@ -182,14 +182,14 @@ spec:
             full: "15 1 * * 0" # Sunday at 01:15
             differential: "15 1 * * 1-6" # Mon-Sat at 01:15
             incremental: "15 3-23 * * *" # Every hour except 01:30-2:30
-  # dataSource:
-  #   pgbackrest:
-  #     stanza: db
-  #     configuration: *backupConfig
-  #     global: *backupFlag
-  #     repo:
-  #       name: repo1
-  #       s3: *minio
+  dataSource:
+    pgbackrest:
+      stanza: db
+      configuration: *backupConfig
+      global: *backupFlag
+      repo:
+        name: repo2
+        s3: *r2
   #      volume: *nfs
   proxy:
     pgBouncer:
