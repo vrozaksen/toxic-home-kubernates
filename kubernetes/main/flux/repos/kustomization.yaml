@@ -12,3 +12,4 @@ resources:
   - ./itzg.yaml
   - ./userinit-controller.yaml
   - ./zoriya.yaml
+  - ./tofu-controller.yaml
