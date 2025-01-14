@@ -12,7 +12,7 @@ spec:
         bucket   = "terraform-state"
         key      = "minio/minio.tfstate"
         region   = "eu-ne-aincrad-1"
-        endpoint = "https://minio.${SECRET_DOMAIN}"
+        endpoint = "https://minio.vrozaksen.eu"
 
         skip_credentials_validation = true
         skip_requesting_account_id  = true
