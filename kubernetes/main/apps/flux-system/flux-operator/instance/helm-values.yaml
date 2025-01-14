@@ -13,7 +13,7 @@ instance:
   sync:
     kind: GitRepository
     name: flux-system
-    url: https://github.com/joryirving/home-ops.git
+    url: https://github.com/vrozaksen/home-ops.git
     ref: refs/heads/main
     path: kubernetes/main/flux/config
     # pullSecret: github-deploy-key

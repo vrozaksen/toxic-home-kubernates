@@ -65,9 +65,9 @@ tasks:
     desc: Bootstrap Apps [CLUSTER=main] [MODEL=required]
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
-      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
+    #  - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
       - export $(bws secret list --output env 1c0d7ca7-3598-4fc5-a0f8-b25601333609) && minijinja-cli --env {{.CLUSTER_DIR}}/bootstrap/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
-      - for var in (bws secret list --output env 1c0d7ca7-3598-4fc5-a0f8-b25601333609 | cut -d= -f1); set -e $var; end
+      - sh -c 'for var in $(bws secret list --output env 1c0d7ca7-3598-4fc5-a0f8-b25601333609 | cut -d= -f1); do unset $var; done'
       - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml destroy --selector name=wipe-rook
     env:
@@ -80,7 +80,7 @@ tasks:
     requires:
       vars: [CLUSTER, MODEL]
     preconditions:
-      - op user get --me
+      - bws -V
       - talosctl config info
       - test -f {{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig
       - test -f {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml
