@@ -55,7 +55,7 @@ spec:
         type: AlphaNumeric
     # My user
     - name: vrozaksen
-      databases: ["postgres"]
+      databases: ["vrozaksen"]
       options: "SUPERUSER"
       password:
         type: AlphaNumeric
