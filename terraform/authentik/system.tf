@@ -2,8 +2,16 @@ data "authentik_certificate_key_pair" "generated" {
   name = "authentik Self-signed Certificate"
 }
 
+module "brand" {
+  source                   = "l-with/authentik-brand/module"
+  version                  = ">= 0.0.3"
+  authentik_url            = "https://sso.${var.cluster_domain}"
+  authentik_token          = local.authentik_token
+  authentik_brand_default  = false
+}
+
 resource "authentik_brand" "home" {
-  domain           = var.cluster_domain
+  domain           = "${module.brand.authentik_module_brand_dummy}."
   default          = true
   branding_title   = "Home"
   branding_logo    = "/static/dist/assets/icons/icon_left_brand.svg"
