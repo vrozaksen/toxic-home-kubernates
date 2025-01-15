@@ -145,7 +145,7 @@ spec:
         repo3-retention-full: "30" # days
         repo3-retention-full-type: "time"
       manual:
-        repoName: repo3
+        repoName: repo2
         options:
           - --type=full
       metadata:
