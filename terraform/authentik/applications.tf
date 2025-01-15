@@ -29,7 +29,7 @@ locals {
     coder = {
       client_id     = local.parsed_secrets["coder"].client_id
       client_secret = local.parsed_secrets["coder"].client_secret
-      group         = authentik_group.infrastructure.name
+      group         = "infrastructure"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/coder.png"
       redirect_uri  = "https://coder.${var.cluster_domain}/api/v2/users/oidc/callback"
       launch_url    = "https://coder.${var.cluster_domain}/"
@@ -37,7 +37,7 @@ locals {
     grafana = {
       client_id     = local.parsed_secrets["grafana"].client_id
       client_secret = local.parsed_secrets["grafana"].client_secret
-      group         = authentik_group.monitoring.name
+      group         = "monitoring"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
@@ -45,7 +45,7 @@ locals {
     headscale = {
       client_id     = local.parsed_secrets["headscale"].client_id
       client_secret = local.parsed_secrets["headscale"].client_secret
-      group         = authentik_group.infrastructure.name
+      group         = "infrastructure"
       icon_url      = "https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/headscale.png"
       redirect_uri  = "https://headscale.${var.cluster_domain}/oidc/callback"
       launch_url    = "https://headscale.${var.cluster_domain}/"
@@ -53,7 +53,7 @@ locals {
     lubelog = {
       client_id     = local.parsed_secrets["lubelog"].client_id
       client_secret = local.parsed_secrets["lubelog"].client_secret
-      group         = authentik_group.home.name
+      group         = "home"
       icon_url      = "https://demo.lubelogger.com/defaults/lubelogger_icon_72.png"
       redirect_uri  = "https://lubelog.${var.cluster_domain}/Login/RemoteAuth"
       launch_url    = "https://lubelog.${var.cluster_domain}/Login/RemoteAuth"
@@ -61,7 +61,7 @@ locals {
     paperless = {
       client_id     = local.parsed_secrets["paperless"].client_id
       client_secret = local.parsed_secrets["paperless"].client_secret
-      group         = authentik_group.home.name
+      group         = "home"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/paperless.png"
       redirect_uri  = "https://paperless.${var.cluster_domain}/accounts/oidc/authentik/login/callback/"
       launch_url    = "https://paperless.${var.cluster_domain}/"
@@ -93,7 +93,7 @@ resource "authentik_application" "application" {
   name               = title(each.key)
   slug               = each.key
   protocol_provider  = authentik_provider_oauth2.oauth2[each.key].id
-  group              = each.value.group
+  group              = authentik_group.default[each.value.group].id
   open_in_new_tab    = true
   meta_icon          = each.value.icon_url
   meta_launch_url    = each.value.launch_url
