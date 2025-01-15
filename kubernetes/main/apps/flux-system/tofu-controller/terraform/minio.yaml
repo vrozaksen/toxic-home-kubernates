@@ -9,16 +9,17 @@ spec:
   backendConfig:
     customConfiguration: |
       backend "s3" {
-        bucket   = "terraform-state"
-        key      = "minio/minio.tfstate"
+        bucket = "terraform-state"
+        key    = "minio/minio.tfstate"
         region   = "eu-ne-aincrad-1"
-        endpoint = "https://minio.vrozaksen.eu"
-
+        endpoints = {
+          s3 = "https://minio.vrozaksen.eu"
+        }
         skip_credentials_validation = true
         skip_requesting_account_id  = true
         skip_metadata_api_check     = true
         skip_region_validation      = true
-        force_path_style            = true
+        use_path_style              = true
       }
   backendConfigsFrom:
   - kind: Secret
