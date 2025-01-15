@@ -29,7 +29,7 @@ locals {
     coder = {
       client_id     = local.parsed_secrets["coder"].client_id
       client_secret = local.parsed_secrets["coder"].client_secret
-      group         = authentik_group.monitoring.name
+      group         = authentik_group.infrastructure.name
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/coder.png"
       redirect_uri  = "https://coder.${var.cluster_domain}/api/v2/users/oidc/callback"
       launch_url    = "https://coder.${var.cluster_domain}/"

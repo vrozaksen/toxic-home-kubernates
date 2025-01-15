@@ -3,11 +3,6 @@ data "authentik_group" "admins" {
   name = "authentik Admins"
 }
 
-resource "authentik_group" "coder" {
-  name         = "Coder"
-  is_superuser = false
-}
-
 resource "authentik_group" "downloads" {
   name         = "Downloads"
   is_superuser = false
