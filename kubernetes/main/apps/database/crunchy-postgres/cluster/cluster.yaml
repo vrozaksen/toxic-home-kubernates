@@ -141,7 +141,6 @@ spec:
         repo2-retention-full: "30" # days
         repo2-retention-full-type: "time"
         repo2-s3-uri-style: path
-        repo2-storage-verify-tls: "n"
         # PVC
         repo3-retention-full: "30" # days
         repo3-retention-full-type: "time"
@@ -164,7 +163,7 @@ spec:
         - name: repo2
           s3: &minio
             bucket: postgresql
-            endpoint: 10.0.20.10:9000
+            endpoint: minio.vrozaksen.eu
             region: eu-ne-aincrad-1
           schedules:
             full: "30 1 * * 0" # Sunday at 01:30
