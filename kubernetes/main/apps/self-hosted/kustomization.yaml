@@ -10,7 +10,7 @@ resources:
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
   - ./homepage/ks.yaml
-  - ./lubelog/ks.yaml
+#  - ./lubelog/ks.yaml
 #  - ./paperless/ks.yaml
 #  - ./redlib/ks.yaml
   - ./free-game-notifier/ks.yaml
