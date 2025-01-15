@@ -3,7 +3,7 @@ data "authentik_certificate_key_pair" "generated" {
 }
 
 module "brand" {
-  source                   = "l-with/authentik-brand/module"
+  source                   = "registry.terraform.io/l-with/authentik-brand/module"
   version                  = ">= 0.0.3"
   authentik_url            = "https://sso.${var.cluster_domain}"
   authentik_token          = local.authentik_token
