@@ -195,7 +195,7 @@ spec:
       global: *backupFlag
       repo:
         name: repo2
-        s3: *r2
+        s3: *minio
       # volume: *nfs
   proxy:
     pgBouncer:
