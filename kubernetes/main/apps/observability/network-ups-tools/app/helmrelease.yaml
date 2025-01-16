@@ -75,7 +75,7 @@ spec:
             LISTEN 0.0.0.0
           upsd.users: |-
             [monuser]
-              password="YAX3u73fTK9$MrLikz5$%*""
+              password="YAX3u73fTK9$MrLikz5$%*"
               upsmon master
           ups.conf: |-
             [CP]
@@ -83,7 +83,7 @@ spec:
               port = auto
               desc = "CyberPower VP1000ELCD"
           upsmon.conf: |-
-            MONITOR CP@10.0.10.1 1 monuser "YAX3u73fTK9$MrLikz5$%*"" slave
+            MONITOR CP@10.0.10.1 1 monuser "YAX3u73fTK9$MrLikz5$%*" slave
             SHUTDOWNCMD "/sbin/shutdown -h +0"
             POWERDOWNFLAG /etc/killpower
             POLLFREQ 15
