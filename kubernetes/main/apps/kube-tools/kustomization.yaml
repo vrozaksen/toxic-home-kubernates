@@ -14,7 +14,7 @@ resources:
   # - ./powertune/ks.yaml
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
-  # - ./system-upgrade-controller/ks.yaml
+  - ./system-upgrade-controller/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
