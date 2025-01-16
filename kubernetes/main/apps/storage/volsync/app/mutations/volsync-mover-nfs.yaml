@@ -46,7 +46,7 @@ spec:
               value: Object.spec.template.spec.volumes{
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "voyager.internal",
+                  server: "10.0.20.10",
                   path: "${SECRET_NFS_VOLSYNC}"
                 }
               }
