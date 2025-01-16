@@ -44,7 +44,7 @@ spec:
               PAPERLESS_REDIS_PREFIX: pngx
               PAPERLESS_URL: https://paperless.${SECRET_DOMAIN}
               PAPERLESS_PORT: "8000"
-              PAPERLESS_TIME_ZONE: America/Edmonton
+              PAPERLESS_TIME_ZONE: ${TIMEZONE}
               PAPERLESS_WEBSERVER_WORKERS: "2"
               PAPERLESS_TASK_WORKERS: "2"
               # Configure Remote User auth
@@ -60,8 +60,8 @@ spec:
               PAPERLESS_CONSUMER_RECURSIVE: "true"
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
               # Configure OCR
-              PAPERLESS_OCR_LANGUAGES: nld
-              PAPERLESS_OCR_LANGUAGE: nld
+              PAPERLESS_OCR_LANGUAGES: pol
+              PAPERLESS_OCR_LANGUAGE: pol+eng
               # Configure redis integration
               PAPERLESS_REDIS: redis://dragonfly.database.svc.cluster.local:6379
               # Configure user permissions
@@ -91,7 +91,7 @@ spec:
           gethomepage.dev/description: Document OCR Software
           gethomepage.dev/widget.type: paperlessngx
           gethomepage.dev/widget.url: http://paperless.self-hosted:8000
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}` }}"
+          #gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}` }}"
         hosts:
         - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
           paths:
@@ -106,7 +106,7 @@ spec:
           - path: /data/local
       nas:
         type: nfs
-        server: voyager.internal
+        server: 10.0.20.10
         path: ${SECRET_NFS_PAPERLESS:=temp}
         globalMounts:
           - path: /data/nas
