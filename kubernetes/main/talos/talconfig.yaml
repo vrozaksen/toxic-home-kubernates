@@ -3,7 +3,7 @@
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.9.1
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.32.0
+kubernetesVersion: v1.32.1
 
 clusterName: &cluster main
 endpoint: https://10.0.10.10:6443
@@ -91,6 +91,14 @@ patches:
         nodeIP:
           validSubnets:
             - "10.0.10.0/24"
+
+  # Enable MutatingAdmissionPolicy
+  - |-
+    cluster:
+      apiServer:
+        extraArgs:
+          runtime-config: admissionregistration.k8s.io/v1alpha1=true
+          feature-gates: MutatingAdmissionPolicy=true
 
   # Custom sysctl settings
   - |-
