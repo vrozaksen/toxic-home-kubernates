@@ -25,16 +25,42 @@ spec:
   values:
     controllers:
       network-ups-tools:
-        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-nut-config:
+            image: busybox
+            command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                # Inicjalizacja plików konfiguracyjnych
+                cp /config/nut.conf /etc/nut/nut.conf
+                cp /config/upsd.conf /etc/nut/upsd.conf
+                cp /config/ups.conf /etc/nut/ups.conf
+                cp /config/upsd.users /etc/nut/upsd.users
+                cp /config/upsmon.conf /etc/nut/upsmon.conf
+                # Zastąpienie zmiennych środowiskowych w plikach
+                envsubst < /etc/nut/nut.conf > /etc/nut/nut.conf
+                envsubst < /etc/nut/upsd.conf > /etc/nut/upsd.conf
+                envsubst < /etc/nut/ups.conf > /etc/nut/ups.conf
+                envsubst < /etc/nut/upsd.users > /etc/nut/upsd.users
+                envsubst < /etc/nut/upsmon.conf > /etc/nut/upsmon.conf
+            envFrom:
+              - secretRef:
+                  name: nut-secret
+            volumeMounts:
+              - name: nut-config-volume
+                mountPath: /config
+              - name: nut-config-volume
+                mountPath: /etc/nut
         containers:
           app:
             image:
               repository: ghcr.io/vrozaksen/network-ups-tools
               tag: v2.8.2@sha256:90d17790bc93376b3a37d100996b0d0e45323b472b90924adacd39dbf0df5ee8
             env:
-              TZ: ${TIMEZONE}
+              TZ: "${TIMEZONE}"
             envFrom:
               - secretRef:
                   name: nut-secret
@@ -45,35 +71,6 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
-        # pod:
-        #   annotations:
-        #     configmap.reloader.stakater.com/reload: &config network-ups-tools-config
-        #   nodeSelector:
-        #     ups.feature.node.kubernetes.io/tripplite: "true"
-        initContainers:
-          - name: init-nut-config
-            image: busybox
-            command:
-              - "/bin/sh"
-              - "-c"
-              - |
-                envsubst < /config/nut.conf.template > /etc/nut/nut.conf
-                envsubst < /config/upsd.conf.template > /etc/nut/upsd.conf
-                envsubst < /config/ups.conf.template > /etc/nut/ups.conf
-                envsubst < /config/upsd.users.template > /etc/nut/upsd.users
-                envsubst < /config/upsmon.conf.template > /etc/nut/upsmon.conf
-            envFrom:
-              - secretRef:
-                  name: nut-secret
-            volumeMounts:
-              - name: nut-config-volume
-                mountPath: /config
-              - name: nut-config-volume
-                mountPath: /etc/nut
-        volumeMounts:
-          - name: nut-config-volume
-            mountPath: /etc/nut
-            readOnly: true
     service:
       app:
         controller: *app

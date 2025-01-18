@@ -24,78 +24,110 @@ spec:
       retries: 3
   values:
     controllers:
-      network-ups-tools:
+      cloudbeaver:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-nut-config:
-            image: busybox
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16.6@sha256:a37bbb04a0ea3f15b505c6f97637e7ae89bc66541ae23b8d3848024087980e76
+            envFrom: &envFrom
+              - secretRef:
+                  name: *app
+          # we have to do this so the current container build can not run as root because
+          # it has the ubuntu user 1000:1000 but the files are not owned by that user
+          # so we just copy them into the cloudbeaver emptyDir and set the owner during init
+          copy-files:
+            image: &image
+              repository: docker.io/dbeaver/cloudbeaver
+              tag: 24.3.2@sha256:9d0ef7df2f45d2b1a55c10dc04f63b2d2ea60b5503f11c79470c0d52dddcca9f
             command:
               - "/bin/sh"
+            args:
               - "-c"
               - |
-                # Inicjalizacja plików konfiguracyjnych
-                cp /config/nut.conf /etc/nut/nut.conf
-                cp /config/upsd.conf /etc/nut/upsd.conf
-                cp /config/ups.conf /etc/nut/ups.conf
-                cp /config/upsd.users /etc/nut/upsd.users
-                cp /config/upsmon.conf /etc/nut/upsmon.conf
-                # Zastąpienie zmiennych środowiskowych w plikach
-                envsubst < /etc/nut/nut.conf > /etc/nut/nut.conf
-                envsubst < /etc/nut/upsd.conf > /etc/nut/upsd.conf
-                envsubst < /etc/nut/ups.conf > /etc/nut/ups.conf
-                envsubst < /etc/nut/upsd.users > /etc/nut/upsd.users
-                envsubst < /etc/nut/upsmon.conf > /etc/nut/upsmon.conf
-            envFrom:
-              - secretRef:
-                  name: nut-secret
-            volumeMounts:
-              - name: nut-config-volume
-                mountPath: /config
-              - name: nut-config-volume
-                mountPath: /etc/nut
+                cd /opt/cloudbeaver \
+                && cp -R conf drivers run-server.sh samples server web /cb/ \
+                && chown 1000:1000 -R /cb/* \
+                && ls -lah /cb/
         containers:
           app:
-            image:
-              repository: ghcr.io/vrozaksen/network-ups-tools
-              tag: v2.8.2@sha256:90d17790bc93376b3a37d100996b0d0e45323b472b90924adacd39dbf0df5ee8
+            image: *image
             env:
               TZ: "${TIMEZONE}"
-            envFrom:
-              - secretRef:
-                  name: nut-secret
+              CB_SERVER_NAME: *app
+              CB_SERVER_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+              CLOUDBEAVER_DB_DRIVER: "postgres-jdbc"
+              CLOUDBEAVER_DB_URL: "jdbc:postgresql://postgres-rw.database.svc.cluster.local:5432/{{ .Release.Name }}"
+              CLOUDBEAVER_DB_BACKUP_ENABLED: "false"
+            envFrom: *envFrom
             securityContext:
-              privileged: true
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: *app
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: ${SVC_SERVER_NUT_ADDR:=temp}
-          external-dns.alpha.kubernetes.io/hostname: server-nut.${SECRET_DOMAIN}
-        externalTrafficPolicy: Cluster
         ports:
           http:
-            port: 3493
-            protocol: TCP
+            port: 8978
+    ingress:
+      app:
+        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Management
+          gethomepage.dev/name: CloudBeaver
+          gethomepage.dev/icon: https://raw.githubusercontent.com/dbeaver/cloudbeaver/23.2.5/webapp/packages/core-app/public/favicon.svg
+          gethomepage.dev/description: Cloud Database Manager
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         type: configMap
-        name: nut-config
-        defaultMode: 0400
+        name: *app
+        advancedMounts:
+          cloudbeaver:
+            app:
+              - subPath: initial-data-sources.conf
+                path: /opt/cloudbeaver/conf/initial-data-sources.conf
+                readOnly: true
+              - subPath: cloudbeaver.conf
+                path: /opt/cloudbeaver/conf/cloudbeaver.conf
+                readOnly: true
+              - subPath: initial-data.conf
+                path: /opt/cloudbeaver/conf/initial-data.conf
+                readOnly: true
+      cloudbeaver:
+        type: emptyDir
+        advancedMounts:
+          cloudbeaver:
+            copy-files:
+              - path: /cb
+            app:
+              - path: /opt/cloudbeaver
+      workspace:
+        existingClaim: *app
         globalMounts:
-          - subPath: nut.conf
-            path: /etc/nut/nut.conf
-          - subPath: upsd.conf
-            path: /etc/nut/upsd.conf
-          - subPath: ups.conf
-            path: /etc/nut/ups.conf
-          - subPath: upsd.users
-            path: /etc/nut/upsd.users
-          - subPath: upsmon.conf
-            path: /etc/nut/upsmon.conf
+          - path: /opt/cloudbeaver/workspace
