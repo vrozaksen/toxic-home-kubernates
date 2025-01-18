@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vrozaksen/it-tools
-              tag: 2024.10.22@sha256:b8dd432164e6721f58a5c2c722de2fdc486475d9aed9586f0c60bcd2c69194bb
+              tag: 2024.10.22@sha256:99909521274ce9fd3164ddfaca34a650fd069b9eff23f8a7b6124ea1addc256f
             env:
               TZ: ${TIMEZONE}
             resources:
