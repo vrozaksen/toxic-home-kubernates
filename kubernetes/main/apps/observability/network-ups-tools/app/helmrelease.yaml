@@ -73,6 +73,9 @@ spec:
         data:
           nut.conf: |-
             MODE=netclient
+          upsd.conf: |-
+            MAXAGE 20
+            LISTEN 0.0.0.0
           upsd.users: |-
             [monuser]
               password=${NUT_MONUSER_PASSWORD}
@@ -89,6 +92,3 @@ spec:
           #     driver = none
           #     port = auto
           #     desc = "CyberPower VP1000ELCD"
-          # upsd.conf: |-
-          #   MAXAGE 20
-          #   LISTEN 0.0.0.0
