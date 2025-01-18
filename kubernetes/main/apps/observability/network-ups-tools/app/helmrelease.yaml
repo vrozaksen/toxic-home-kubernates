@@ -26,6 +26,8 @@ spec:
     controllers:
       network-ups-tools:
         strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
