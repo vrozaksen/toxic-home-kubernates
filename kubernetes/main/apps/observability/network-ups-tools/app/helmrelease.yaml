@@ -29,18 +29,18 @@ spec:
           reloader.stakater.com/auto: "true"
         initContainers:
           init-nut-config:
-            image: busybox
+            image:
+              repository: docker.io/library/busybox
+              tag: latest
             command:
               - "/bin/sh"
               - "-c"
               - |
-                # Inicjalizacja plików konfiguracyjnych
                 cp /config/nut.conf /etc/nut/nut.conf
                 cp /config/upsd.conf /etc/nut/upsd.conf
                 cp /config/ups.conf /etc/nut/ups.conf
                 cp /config/upsd.users /etc/nut/upsd.users
                 cp /config/upsmon.conf /etc/nut/upsmon.conf
-                # Zastąpienie zmiennych środowiskowych w plikach
                 envsubst < /etc/nut/nut.conf > /etc/nut/nut.conf
                 envsubst < /etc/nut/upsd.conf > /etc/nut/upsd.conf
                 envsubst < /etc/nut/ups.conf > /etc/nut/ups.conf
@@ -49,11 +49,6 @@ spec:
             envFrom:
               - secretRef:
                   name: nut-secret
-            volumeMounts:
-              - name: nut-config-volume
-                mountPath: /config
-              - name: nut-config-volume
-                mountPath: /etc/nut
         containers:
           app:
             image:
@@ -99,3 +94,7 @@ spec:
             path: /etc/nut/upsd.users
           - subPath: upsmon.conf
             path: /etc/nut/upsmon.conf
+    volumes:
+      - name: nut-config-volume
+        configMap:
+          name: nut-config
