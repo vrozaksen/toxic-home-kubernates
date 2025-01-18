@@ -50,6 +50,30 @@ spec:
         #     configmap.reloader.stakater.com/reload: &config network-ups-tools-config
         #   nodeSelector:
         #     ups.feature.node.kubernetes.io/tripplite: "true"
+        initContainers:
+          - name: init-nut-config
+            image: busybox
+            command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                envsubst < /config/nut.conf.template > /etc/nut/nut.conf
+                envsubst < /config/upsd.conf.template > /etc/nut/upsd.conf
+                envsubst < /config/ups.conf.template > /etc/nut/ups.conf
+                envsubst < /config/upsd.users.template > /etc/nut/upsd.users
+                envsubst < /config/upsmon.conf.template > /etc/nut/upsmon.conf
+            envFrom:
+              - secretRef:
+                  name: nut-secret
+            volumeMounts:
+              - name: nut-config-volume
+                mountPath: /config
+              - name: nut-config-volume
+                mountPath: /etc/nut
+        volumeMounts:
+          - name: nut-config-volume
+            mountPath: /etc/nut
+            readOnly: true
     service:
       app:
         controller: *app
