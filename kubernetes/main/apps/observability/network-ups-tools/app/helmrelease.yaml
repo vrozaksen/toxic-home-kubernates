@@ -73,6 +73,11 @@ spec:
           upsd.conf: |-
             MAXAGE 20
             LISTEN 0.0.0.0
+          ups.conf: |-
+            [CP]
+              driver = none
+              port = auto
+              desc = "CyberPower VP1000ELCD"
           upsd.users: |-
             [monuser]
               password=YAX3u73fTK9$MrLikz5$%*
@@ -84,8 +89,4 @@ spec:
             POLLFREQ 15
             POLLFREQALERT 5
             HOSTSYNC 15
-          # ups.conf: |-
-          #   [CP]
-          #     driver = none
-          #     port = auto
-          #     desc = "CyberPower VP1000ELCD"
+
