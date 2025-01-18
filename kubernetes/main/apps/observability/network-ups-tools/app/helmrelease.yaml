@@ -105,3 +105,4 @@ spec:
         mountPath: /config
       - name: nut-temp
         mountPath: /etc/nut
+        readOnly: false
