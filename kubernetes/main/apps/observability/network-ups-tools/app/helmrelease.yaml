@@ -30,9 +30,12 @@ spec:
           app:
             image:
               repository: ghcr.io/vrozaksen/network-ups-tools
-              tag: v2.8.2@sha256:a3063cb21fe93e3a920f86d45d512006b50f136f8bd1ab9f2fa7733683cd8bea
+              tag: v2.8.2@sha256:4057093412c26bfa513c72941d7e7249afc5b85f1519fa00f8ae059d3e506261
             env:
               TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: nut-secret
             securityContext:
               privileged: true
             probes:
@@ -70,23 +73,22 @@ spec:
         data:
           nut.conf: |-
             MODE=netclient
-          upsd.conf: |-
-            MAXAGE 20
-            LISTEN 0.0.0.0
-          ups.conf: |-
-            [CP]
-              driver = none
-              port = auto
-              desc = "CyberPower VP1000ELCD"
           upsd.users: |-
             [monuser]
-              password=YAX3u73fTK9$MrLikz5$%*
+              password=${NUT_MONUSER_PASSWORD}
               upsmon secondary
           upsmon.conf: |-
-            MONITOR CP@10.0.10.1 1 monuser YAX3u73fTK9$MrLikz5$%* secondary
+            MONITOR CP@{NUT_SERVER_IP} 1 monuser ${NUT_MONUSER_PASSWORD} slave
             SHUTDOWNCMD "/sbin/shutdown -h +0"
             POWERDOWNFLAG /etc/killpower
             POLLFREQ 15
             POLLFREQALERT 5
             HOSTSYNC 15
-
+          # ups.conf: |-
+          #   [CP]
+          #     driver = none
+          #     port = auto
+          #     desc = "CyberPower VP1000ELCD"
+          # upsd.conf: |-
+          #   MAXAGE 20
+          #   LISTEN 0.0.0.0
