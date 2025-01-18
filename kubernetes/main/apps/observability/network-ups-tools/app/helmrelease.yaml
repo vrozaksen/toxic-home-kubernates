@@ -98,8 +98,10 @@ spec:
       - name: nut-config-volume
         configMap:
           name: nut-config
+      - name: nut-temp
+        emptyDir: {}
     volumeMounts:
       - name: nut-config-volume
         mountPath: /config
-      - name: nut-config-volume
+      - name: nut-temp
         mountPath: /etc/nut
