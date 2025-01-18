@@ -26,8 +26,6 @@ spec:
     controllers:
       network-ups-tools:
         strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -35,9 +33,6 @@ spec:
               tag: v2.8.2@sha256:90d17790bc93376b3a37d100996b0d0e45323b472b90924adacd39dbf0df5ee8
             env:
               TZ: ${TIMEZONE}
-            envFrom:
-              - secretRef:
-                  name: nut-secret
             securityContext:
               privileged: true
             probes:
