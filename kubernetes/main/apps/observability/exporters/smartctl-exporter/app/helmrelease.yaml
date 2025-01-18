@@ -27,8 +27,8 @@ spec:
   values:
     fullnameOverride: *app
     image:
-      repository: ghcr.io/joryirving/smartctl_exporter
-      tag: 0.13.0@sha256:a31f74f50c0e3a22cc1bb474ea8ff0d5d4c4ca3be5409eaf24d8894ff74b0921
+      repository: ghcr.io/vrozaksen/smartctl_exporter
+      tag: 0.13.0@sha256:a1c6cba69a7b0a1cd14e8c62d63496b6501b6b1ff3700fd4c242e7397ad774a8
     serviceMonitor:
       enabled: true
       relabelings:

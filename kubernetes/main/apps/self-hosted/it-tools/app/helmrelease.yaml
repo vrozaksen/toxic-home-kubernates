@@ -36,8 +36,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/joryirving/it-tools
-              tag: 2024.10.22@sha256:71d53005f9147a320078aa8e88026bf39649ce7e30cfdd828eaf31aefb3fcea3
+              repository: ghcr.io/vrozaksen/it-tools
+              tag: 2024.10.22@sha256:b8dd432164e6721f58a5c2c722de2fdc486475d9aed9586f0c60bcd2c69194bb
             env:
               TZ: ${TIMEZONE}
             resources:
