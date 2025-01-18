@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vrozaksen/network-ups-tools
-              tag: v2.8.2@sha256:374f0ba5ac75f20f8458bcd2ce47a5e02d5ef5f878084e44890fe2266ff3b5a6
+              tag: v2.8.2@sha256:a3063cb21fe93e3a920f86d45d512006b50f136f8bd1ab9f2fa7733683cd8bea
             env:
               TZ: ${TIMEZONE}
             securityContext:
