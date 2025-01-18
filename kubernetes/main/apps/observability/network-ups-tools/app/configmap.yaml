@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nut-config
+  labels:
+    app.kubernetes.io/name: network-ups-tools
+data:
+  nut.conf: |
+    MODE=netclient
+  upsd.conf: |
+    MAXAGE 20
+    LISTEN 0.0.0.0
+  ups.conf: |
+    [CP]
+      driver = none
+      port = auto
+      desc = "CyberPower VP1000ELCD"
+  upsd.users: |
+    [monuser]
+      password: ${NUT_MONUSER_PASSWORD}
+      upsmon secondary
+  upsmon.conf: |
+    MONITOR CP@${NUT_SERVER_IP} 1 monuser ${NUT_MONUSER_PASSWORD} slave
+    SHUTDOWNCMD "/sbin/shutdown -h +0"
+    POWERDOWNFLAG /etc/killpower
+    POLLFREQ 15
+    POLLFREQALERT 5
+    HOSTSYNC 15

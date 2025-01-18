@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vrozaksen/network-ups-tools
-              tag: v2.8.2@sha256:4057093412c26bfa513c72941d7e7249afc5b85f1519fa00f8ae059d3e506261
+              tag: v2.8.2@sha256:90d17790bc93376b3a37d100996b0d0e45323b472b90924adacd39dbf0df5ee8
             env:
               TZ: ${TIMEZONE}
             envFrom:
@@ -45,11 +45,11 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
-        pod:
-          annotations:
-            configmap.reloader.stakater.com/reload: &config network-ups-tools-config
-          #nodeSelector:
-          #  ups.feature.node.kubernetes.io/tripplite: "true"
+        # pod:
+        #   annotations:
+        #     configmap.reloader.stakater.com/reload: &config network-ups-tools-config
+        #   nodeSelector:
+        #     ups.feature.node.kubernetes.io/tripplite: "true"
     service:
       app:
         controller: *app
@@ -65,33 +65,16 @@ spec:
     persistence:
       config:
         type: configMap
-        name: *config
+        name: nut-config
         defaultMode: 0400
         globalMounts:
-          - path: /etc/nut
-    configMaps:
-      config:
-        enabled: true
-        data:
-          nut.conf: |-
-            MODE=netclient
-          upsd.conf: |-
-            MAXAGE 20
-            LISTEN 0.0.0.0
-          ups.conf: |-
-            [CP]
-              driver = none
-              port = auto
-              desc = "CyberPower VP1000ELCD"
-          upsd.users: |-
-            [monuser]
-              password=${NUT_MONUSER_PASSWORD}
-              upsmon secondary
-          upsmon.conf: |-
-            MONITOR CP@{NUT_SERVER_IP} 1 monuser ${NUT_MONUSER_PASSWORD} slave
-            SHUTDOWNCMD "/sbin/shutdown -h +0"
-            POWERDOWNFLAG /etc/killpower
-            POLLFREQ 15
-            POLLFREQALERT 5
-            HOSTSYNC 15
-
+          - subPath: nut.conf
+            path: /etc/nut/nut.conf
+          - subPath: upsd.conf
+            path: /etc/nut/upsd.conf
+          - subPath: ups.conf
+            path: /etc/nut/ups.conf
+          - subPath: upsd.users
+            path: /etc/nut/upsd.users
+          - subPath: upsmon.conf
+            path: /etc/nut/upsmon.conf
