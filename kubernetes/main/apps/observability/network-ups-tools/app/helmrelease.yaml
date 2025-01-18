@@ -29,8 +29,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/jr0dd/network-ups-tools
-              tag: v2.8.1@sha256:2a6e47d431cbb901482ad6692f089a7541524fd3538e42857b39663bb331ba25
+              repository: ghcr.io/vrozaksen/network-ups-tools
+              tag: v2.8.2@sha256:003eca8c4cc4af7198140b9ef36742846839e57af2dfafefff023ffee2303b28
             env:
               TZ: ${TIMEZONE}
             securityContext:
