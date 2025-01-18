@@ -78,10 +78,10 @@ spec:
               password=YAX3u73fTK9$MrLikz5$%*
               upsmon master
           ups.conf: |-
-            [CP]
-              driver = none
-              port = auto
-              desc = "CyberPower VP1000ELCD"
+            #[CP]
+            #  driver = none
+            #  port = auto
+            #  desc = "CyberPower VP1000ELCD"
           upsmon.conf: |-
             MONITOR CP@10.0.10.1 1 monuser YAX3u73fTK9$MrLikz5$%* slave
             SHUTDOWNCMD "/sbin/shutdown -h +0"
