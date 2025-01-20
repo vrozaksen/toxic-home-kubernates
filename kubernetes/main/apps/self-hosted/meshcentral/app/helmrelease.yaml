@@ -36,9 +36,9 @@ spec:
               repository: ghcr.io/ylianst/meshcentral
               tag: 1.1.38@sha256:1431343422c056bba976574605bb78fb910f9ce54b357d0671e5c5a27a8cc54d
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Warsaw
               NODE_ENV: production
-              HOSTNAME: &host mesh.${SECRET_DOMAIN}
+              HOSTNAME: &host mesh.vzkn.eu
               ALLOW_NEW_ACCOUNTS: "false"
             securityContext:
               allowPrivilegeEscalation: false
@@ -67,7 +67,7 @@ spec:
       app:
         className: internal
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.vzkn.eu
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: *host

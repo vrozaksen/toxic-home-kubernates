@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app crunchy-postgres-operator-cluster
+  name: &app crunchy-postgres-cluster
   namespace: flux-system
 spec:
   targetNamespace: database
@@ -32,8 +32,35 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: crunchy-postgres-operator
-    - name: external-secrets-stores
+    - name: bitwarden-store
   path: ./kubernetes/main/apps/database/crunchy-postgres/cluster
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  timeout: 5m
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: crunchy-postgres-r2
+        optional: false
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app crunchy-postgres-stores
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: crunchy-postgres-cluster
+  path: ./kubernetes/main/apps/database/crunchy-postgres/stores
   prune: true
   sourceRef:
     kind: GitRepository
@@ -54,30 +81,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
+    - name: crunchy-postgres-cluster
   path: ./kubernetes/main/apps/database/crunchy-postgres/userinit-controller
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: true
-  interval: 30m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app crunchy-postgres-stores
-  namespace: flux-system
-spec:
-  targetNamespace: database
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets
-  path: ./kubernetes/main/apps/database/crunchy-postgres/clustersecretstore
   prune: true
   sourceRef:
     kind: GitRepository

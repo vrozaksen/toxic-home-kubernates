@@ -8,6 +8,7 @@ resources:
   - ../../../shared/templates/alerts
   # Flux-Kustomizations
   - ./external-secrets/ks.yaml
+  - ./bitwarden/ks.yaml
 transformers:
   - |-
     apiVersion: builtin

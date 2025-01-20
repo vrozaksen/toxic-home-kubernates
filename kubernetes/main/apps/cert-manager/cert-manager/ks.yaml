@@ -15,7 +15,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
+  wait: false
   interval: 30m
   timeout: 5m
 ---
@@ -31,8 +31,31 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager
+    - name: bitwarden-store
   path: ./kubernetes/main/apps/cert-manager/cert-manager/issuers
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 30m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cert-manager-tls
+  namespace: flux-system
+spec:
+  targetNamespace: cert-manager
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cert-manager-issuers
+    - name: bitwarden-store
+  path: ./kubernetes/main/apps/cert-manager/cert-manager/tls
   prune: true
   sourceRef:
     kind: GitRepository

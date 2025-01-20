@@ -12,9 +12,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: volsync
-    - name: crunchy-postgres-operator-cluster
+    - name: crunchy-postgres-cluster
     - name: crunchy-postgres-stores
-    - name: external-secrets-stores
+    - name: bitwarden-store
   path: ./kubernetes/main/apps/management/cloudbeaver/app
   prune: true
   sourceRef:

@@ -38,7 +38,7 @@ spec:
               repository: ghcr.io/hargata/lubelogger
               tag: v1.4.3
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Warsaw
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -75,7 +75,7 @@ spec:
           #gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_LUBELOG_USERNAME}}` }}"
           #gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_LUBELOG_PASSWORD}}` }}"
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: "{{ .Release.Name }}.vzkn.eu"
             paths:
               - path: /
                 pathType: Prefix

@@ -3,6 +3,7 @@
   "extends": [
     ":skipStatusChecks",
     "github>vrozaksen/renovate-config",
+    "github>vrozaksen/home-ops//.github/renovate/autoMerge.json5",
     "github>vrozaksen/home-ops//.github/renovate/customManagers.json5",
     "github>vrozaksen/home-ops//.github/renovate/grafanaDashboards.json5",
     "github>vrozaksen/home-ops//.github/renovate/groups.json5",

@@ -33,10 +33,10 @@ spec:
               repository: ghcr.io/whazor/clickops
               tag: v0.0.2@sha256:ca764fc302afd14e0aa31b2195bc2ee1a9ddf53d32aa046abd6137973018865d
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Warsaw
               # not used
               __PORT: &port 3000
-              __HOST: &host "clickops.${SECRET_DOMAIN}"
+              __HOST: &host "clickops.vzkn.eu"
             probes:
               liveness: &probe
                 enabled: true
@@ -82,7 +82,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: "{{ .Release.Name }}.vzkn.eu"
             paths:
               - path: /
                 pathType: Prefix

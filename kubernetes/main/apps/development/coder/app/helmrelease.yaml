@@ -43,16 +43,16 @@ spec:
               key: CODER_PG_CONNECTION_URL
         # App
         - name: CODER_ACCESS_URL
-          value: "https://coder.${SECRET_DOMAIN}"
+          value: "https://coder.vzkn.eu"
         - name: CODER_WILDCARD_ACCESS_URL
-          value: "*.coder.${SECRET_DOMAIN}"
+          value: "*.coder.vzkn.eu"
         - name: CODER_TELEMETRY_ENABLE
           value: "false"
         - name: CODER_DISABLE_PASSWORD_AUTH
           value: "true"
         # OIDC
         - name: CODER_OIDC_ISSUER_URL
-          value: "https://sso.${SECRET_DOMAIN}/application/o/coder/"
+          value: "https://sso.vzkn.eu/application/o/coder/"
         - name: CODER_OIDC_SCOPES
           value: "openid,profile,email,groups,offline_access"
         - name: CODER_OIDC_ALLOWED_GROUPS
@@ -99,7 +99,7 @@ spec:
         enable: true
         className: "external"
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.vzkn.eu"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: coder.png
           gethomepage.dev/name: Coder
@@ -108,8 +108,8 @@ spec:
           gethomepage.dev/description: OIDC User Management
           gethomepage.dev/widget.type: coder
           gethomepage.dev/widget.url: http://coder.development
-        host: "coder.${SECRET_DOMAIN}"
-        wildcardHost: "*.coder.${SECRET_DOMAIN}"
+        host: "coder.vzkn.eu"
+        wildcardHost: "*.coder.vzkn.eu"
         tls:
           enable: false
           secretName: ""

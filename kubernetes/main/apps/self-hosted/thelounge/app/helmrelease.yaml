@@ -70,9 +70,9 @@ spec:
       app:
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.vzkn.eu
         hosts:
-          - host: tl.${SECRET_DOMAIN}
+          - host: tl.vzkn.eu
             paths:
               - path: /
                 service:

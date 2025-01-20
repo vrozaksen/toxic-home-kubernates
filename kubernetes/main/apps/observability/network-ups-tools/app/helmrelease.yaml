@@ -32,7 +32,7 @@ spec:
               repository: ghcr.io/vrozaksen/network-ups-tools
               tag: v2.8.2@sha256:90d17790bc93376b3a37d100996b0d0e45323b472b90924adacd39dbf0df5ee8
             env:
-              TZ: ${TIMEZONE}
+              TZ: Europe/Warsaw
             securityContext:
               privileged: true
             probes:
@@ -50,8 +50,8 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_SERVER_NUT_ADDR:=temp}
-          external-dns.alpha.kubernetes.io/hostname: server-nut.${SECRET_DOMAIN}
+          lbipam.cilium.io/ips: 10.0.10.202
+          external-dns.alpha.kubernetes.io/hostname: server-nut.vzkn.eu
         externalTrafficPolicy: Cluster
         ports:
           http:

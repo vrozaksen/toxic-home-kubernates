@@ -55,9 +55,9 @@ spec:
           app:
             image: *image
             env:
-              TZ: "${TIMEZONE}"
+              TZ: "Europe/Warsaw"
               CB_SERVER_NAME: *app
-              CB_SERVER_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+              CB_SERVER_URL: "https://{{ .Release.Name }}.vzkn.eu"
               CLOUDBEAVER_DB_DRIVER: "postgres-jdbc"
               CLOUDBEAVER_DB_URL: "jdbc:postgresql://postgres-rw.database.svc.cluster.local:5432/{{ .Release.Name }}"
               CLOUDBEAVER_DB_BACKUP_ENABLED: "false"
@@ -90,14 +90,14 @@ spec:
       app:
         className: internal
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.vzkn.eu
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Management
           gethomepage.dev/name: CloudBeaver
           gethomepage.dev/icon: https://raw.githubusercontent.com/dbeaver/cloudbeaver/23.2.5/webapp/packages/core-app/public/favicon.svg
           gethomepage.dev/description: Cloud Database Manager
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: "{{ .Release.Name }}.vzkn.eu"
             paths:
               - path: /
                 service:
