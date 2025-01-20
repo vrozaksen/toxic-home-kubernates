@@ -7,16 +7,16 @@ resources:
   - ./namespace.yaml
   - ../../../shared/templates/alerts
   # Flux-Kustomizations
-  - ./atuin/ks.yaml
-  - ./it-tools/ks.yaml
-  - ./homepage/ks.yaml
-  - ./lubelog/ks.yaml
-  - ./paperless/ks.yaml
-  - ./redlib/ks.yaml
-  - ./free-game-notifier/ks.yaml
-  - ./meshcentral/ks.yaml
-  - ./thelounge/ks.yaml
-  - ./outline/ks.yaml
+  # - ./atuin/ks.yaml
+  # - ./it-tools/ks.yaml
+  # - ./homepage/ks.yaml
+  # - ./lubelog/ks.yaml
+  # - ./paperless/ks.yaml
+  # - ./redlib/ks.yaml
+  # - ./free-game-notifier/ks.yaml
+  # - ./meshcentral/ks.yaml
+  # - ./thelounge/ks.yaml
+  # - ./outline/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
