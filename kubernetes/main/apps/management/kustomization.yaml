@@ -5,9 +5,9 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
 #  - ./cloudbeaver/ks.yaml
-  # - ./pgadmin/ks.yaml
-  # - ./rustdesk/ks.yaml
-  # - ./sshwifty/ks.yaml
+  - ./pgadmin/ks.yaml
+  - ./rustdesk/ks.yaml
+  - ./sshwifty/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
