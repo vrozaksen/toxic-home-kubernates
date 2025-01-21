@@ -8,12 +8,22 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../shared/components/gatus/external
   dependsOn:
     - name: crunchy-postgres-cluster
+      namespace: database
     - name: crunchy-postgres-stores
+      namespace: database
+    - name: dragonfly-cluster
+      namespace: database
     - name: bitwarden-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/main/apps/development/coder/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,7 +31,4 @@ spec:
     namespace: flux-system
   targetNamespace: development
   timeout: 5m
-  wait: true
-  postBuild:
-    substitute:
-      APP: *app
+  wait: false
