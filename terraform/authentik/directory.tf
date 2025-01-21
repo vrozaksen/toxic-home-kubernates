@@ -35,9 +35,15 @@ data "bitwarden_secret" "discord" {
   key = "discord"
 }
 
+data "bitwarden_secret" "github" {
+  key = "github"
+}
+
 locals {
   discord_client_id     = replace(regex("DISCORD_CLIENT_ID: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
   discord_client_secret = replace(regex("DISCORD_CLIENT_SECRET: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
+  github_client_id     = replace(regex("GITHUB_CLIENT_ID: (\\S+)", data.bitwarden_secret.github.value)[0], "\"", "")
+  github_client_secret = replace(regex("GITHUB_CLIENT_SECRET: (\\S+)", data.bitwarden_secret.github.value)[0], "\"", "")
 }
 
 ##Oauth
@@ -51,4 +57,16 @@ resource "authentik_source_oauth" "discord" {
   provider_type   = "discord"
   consumer_key    = local.discord_client_id
   consumer_secret = local.discord_client_secret
+}
+
+resource "authentik_source_oauth" "github" {
+  name                = "Github"
+  slug                = "github"
+  authentication_flow = data.authentik_flow.default-source-authentication.id
+  enrollment_flow     = authentik_flow.enrollment-invitation.uuid
+  user_matching_mode  = "email_deny"
+
+  provider_type   = "github"
+  consumer_key    = local.github_client_id
+  consumer_secret = local.github_client_secret
 }
