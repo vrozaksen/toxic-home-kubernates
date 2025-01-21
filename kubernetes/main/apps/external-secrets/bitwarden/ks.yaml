@@ -4,41 +4,43 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app bitwarden-store
-  namespace: flux-system
 spec:
-  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets
+      namespace: external-secrets
+  interval: 30m
   path: ./kubernetes/main/apps/external-secrets/bitwarden/stores
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: external-secrets
   timeout: 5m
+  wait: true
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app bitwarden-certs
-  namespace: flux-system
 spec:
-  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  interval: 30m
   path: ./kubernetes/main/apps/external-secrets/bitwarden/certificates
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
+    namespace: flux-system
+  targetNamespace: external-secrets
   dependsOn:
     - name: cert-manager-selfsigned-issuers
-  interval: 30m
+      namespace: cert-manager
   timeout: 5m
+  wait: true

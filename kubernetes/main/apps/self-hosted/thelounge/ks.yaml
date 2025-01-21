@@ -4,24 +4,27 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app thelounge
-  namespace: flux-system
 spec:
-  targetNamespace: self-hosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../shared/components/gatus/external
+    - ../../../../../shared/components/volsync
   dependsOn:
     - name: volsync
-  path: ./kubernetes/main/apps/self-hosted/thelounge/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false # no flux ks dependents
+      namespace: storage
   interval: 30m
-  timeout: 5m
+  path: ./kubernetes/main/apps/self-hosted/thelounge/app
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: tl
-      VOLSYNC_CAPACITY: 1Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: self-hosted
+  timeout: 5m
+  wait: false

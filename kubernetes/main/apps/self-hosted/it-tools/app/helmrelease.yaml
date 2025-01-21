@@ -61,8 +61,6 @@ spec:
     ingress:
       app:
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.vzkn.eu
         hosts:
           - host: "{{ .Release.Name }}.vzkn.eu"
             paths:

@@ -1,26 +1,30 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app rustdesk
-  namespace: flux-system
 spec:
-  targetNamespace: management
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../shared/components/gatus/guarded
   dependsOn:
     - name: volsync
+      namespace: storage
     - name: bitwarden-store
+      namespace: external-secrets
+  interval: 30m
   path: ./kubernetes/main/apps/management/rustdesk/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false # no flux ks dependents
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: management
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
+  wait: false

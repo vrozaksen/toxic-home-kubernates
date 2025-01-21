@@ -36,8 +36,7 @@ spec:
               repository: ghcr.io/thelounge/thelounge
               tag: 4.4.3@sha256:91927fc0780feb3d02594b478378844365a663be5866fbd1b62e8c910e86d742
             env:
-              # Ref: https://github.com/thelounge/thelounge/issues/2656
-              THELOUNGE_HOME: /config/thelounge
+              THELOUNGE_HOME: /config
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -69,8 +68,6 @@ spec:
     ingress:
       app:
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.vzkn.eu
         hosts:
           - host: tl.vzkn.eu
             paths:
@@ -81,5 +78,3 @@ spec:
     persistence:
       config:
         existingClaim: *app
-        globalMounts:
-          - path: /config

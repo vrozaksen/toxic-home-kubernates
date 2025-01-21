@@ -4,42 +4,43 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app volsync
-  namespace: flux-system
 spec:
-  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: bitwarden-store
-    - name: longhorn
+      namespace: external-secrets
+  interval: 30m
   path: ./kubernetes/main/apps/storage/volsync/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false # no flux ks dependents
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: storage
   timeout: 5m
+  wait: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app volsync-src-fixer
-  namespace: flux-system
 spec:
-  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: volsync
+      namespace: storage
+  interval: 30m
   path: ./kubernetes/main/apps/storage/volsync/src-fixer
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: storage
   timeout: 5m
+  wait: false
