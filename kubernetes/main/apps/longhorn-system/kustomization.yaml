@@ -11,5 +11,5 @@ transformers:
     kind: NamespaceTransformer
     metadata:
       name: not-used
-      namespace: security
+      namespace: longhorn-system
     unsetOnly: true
