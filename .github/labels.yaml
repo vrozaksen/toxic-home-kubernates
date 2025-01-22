@@ -42,8 +42,6 @@
 - name: type/major
   color: "f6412d"
 # Uncategorized
-- name: community
-  color: "370fb2"
 - name: hold/upstream
   color: "ee0701"
 - name: lint/lychee

@@ -27,8 +27,8 @@ spec:
   dependsOn:
     - name: kube-prometheus-stack-crds
       namespace: observability
-    - name: volsync
-      namespace: storage
+    - name: longhorn
+      namespace: longhorn-system
   values:
     crds:
       enabled: false

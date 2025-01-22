@@ -24,20 +24,12 @@ jobs:
     outputs:
       matrix: ${{ steps.changed-clusters.outputs.all_changed_and_modified_files }}
     steps:
-      - name: Get Secrets
-        uses: bitwarden/sm-action@v2
-        with:
-          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
-          secrets: |
-            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
-            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
-
       - name: Generate Token
         uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          app-id: ${{ env.BOT_APP_ID }}
-          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -71,20 +63,12 @@ jobs:
       default: ${{ steps.extract-images.outputs.default }}
       pull: ${{ steps.extract-images.outputs.pull }}
     steps:
-      - name: Get Secrets
-        uses: bitwarden/sm-action@v2
-        with:
-          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
-          secrets: |
-            a1ebf68f-7c5c-4c55-a84f-b25500fe34e7 > BOT_APP_ID
-            e04c3c7c-5f88-4261-88de-b25500fed32b > BOT_APP_PRIVATE_KEY
-
       - name: Generate Token
         uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          app-id: ${{ env.BOT_APP_ID }}
-          private-key: ${{ env.BOT_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v4

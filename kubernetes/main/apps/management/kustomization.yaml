@@ -2,17 +2,20 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: management
 resources:
   - ./namespace.yaml
 #  - ./cloudbeaver/ks.yaml
   - ./pgadmin/ks.yaml
   - ./rustdesk/ks.yaml
   - ./sshwifty/ks.yaml
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: not-used
-      namespace: management
-    unsetOnly: true
+components:
+  - ../../../shared/components/alerts
+  - ../../../shared/components/namespace
+patches:
+  - patch: |
+      - op: add
+        path: /metadata/name
+        value: database
+    target:
+      kind: Namespace

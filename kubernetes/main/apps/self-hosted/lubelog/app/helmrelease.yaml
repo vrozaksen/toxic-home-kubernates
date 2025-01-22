@@ -23,8 +23,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: volsync
-      namespace: storage
+    - name: longhorn
+      namespace: longhorn-system
   values:
     controllers:
       lubelog:
