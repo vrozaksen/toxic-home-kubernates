@@ -5,8 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ../../../../../shared/templates/volsync
-  - ../../../../../shared/templates/gatus/guarded
 configMapGenerator:
   - name: cloudbeaver
     files:

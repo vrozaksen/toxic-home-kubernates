@@ -9,8 +9,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../shared/components/gatus/external
-    - ../../../../shared/components/volsync
+    - ../../../../../shared/components/volsync
+    - ../../../../../shared/components/gatus/external
   dependsOn:
     - name: volsync
       namespace: storage
