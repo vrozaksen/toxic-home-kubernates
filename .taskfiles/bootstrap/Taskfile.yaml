@@ -73,7 +73,7 @@ tasks:
     desc: Bootstrap Apps [CLUSTER=main]
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
-    #  - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
+      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
       - export $(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | grep -Ff {{.BOOTSTRAP_DIR}}/apps/.secrets.env) && minijinja-cli --env {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
       - sh -c 'for var in $(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | cut -d= -f1); do unset $var; done'
       - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
