@@ -37,7 +37,7 @@ spec:
     server:
       autoscaling:
         enabled: true
-        minReplicas: 2
+        minreplicas: 1
       metrics:
         prometheus:
           serviceMonitor:
@@ -61,4 +61,4 @@ spec:
     worker:
       autoscaling:
         enabled: true
-        minReplicas: 2
+        minreplicas: 1

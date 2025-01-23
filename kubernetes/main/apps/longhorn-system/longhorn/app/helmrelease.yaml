@@ -32,11 +32,11 @@ spec:
       defaultClassReplicaCount: 1
     defaultSettings:
       createDefaultDiskLabeledNodes: true
-      defaultDataLocality: true
+      defaultDataLocality: false
       replicaAutoBalance: true
       storageMinimalAvailablePercentage: 10
       #storageReservedPercentageForDefaultDisk: 10
-      defaultReplicaCount: 2
+      defaultReplicaCount: 1
       defaultLonghornStaticStorageClass: longhorn
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 3
