@@ -8,11 +8,11 @@ resources:
   - ./it-tools/ks.yaml
   - ./homepage/ks.yaml
   - ./lubelog/ks.yaml
-#  - ./paperless/ks.yaml
+  - ./paperless/ks.yaml
   - ./redlib/ks.yaml
   - ./free-game-notifier/ks.yaml
   - ./meshcentral/ks.yaml
-#  - ./thelounge/ks.yaml
+  - ./thelounge/ks.yaml
   - ./outline/ks.yaml
 components:
   - ../../../shared/components/alerts
