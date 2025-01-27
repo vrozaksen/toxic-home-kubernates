@@ -4,8 +4,8 @@ MASTER_PASSWORD_REQUIRED = False
 OAUTH2_CONFIG = [{
     "OAUTH2_NAME": "authentik",
     "OAUTH2_DISPLAY_NAME": "Login with Authentik",
-    'OAUTH2_CLIENT_ID': '{{ .PGADMIN_OIDC_CLIENT_ID }}',
-    'OAUTH2_CLIENT_SECRET': '{{ .PGADMIN_OIDC_CLIENT_SECRET }}',
+    'OAUTH2_CLIENT_ID': '{{ .PGADMIN_CLIENT_ID }}',
+    'OAUTH2_CLIENT_SECRET': '{{ .PGADMIN_CLIENT_SECRET }}',
     "OAUTH2_TOKEN_URL": "https://sso.vzkn.eu/application/o/token/",
     "OAUTH2_AUTHORIZATION_URL": "https://sso.vzkn.eu/application/o/authorize/",
     "OAUTH2_API_BASE_URL": "https://sso.vzkn.eu/",

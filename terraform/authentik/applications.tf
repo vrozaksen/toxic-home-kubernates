@@ -3,8 +3,10 @@ locals {
     "coder",
     "grafana",
     "headscale",
+    "pgadmin",
     "lubelog",
-    "paperless"
+    "paperless",
+    "outline"
   ]
 }
 
@@ -30,7 +32,7 @@ locals {
       client_id     = local.parsed_secrets["coder"].client_id
       client_secret = local.parsed_secrets["coder"].client_secret
       group         = "infrastructure"
-      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/coder.png"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/coder-light.png"
       redirect_uri  = "https://coder.${var.cluster_domain}/api/v2/users/oidc/callback"
       launch_url    = "https://coder.${var.cluster_domain}/"
     },
@@ -50,11 +52,27 @@ locals {
       redirect_uri  = "https://headscale.${var.cluster_domain}/oidc/callback"
       launch_url    = "https://headscale.${var.cluster_domain}/"
     },
+    pgadmin = {
+      client_id     = local.parsed_secrets["pgadmin"].client_id
+      client_secret = local.parsed_secrets["pgadmin"].client_secret
+      group         = "infrastructure"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/pgadmin.png"
+      redirect_uri  = "https://pgadmin.${var.cluster_domain}/oauth2/authorize"
+      launch_url    = "https://pgadmin.${var.cluster_domain}/"
+    },
+    outline = {
+      client_id     = local.parsed_secrets["outline"].client_id
+      client_secret = local.parsed_secrets["outline"].client_secret
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/outline.png"
+      redirect_uri  = "https://docs.${var.cluster_domain}/auth/oidc.callback"
+      launch_url    = "https://docs.${var.cluster_domain}/"
+    },
     lubelog = {
       client_id     = local.parsed_secrets["lubelog"].client_id
       client_secret = local.parsed_secrets["lubelog"].client_secret
       group         = "home"
-      icon_url      = "https://demo.lubelogger.com/defaults/lubelogger_icon_72.png"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/lubelogger.png"
       redirect_uri  = "https://lubelog.${var.cluster_domain}/Login/RemoteAuth"
       launch_url    = "https://lubelog.${var.cluster_domain}/Login/RemoteAuth"
     },
@@ -62,7 +80,7 @@ locals {
       client_id     = local.parsed_secrets["paperless"].client_id
       client_secret = local.parsed_secrets["paperless"].client_secret
       group         = "home"
-      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/paperless.png"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/paperless-ngx.png"
       redirect_uri  = "https://paperless.${var.cluster_domain}/accounts/oidc/authentik/login/callback/"
       launch_url    = "https://paperless.${var.cluster_domain}/"
     }
