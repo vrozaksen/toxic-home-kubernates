@@ -22,6 +22,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
+  - name: longhorn
+    namespace: longhorn-system
   - name: volsync
     namespace: storage
   values:
@@ -60,7 +62,7 @@ spec:
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
               # Configure OCR
               PAPERLESS_OCR_LANGUAGES: pol
-              PAPERLESS_OCR_LANGUAGE: pol+eng
+              PAPERLESS_OCR_LANGUAGE: pol
               # Configure redis integration
               PAPERLESS_REDIS: redis://dragonfly.database.svc.cluster.local:6379
               # Configure user permissions

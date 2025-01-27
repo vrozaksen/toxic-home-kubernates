@@ -37,3 +37,17 @@ metadata:
   namespace: external-secrets
 stringData:
   token: {{ ENV.BITWARDEN_KUBERNETES_TOKEN }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sops-age
+  namespace: flux-system
+stringData:
+  age.agekey: |
+    {{ ENV.FLUX_SOPS_PRIVATE_KEY | indent(4) }}

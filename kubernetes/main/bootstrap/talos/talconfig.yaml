@@ -13,7 +13,7 @@ clusterSvcNets:
   - "10.96.0.0/16"
 additionalApiServerCertSans: &sans
   - "10.0.10.10"
-  - "127.0.0.1"
+  - 127.0.0.1 # KubePrism
 additionalMachineCertSans: *sans
 cniConfig:
   name: none
@@ -21,7 +21,7 @@ cniConfig:
 nodes:
   - hostname: "alfheim"
     ipAddress: "10.0.10.11"
-    installDisk: "/dev/sdb"
+    installDisk: /dev/sdb
     talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
     controlPlane: true
     networkInterfaces:
@@ -33,7 +33,7 @@ nodes:
           ip: "10.0.10.10"
   - hostname: "alne"
     ipAddress: "10.0.10.12"
-    installDisk: "/dev/sdb"
+    installDisk: /dev/sdb
     talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
     controlPlane: false
     networkInterfaces:
@@ -47,7 +47,8 @@ patches:
   - |
     machine:
       files:
-        - op: create
+        - # Spegel
+          op: create
           path: /etc/cri/conf.d/20-customization.part
           content: |
             [plugins."io.containerd.cri.v1.images"]

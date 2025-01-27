@@ -23,9 +23,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    image:
-      nfs:
-        repository: gcr.io/k8s-staging-sig-storage/nfsplugin
     controller:
       replicas: 1
     storageClass:
@@ -40,4 +37,4 @@ spec:
         - hard
         - noatime
       reclaimPolicy: Delete
-      volumeBindingMode: WaitForFirstConsumer
+      volumeBindingMode: Immediate

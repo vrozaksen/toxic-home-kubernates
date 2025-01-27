@@ -12,13 +12,14 @@ resources:
   - ./redlib/ks.yaml
   - ./free-game-notifier/ks.yaml
   - ./meshcentral/ks.yaml
-#  - ./thelounge/ks.yaml
+  - ./thelounge/ks.yaml
   - ./outline/ks.yaml
 components:
   - ../../../shared/components/alerts
   - ../../../shared/components/namespace
 patches:
-  - patch: |
+  - # Add the name to the namespace
+    patch: |
       - op: add
         path: /metadata/name
         value: self-hosted

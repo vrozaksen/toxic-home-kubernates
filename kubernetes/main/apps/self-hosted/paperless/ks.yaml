@@ -8,6 +8,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../shared/components/gatus/guarded
+    - ../../../../../shared/components/volsync
   dependsOn:
     - name: crunchy-postgres-stores
       namespace: database
