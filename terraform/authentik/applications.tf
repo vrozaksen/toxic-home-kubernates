@@ -40,7 +40,7 @@ locals {
       client_id     = local.parsed_secrets["grafana"].client_id
       client_secret = local.parsed_secrets["grafana"].client_secret
       group         = "monitoring"
-      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/grafana.png"
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
     },
@@ -48,7 +48,7 @@ locals {
       client_id     = local.parsed_secrets["headscale"].client_id
       client_secret = local.parsed_secrets["headscale"].client_secret
       group         = "infrastructure"
-      icon_url      = "https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/headscale.png"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/headscale.png"
       redirect_uri  = "https://headscale.${var.cluster_domain}/oidc/callback"
       launch_url    = "https://headscale.${var.cluster_domain}/"
     },
