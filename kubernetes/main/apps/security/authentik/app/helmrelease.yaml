@@ -61,4 +61,4 @@ spec:
     worker:
       autoscaling:
         enabled: true
-        minreplicas: 1
+        minReplicas: 1
