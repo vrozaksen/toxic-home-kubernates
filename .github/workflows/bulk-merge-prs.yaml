@@ -37,7 +37,6 @@
           run: |
             args=()
             args+=(--app $BOT_USERNAME)
-            args+=(--state "open")
             if [ ${{ github.event.inputs.labels }} != "any" ]; then
                 IFS=',' read -ra labels <<< ${{ github.event.inputs.labels }}
                 for label in "${labels[@]}"; do
@@ -52,3 +51,4 @@
                 gh pr merge "${id}" --squash
                 sleep 2
             done
+# args+=(--state open) # it's default so ignore that
