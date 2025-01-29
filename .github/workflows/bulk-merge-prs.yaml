@@ -46,12 +46,10 @@
                 done
             fi
             for id in $(gh pr list "${args[@]}" --jq '.[].number' --json number); do
-                branch=$(gh pr view "$id" --json headRefName --jq '.headRefName')
                 if [ ${{ github.event.inputs.dryRun }} = "true" ]; then
                     echo "Dry run: gh pr merge $id --squash"
-                    echo "Dry run: gh pr delete $branch"
                     continue
                 fi
-                gh pr merge "${id}" --squash && gh pr delete "$branch"
+                gh pr merge "${id}" --squash
                 sleep 2
             done
