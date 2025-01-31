@@ -22,7 +22,7 @@ data:
             - icon: spotify.png
               href: 'http://open.spotify.com'
         - Youtube Music:
-            - icon: https://raw.githubusercontent.com/joryirving/home-ops/main/docs/src/assets/icons/youtube-music.png
+            - icon: https://raw.githubusercontent.com/vrozaksen/home-ops/main/docs/src/assets/icons/youtube-music.png
               href: 'https://music.youtube.com'
     - Reading:
         - Reddit:
@@ -32,20 +32,14 @@ data:
         - kubesearch:
             - icon: kubernetes-dashboard.png
               href: 'https://kubesearch.dev/'
+        - home-ops:
+            - icon: github.png
+              href: 'https://github.com/vrozaksen/home-ops'
   docker.yaml: ""
   kubernetes.yaml: |
     mode: cluster
   services.yaml: |
     - Network:
-        - OPNSense:
-            href: https://opnsense.lan.vrozaksen.eu:8443
-            icon: opnsense.png
-            description: OPNsense Firewall
-            widget:
-              type: opnsense
-              url: https://opnsense.lan.vrozaksen.eu:8443
-              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
-              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
         - Cloudflared:
             href: https://dash.cloudflare.com/
             icon: cloudflare-zero-trust.png
@@ -65,6 +59,15 @@ data:
               url: https://healthchecks.io/
               key: {{HOMEPAGE_VAR_HEALTHCHECK_TOKEN}}
               uuid: {{HOMEPAGE_VAR_HEALTHCHECK_UUID}}
+        - OPNSense:
+            href: https://opnsense.lan.vrozaksen.eu:8443
+            icon: opnsense.png
+            description: OPNsense Firewall
+            widget:
+              type: opnsense
+              url: https://opnsense.lan.vrozaksen.eu:8443
+              username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+              password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
     - Games:
         - Create:
             icon: minecraft.png
@@ -102,14 +105,14 @@ data:
                   service_name: Readarr # service name for that widget
     - Infrastructure:
         - Unraid:
-            description: Unraid NAS
-            icon: unraid.png
             href: https://aincrad.lan.vrozaksen.eu
+            icon: unraid.png
+            description: Unraid NAS
             ping: https://aincrad.lan.vrozaksen.eu
             siteMonitor: https://aincrad.lan.vrozaksen.eu
   settings.yaml: |
     title: Dashboard
-    favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
+    favicon: https://github.com/homarr-labs/dashboard-icons/blob/main/png/heimdall.png
     useEqualHeights: true
     theme: dark
     background:
@@ -180,8 +183,8 @@ data:
           showLabel: true
     - openmeteo:
         label: Home
-        latitude: ${LATITUDE}
-        longitude: ${LONGITUDE}
+        latitude: {{HOMEPAGE_VAR_LATITUDE}}
+        longitude: {{HOMEPAGE_VAR_LONGITUDE}}
         units: metric
         cache: 5
     - datetime:

@@ -9,5 +9,5 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: "jory.dev"
-  dnsNames: ["jory.dev", "*.jory.dev"]
+  commonName: "vzkn.eu"
+  dnsNames: ["vzkn.eu", "*.vzkn.eu"]

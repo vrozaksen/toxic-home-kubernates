@@ -3,6 +3,7 @@ locals {
     "coder",
     "grafana",
     "headscale",
+    "headlamp",
     "pgadmin",
     "lubelog",
     "paperless",
@@ -43,6 +44,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/grafana.png"
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+    },
+    headlamp = {
+      client_id     = local.parsed_secrets["headlamp"].client_id
+      client_secret = local.parsed_secrets["headlamp"].client_secret
+      group         = "infrastructure"
+      icon_url      = "https://raw.githubusercontent.com/headlamp-k8s/headlamp/refs/heads/main/frontend/src/resources/icon-dark.svg"
+      redirect_uri  = "https://headlamp.${var.cluster_domain}/oidc-callback"
+      launch_url    = "https://headlamp.${var.cluster_domain}/oidc-callback"
     },
     headscale = {
       client_id     = local.parsed_secrets["headscale"].client_id

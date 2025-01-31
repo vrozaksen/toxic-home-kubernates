@@ -1,0 +1,215 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+---
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.9.3
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.32.1
+
+clusterName: &cluster main
+endpoint: https://10.0.10.10:6443
+clusterPodNets:
+  - "10.69.0.0/16"
+clusterSvcNets:
+  - "10.96.0.0/16"
+additionalApiServerCertSans: &sans
+  - "10.0.10.10"
+  - 127.0.0.1 # KubePrism
+additionalMachineCertSans: *sans
+cniConfig:
+  name: none
+
+nodes:
+  - hostname: "alfheim"
+    ipAddress: "10.0.10.11"
+    installDisk: /dev/sdb
+    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "f8:75:a4:09:50:fd"
+        dhcp: true
+        mtu: 1500
+        vip:
+          ip: "10.0.10.10"
+  - hostname: "alne"
+    ipAddress: "10.0.10.12"
+    installDisk: /dev/sdb
+    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "e8:6a:64:47:fe:44"
+        dhcp: true
+        mtu: 1500
+
+patches:
+  # Configure containerd
+  - |
+    machine:
+      files:
+        - # Spegel
+          op: create
+          path: /etc/cri/conf.d/20-customization.part
+          content: |
+            [plugins."io.containerd.cri.v1.images"]
+              discard_unpacked_layers = false
+
+  # Configure NFS Mounts
+  - |
+    machine:
+      files:
+        - op: overwrite
+          path: /etc/nfsmount.conf
+          permissions: 0o644
+          content: |
+            [ NFSMount_Global_Options ]
+            nfsvers=4.2
+            hard=True
+            nconnect=16
+            noatime=True
+
+  # Disable search domain everywhere
+  - |-
+    machine:
+      network:
+        disableSearchDomain: true
+
+  # Enable cluster discovery
+  # - |-
+  #   cluster:
+  #     discovery:
+  #       enabled: true
+  #       registries:
+  #         kubernetes:
+  #           disabled: false
+  #         service:
+  #           disabled: true
+
+  # Configure kubelet
+  - |-
+    machine:
+      kubelet:
+        nodeIP:
+          validSubnets:
+            - "10.0.10.0/24"
+
+  # Enable MutatingAdmissionPolicy
+  - |-
+    cluster:
+      apiServer:
+        extraArgs:
+          runtime-config: admissionregistration.k8s.io/v1alpha1=true
+          feature-gates: MutatingAdmissionPolicy=true
+
+  # Custom sysctl settings
+  - |-
+    machine:
+      sysctls:
+        fs.inotify.max_user_watches: 1048576   # Watchdog
+        fs.inotify.max_user_instances: 8192    # Watchdog
+        vm.nr_hugepages: "1024"
+
+  # Mount openebs-hostpath in kubelet
+  - |-
+    machine:
+      kubelet:
+        extraMounts:
+          - destination: /var/openebs/local
+            type: bind
+            source: /var/openebs/local
+            options: ["bind", "rshared", "rw"]
+          - destination: /var/lib/longhorn/
+            type: bind
+            source: /var/lib/longhorn/
+            options: ["bind", "rshared", "rw"]
+  # Mount openebs-hostpath in kubelet
+  - |-
+    machine:
+      disks:
+        - device: /dev/nvme0n1
+          partitions:
+            - mountpoint: /var/lib/longhorn/
+  # # Performance hacks
+  - |-
+    machine:
+      install:
+        extraKernelArgs:
+          - apparmor=0              # Less security, faster puter
+          - init_on_alloc=0         # Less security, faster puter
+          - init_on_free=0          # Less security, faster puter
+          - mitigations=off         # Less security, faster puter
+          - security=none           # Less security, faster puter
+          - talos.auditd.disabled=1 # Less security, faster puter
+controlPlane:
+  nodeLabels:
+    topology.kubernetes.io/zone: controlPlane
+  patches:
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnControlPlanes: true
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        coreDNS:
+          disabled: true
+        proxy:
+          disabled: true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                plugins:
+                  score:
+                    disabled:
+                      - name: ImageLocality
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+          advertisedSubnets:
+            - "10.0.10.0/24"
+
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - kube-tools
+
+    # Enable hostDNS:
+    - |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            forwardKubeDNSToHost: true
+            resolveMemberNames: true
+
+worker:
+  nodeLabels:
+    topology.kubernetes.io/zone: worker
