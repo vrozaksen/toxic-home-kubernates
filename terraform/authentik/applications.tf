@@ -7,6 +7,7 @@ locals {
     "pgadmin",
     "lubelog",
     "paperless",
+    "rresume",
     "outline"
   ]
 }
@@ -92,6 +93,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/paperless-ngx.png"
       redirect_uri  = "https://paperless.${var.cluster_domain}/accounts/oidc/authentik/login/callback/"
       launch_url    = "https://paperless.${var.cluster_domain}/"
+    },
+    paperless = {
+      client_id     = local.parsed_secrets["rresume"].client_id
+      client_secret = local.parsed_secrets["rresume"].client_secret
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/reactive-resume.png"
+      redirect_uri  = "https://rr.${var.cluster_domain}/api/auth/openid/callback"
+      launch_url    = "https://rr.${var.cluster_domain}/"
     }
   }
 }
