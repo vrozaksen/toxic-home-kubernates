@@ -7,11 +7,11 @@ resources:
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
   - ./homepage/ks.yaml
-#  - ./paperless/ks.yaml
+  - ./paperless/ks.yaml
   - ./redlib/ks.yaml
   - ./free-game-notifier/ks.yaml
-#  - ./meshcentral/ks.yaml
-#  - ./thelounge/ks.yaml
+  - ./meshcentral/ks.yaml
+  - ./thelounge/ks.yaml
   - ./outline/ks.yaml
 components:
   - ../../../shared/meta/components/alerts
