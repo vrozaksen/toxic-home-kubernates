@@ -27,6 +27,26 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
+          chrome:
+            image:
+              repository: ghcr.io/browserless/chromium
+              tag: v2.24.3@sha256:7c036e9ce0e93555f83c6bd511d060a546bb259200ecfbbf6f68772af624f6d3
+            envFrom:
+              - secretRef:
+                  name: browserless-chrome-secret
+            env:
+              TZ: "Europe/Warsaw"
+              DEBUG: "browserless*,-*:trace,-*:verbose"
+              ENABLE_DEBUGGER: "false"
+              TIMEOUT: "60000"
+              CONCURRENT: "10"
+              EXIT_ON_HEALTH_FAILURE: "true"
+              HEALTH: "true"
+            securityContext:
+              runAsUser: 999
+              runAsGroup: 999
+              allowPrivilegeEscalation: false
+              capabilities: {drop: [ALL]}
           app:
             image:
               repository: "ghcr.io/amruthpillai/reactive-resume"
@@ -54,37 +74,18 @@ spec:
               limits:
                 cpu: 3000m
                 memory: 600Mi
-          chrome:
-            image:
-              repository: ghcr.io/browserless/chromium
-              tag: v2.24.3@sha256:7c036e9ce0e93555f83c6bd511d060a546bb259200ecfbbf6f68772af624f6d3
-            envFrom:
-              - secretRef:
-                  name: browserless-chrome-secret
-            env:
-              TZ: "Europe/Warsaw"
-              DEBUG: "browserless*,-*:trace,-*:verbose"
-              ENABLE_DEBUGGER: "false"
-              TIMEOUT: "60000"
-              CONCURRENT: "10"
-              EXIT_ON_HEALTH_FAILURE: "true"
-              HEALTH: "true"
-            securityContext:
-              runAsUser: 999
-              runAsGroup: 999
-              allowPrivilegeEscalation: false
-              capabilities: {drop: [ALL]}
+
     service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: 8000
       chrome:
         controller: *app
         ports:
           http:
             port: 3000
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 8000
     ingress:
       app:
         className: external
