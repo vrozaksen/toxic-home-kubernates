@@ -19,6 +19,9 @@ spec:
       namespace: external-secrets
   interval: 30m
   path: ./kubernetes/main/apps/self-hosted/reactive-resume/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
