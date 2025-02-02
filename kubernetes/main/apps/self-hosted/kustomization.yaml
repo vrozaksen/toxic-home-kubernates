@@ -13,6 +13,7 @@ resources:
   - ./meshcentral/ks.yaml
   - ./thelounge/ks.yaml
   - ./outline/ks.yaml
+  - ./reactive-resume/ks.yaml
 components:
   - ../../../shared/meta/components/alerts
   - ../../../shared/meta/components/namespace

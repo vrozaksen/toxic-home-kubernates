@@ -88,6 +88,10 @@ spec:
       databases: ["paperless"]
       password:
         type: AlphaNumeric
+    - name: "rresume"
+      databases: ["rresume"]
+      password:
+        type: AlphaNumeric
   #  - name: "bazarr"
   #    databases: ["bazarr"]
   #    password:
