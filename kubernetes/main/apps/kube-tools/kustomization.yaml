@@ -7,6 +7,7 @@ resources:
   - ./descheduler/ks.yaml
   - ./fstrim/ks.yaml
   - ./intel-device-plugins/ks.yaml
+  - ./kube-cleanup-operator/ks.yaml
   - ./node-feature-discovery/ks.yaml
   # - ./powertune/ks.yaml
   - ./reloader/ks.yaml

@@ -31,3 +31,4 @@ resources:
   - ./bitwarden.yaml
   - ./kubernetes-sigs-external-dns.yaml
   - ./longhorn.yaml
+  - ./lwolf-charts.yaml
