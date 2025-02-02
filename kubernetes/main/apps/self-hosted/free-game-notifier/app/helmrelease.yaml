@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vrozaksen/free-game-notifier
-              tag: 1.6.0@sha256:536d3033fd5edc3fc99fa994c0987f76685436dacf25fa21f996a16ba64ff93c
+              tag: 1.6.0@sha256:5c9e1f7cac995ac04b5e0d8f4d193ecbf2935282774be1cb6af29dce6ea30001
             env:
               TZ: Europe/Warsaw
               SEND_UPCOMING: false
