@@ -103,6 +103,6 @@ spec:
       # optional: change the default theme
       extraEnvs:
       - name: TEMPLATE_NAME
-        value: l7-dark
+        value: lost-in-space
       - name: SHOW_DETAILS
         value: 'true'
