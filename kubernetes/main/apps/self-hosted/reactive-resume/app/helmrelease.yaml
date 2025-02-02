@@ -53,7 +53,7 @@ spec:
               tag: "v4.4.5"
             env: &env
               TZ: "Europe/Warsaw"
-              PORT: "3000"
+              PORT: "3001"
               NODE_ENV: "production"
               PUBLIC_URL: https://rr.vzkn.eu
               CHROME_URL: ws://chrome.self-hosted.svc.cluster.local.:3000
@@ -85,7 +85,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: 8000
+            port: 3001
     ingress:
       app:
         className: external
