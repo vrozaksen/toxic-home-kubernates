@@ -11,7 +11,7 @@ spec:
   components:
     - ../../../../../shared/meta/components/gatus/guarded
   interval: 30m
-  path: ./kubernetes/main/apps/longhorn-system/longhorn/app
+  path: ./kubernetes/main/apps/storage/longhorn/app
   postBuild:
     substitute:
       APP: *app
@@ -20,7 +20,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: longhorn-system
+  targetNamespace: storage
   timeout: 5m
   wait: false
 ---
@@ -35,14 +35,14 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: longhorn
-      namespace: longhorn-system
+      namespace: storage
   interval: 30m
-  path: ./kubernetes/main/apps/longhorn-system/longhorn/storageclass
+  path: ./kubernetes/main/apps/storage/longhorn/storageclass
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: longhorn-system
+  targetNamespace: storage
   timeout: 5m
   wait: false

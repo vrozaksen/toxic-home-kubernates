@@ -24,7 +24,7 @@ spec:
       retries: 3
   dependsOn:
     - name: longhorn
-      namespace: longhorn-system
+      namespace: storage
   values:
     controllers:
       home-assistant:
