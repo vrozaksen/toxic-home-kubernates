@@ -31,9 +31,6 @@ spec:
             image:
               repository: ghcr.io/browserless/chromium
               tag: v2.24.3@sha256:7c036e9ce0e93555f83c6bd511d060a546bb259200ecfbbf6f68772af624f6d3
-            envFrom:
-              - secretRef:
-                  name: browserless-chrome-secret
             env:
               TZ: "Europe/Warsaw"
               DEBUG: "browserless*,-*:trace,-*:verbose"
@@ -42,6 +39,9 @@ spec:
               CONCURRENT: "10"
               EXIT_ON_HEALTH_FAILURE: "true"
               HEALTH: "true"
+            envFrom:
+              - secretRef:
+                  name: browserless-chrome-secret
             securityContext:
               runAsUser: 999
               runAsGroup: 999
@@ -49,9 +49,9 @@ spec:
               capabilities: {drop: [ALL]}
           app:
             image:
-              repository: "ghcr.io/amruthpillai/reactive-resume"
-              tag: "v4.4.5"
-            env: &env
+              repository: ghcr.io/amruthpillai/reactive-resume
+              tag: v4.4.5@sha256:d6e56fa0378801f76a082b5c7a612ed9cece731729afc57e5b48f3b9d6823ff4
+            env:
               TZ: "Europe/Warsaw"
               PORT: "3001"
               NODE_ENV: "production"
