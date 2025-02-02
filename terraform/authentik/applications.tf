@@ -94,7 +94,7 @@ locals {
       redirect_uri  = "https://paperless.${var.cluster_domain}/accounts/oidc/authentik/login/callback/"
       launch_url    = "https://paperless.${var.cluster_domain}/"
     },
-    paperless = {
+    rresume = {
       client_id     = local.parsed_secrets["rresume"].client_id
       client_secret = local.parsed_secrets["rresume"].client_secret
       group         = "home"
