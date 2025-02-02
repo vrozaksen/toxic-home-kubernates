@@ -66,6 +66,8 @@ spec:
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
+        custom-http-errors: >-
+          401,403,404,500,501,502,503
       metrics:
         enabled: true
         serviceMonitor:
@@ -93,4 +95,13 @@ spec:
         limits:
           memory: 500Mi
     defaultBackend:
-      enabled: false
+      enabled: true
+      image:
+        repository: ghcr.io/tarampampam/error-pages
+        tag: latest
+      # optional: change the default theme
+      extraEnvs:
+      - name: TEMPLATE_NAME
+        value: l7-dark
+      - name: SHOW_DETAILS
+        value: 'true'
