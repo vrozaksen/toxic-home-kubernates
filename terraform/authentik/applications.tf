@@ -5,7 +5,6 @@ locals {
     "headscale",
     "headlamp",
     "pgadmin",
-    "lubelog",
     "paperless",
     "rresume",
     "outline"
@@ -77,14 +76,6 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/outline.png"
       redirect_uri  = "https://docs.${var.cluster_domain}/auth/oidc.callback"
       launch_url    = "https://docs.${var.cluster_domain}/"
-    },
-    lubelog = {
-      client_id     = local.parsed_secrets["lubelog"].client_id
-      client_secret = local.parsed_secrets["lubelog"].client_secret
-      group         = "home"
-      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/lubelogger.png"
-      redirect_uri  = "https://lubelog.${var.cluster_domain}/Login/RemoteAuth"
-      launch_url    = "https://lubelog.${var.cluster_domain}/Login/RemoteAuth"
     },
     paperless = {
       client_id     = local.parsed_secrets["paperless"].client_id
