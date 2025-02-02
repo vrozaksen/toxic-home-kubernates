@@ -26,8 +26,8 @@ tasks:
     desc: Push Utility kubeconfig to Secrets Manager
     cmds:
       - bws secret edit 691eca9e-39c7-488b-85b7-b256018994fe --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/kubeconfig)" &>/dev/null
-      - bws secret edit fc932a13-0221-488d-8dc4-b2560187daf5 --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/talos/clusterconfig/talosconfig)" &>/dev/null
-      - bws secret edit 9d84521d-69b6-4f2a-b533-b25e0176dee7 --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/talos/clusterconfig/talosconfig | base64 -w 0)" &>/dev/null
+      - bws secret edit fc932a13-0221-488d-8dc4-b2560187daf5 --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/bootstrap/talos/clusterconfig/talosconfig)" &>/dev/null
+      - bws secret edit 9d84521d-69b6-4f2a-b533-b25e0176dee7 --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/bootstrap/talos/clusterconfig/talosconfig | base64 -w 0)" &>/dev/null
     preconditions:
       - which bws
 
@@ -36,15 +36,16 @@ tasks:
     cmds:
       - mkdir -p ~/.kube
       - mkdir -p ~/.talos
-      - mkdir -p ~/.talos
-      - bws secret get 3e5dc441-3696-4151-9ad6-b25601897b3c | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/bootstrap/main/kubeconfig # Main kubeconfig
-      - bws secret get 76bf4533-0884-4b90-8490-b25601879083 | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/bootstrap/main/talos/clusterconfig/talosconfig # Main talosconfig
+      - mkdir -p {{.ROOT_DIR}}/kubernetes/main/bootstrap/talos/clusterconfig
+      - mkdir -p {{.ROOT_DIR}}/kubernetes/utility/bootstrap/talos/clusterconfig
+      - bws secret get 3e5dc441-3696-4151-9ad6-b25601897b3c | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/main/kubeconfig # Main kubeconfig
+      - bws secret get 76bf4533-0884-4b90-8490-b25601879083 | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/main/bootstrap/talos/clusterconfig/talosconfig # Main talosconfig
       - bws secret get 691eca9e-39c7-488b-85b7-b256018994fe | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/utility/kubeconfig # Utility kubeconfig
-      - bws secret get fc932a13-0221-488d-8dc4-b2560187daf5 | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/utility/talos/clusterconfig/talosconfig # Utility talosconfig
+      - bws secret get fc932a13-0221-488d-8dc4-b2560187daf5 | jq -r '.value' > {{.ROOT_DIR}}/kubernetes/utility/bootstrap/talos/clusterconfig/talosconfig # Utility talosconfig
       - bws secret get ffadfa6f-6e02-4873-a7d6-b2550100efb7 | jq -r '.value' > ~/.kube/config # Flat kubeconfig
       ## Note: The last `talosconfig` merged becomes the default context
       ## We pull the second talosconfig, and merge the main into it, so main is default
-      - bws secret get fc932a13-0221-488d-8dc4-b2560187daf5 | jq -r '.value' > ~/.talos/config # Utility talosconfig
+      - cp {{.ROOT_DIR}}/kubernetes/utility/bootstrap/talos/clusterconfig/talosconfig ~/.talos/config # Utility talosconfig
       - talosctl config merge {{.ROOT_DIR}}/kubernetes/main/bootstrap/talos/clusterconfig/talosconfig --talosconfig  ~/.talos/config #Merge main into flat talosconfig
     preconditions:
       - which bws jq

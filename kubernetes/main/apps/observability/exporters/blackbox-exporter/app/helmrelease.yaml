@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: prometheus-blackbox-exporter
-      version: 9.1.0
+      version: 9.2.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -70,6 +70,5 @@ spec:
       defaults:
         interval: 1m
       targets:
-        - { name: &name unifi.internal, module: icmp, url: *name }
-        - { name: &name voyager.internal, module: icmp, url: *name }
-        - { name: &name pikvm.internal, module: icmp, url: *name }
+        - { name: &name opnsense.lan.vrozaksen.eu, module: icmp, url: *name }
+        - { name: &name 10.0.20.10, module: icmp, url: *name }
