@@ -84,7 +84,7 @@ spec:
           http:
             port: 8000
       chrome:
-        controller: chrome
+        controller: *app
         ports:
           http:
             port: 3000
