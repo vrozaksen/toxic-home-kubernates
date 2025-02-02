@@ -51,7 +51,7 @@ spec:
         - name: CODER_DISABLE_PASSWORD_AUTH
           value: "true"
         - name: CODER_PROMETHEUS_ENABLE
-          value: true
+          value: "true"
         # OIDC
         - name: CODER_OIDC_ISSUER_URL
           value: "https://sso.vzkn.eu/application/o/coder/"
