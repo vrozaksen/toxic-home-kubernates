@@ -6,7 +6,7 @@ namespace: network
 resources:
   - ./external/ks.yaml
   - ./internal/ks.yaml
-#  - ./omada-controller/ks.yaml
+  - ./omada-controller/ks.yaml
   - ./openspeedtest/ks.yaml
 components:
   - ../../../shared/meta/components/alerts
