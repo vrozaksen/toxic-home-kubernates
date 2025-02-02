@@ -13,8 +13,6 @@ spec:
   dependsOn:
     - name: crunchy-postgres-stores
       namespace: database
-    - name: dragonfly-cluster
-      namespace: database
     - name: bitwarden-store
       namespace: external-secrets
   interval: 30m
