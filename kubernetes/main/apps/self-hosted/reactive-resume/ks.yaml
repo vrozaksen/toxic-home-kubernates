@@ -19,7 +19,8 @@ spec:
   path: ./kubernetes/main/apps/self-hosted/reactive-resume/app
   postBuild:
     substitute:
-      APP: rr
+      APP: *app
+      GATUS_SUBDOMAIN: rr
   prune: true
   sourceRef:
     kind: GitRepository

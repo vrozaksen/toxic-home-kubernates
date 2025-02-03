@@ -14,7 +14,8 @@ spec:
   path: ./kubernetes/main/apps/self-hosted/stirling-pdf/app
   postBuild:
     substitute:
-      APP: pdf
+      APP: *app
+      GATUS_SUBDOMAIN: pdf
   prune: true
   sourceRef:
     kind: GitRepository
