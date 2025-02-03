@@ -9,7 +9,7 @@ resources:
   - ./homepage/ks.yaml
   - ./paperless/ks.yaml
   - ./free-game-notifier/ks.yaml
-#  - ./meshcentral/ks.yaml
+  - ./meshcentral/ks.yaml
 #  - ./thelounge/ks.yaml
   - ./outline/ks.yaml
   - ./reactive-resume/ks.yaml
