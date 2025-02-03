@@ -14,6 +14,8 @@ resources:
   - ./thelounge/ks.yaml
   - ./outline/ks.yaml
   - ./reactive-resume/ks.yaml
+  - ./stirling-pdf/ks.yaml
+  - ./excalidraw/ks.yaml
 components:
   - ../../../shared/meta/components/alerts
   - ../../../shared/meta/components/namespace
