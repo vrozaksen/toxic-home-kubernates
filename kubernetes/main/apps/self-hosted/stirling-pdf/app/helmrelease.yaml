@@ -21,9 +21,14 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+    - name: volsync
+      namespace: storage
   values:
     controllers:
-      stirling-pdf:
+      app:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -32,24 +37,68 @@ spec:
               repository: ghcr.io/stirling-tools/s-pdf
               tag: 0.40.1
             env:
-              SYSTEM_ENABLEANALYTICS: false
+              TZ: Europe/Warsaw
+              DOCKER_ENABLE_SECURITY: "false"
+              SECURITY_ENABLE_LOGIN: "false"
+              INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
+            probes:
+              liveness: &probe
+                enabled: true
+                type: HTTP
+                path: /api/v1/info/status
+              readiness: *probe
+              startup:
+                <<: *probe
+                spec:
+                  failureThreshold: 90
+                  periodSeconds: 5
+            securityContext:
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: app
         ports:
           http:
             port: 8080
     ingress:
       app:
         className: external
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: Stirling PDF
+          gethomepage.dev/description: PDF Viewer and Editor
+          gethomepage.dev/group: Services
+          gethomepage.dev/icon: https://cdn-icons-png.flaticon.com/512/4208/4208479.png
+          gethomepage.dev/pod-selector: >-
+            app.kubernetes.io/name in (pdfding)
         hosts:
-        - host: "pdf.vzkn.eu"
-          paths:
-          - path: /
-            service:
-              identifier: app
-              port: http
+          - host: pdf.vzkn.eu
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /configs
+      logs:
+        enabled: true
+        type: emptyDir
       tmp:
         enabled: true
         type: emptyDir
+      tessdata:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /usr/share/tessdata
