@@ -72,7 +72,7 @@ releases:
   - name: kustomize-mutating-webhook
     namespace: flux-system
     chart: fluxcd-kustomize-mutating-webhook/kustomize-mutating-webhook
-    version: 0.3.0
+    version: 0.4.0
     values: ["../../{{ .Values.cluster }}/apps/flux-system/kustomize-mutating-webhook/app/helm-values.yaml"]
     needs: ["external-secrets/external-secrets"]
 
