@@ -46,7 +46,7 @@ spec:
     sources: ["crd", "ingress"]
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.${CLUSTER}.
-    domainFilters: ["vzkn.eu"]
+    domainFilters: ["${SECRET_DOMAIN}"]
     serviceMonitor:
       enabled: true
     podAnnotations:

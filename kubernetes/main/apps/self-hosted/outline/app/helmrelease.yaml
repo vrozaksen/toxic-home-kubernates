@@ -46,7 +46,7 @@ spec:
               LOG_LEVEL: debug
               NODE_TLS_REJECT_UNAUTHORIZED: "0"
               PORT: 8080
-              URL: "https://docs.vzkn.eu"
+              URL: "https://docs.${SECRET_DOMAIN}"
               WEB_CONCURRENCY: 10
             command:
               [
@@ -71,7 +71,7 @@ spec:
         enabled: true
         className: internal
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.vzkn.eu
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: outline.png
           gethomepage.dev/name: Outline
@@ -79,7 +79,7 @@ spec:
           gethomepage.dev/app: outline
           gethomepage.dev/description: A fast, collaborative, knowledge base.
         hosts:
-          - host: "docs.vzkn.eu"
+          - host: "docs.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

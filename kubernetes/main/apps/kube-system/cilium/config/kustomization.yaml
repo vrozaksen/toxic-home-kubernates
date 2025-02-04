@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   - ./kube-api.yaml
   - ./l2.yaml
-#  - ./l3.yaml
+  - ./l3.yaml
   - ./pool.yaml

@@ -25,11 +25,11 @@ spec:
   values:
     fullnameOverride: *app
     controller:
-      replicaCount: 1
+      replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: &hostname internal.vzkn.eu
-          lbipam.cilium.io/ips: 10.0.10.250
+          external-dns.alpha.kubernetes.io/hostname: &hostname internal.${SECRET_DOMAIN}
+          lbipam.cilium.io/ips: ${SVC_NGINX_INTERNAL}
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
@@ -67,8 +67,6 @@ spec:
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
-        custom-http-errors: >-
-          401,403,404,500,501,502,503
       metrics:
         enabled: true
         serviceMonitor:
@@ -76,7 +74,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: cert-manager/vzkn.eu-tls
+        default-ssl-certificate: cert-manager/${SECRET_DOMAIN}-tls
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       publishService:
@@ -96,13 +94,4 @@ spec:
         limits:
           memory: 500Mi
     defaultBackend:
-      enabled: true
-      image:
-        repository: ghcr.io/tarampampam/error-pages
-        tag: latest
-      # optional: change the default theme
-      extraEnvs:
-      - name: TEMPLATE_NAME
-        value: lost-in-space
-      - name: SHOW_DETAILS
-        value: 'true'
+      enabled: false

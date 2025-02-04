@@ -37,7 +37,7 @@ spec:
               repository: docker.io/excalidraw/excalidraw
               tag: latest@sha256:901a0ba840010bc5257608fae71ed16aa584b9971b0bcedbde34d31fd0db7613
             env:
-              TZ: Europe/Warsaw
+              TZ: ${TIMEZONE}
               NODE_ENV: production
             probes:
               liveness:
@@ -68,7 +68,7 @@ spec:
       app:
         className: external
         hosts:
-          - host: draw.vzkn.eu
+          - host: draw.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

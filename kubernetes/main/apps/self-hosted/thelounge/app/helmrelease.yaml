@@ -70,7 +70,7 @@ spec:
       app:
         className: external
         hosts:
-          - host: tl.vzkn.eu
+          - host: tl.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

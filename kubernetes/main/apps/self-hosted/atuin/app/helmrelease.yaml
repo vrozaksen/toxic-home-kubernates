@@ -25,7 +25,7 @@ spec:
   values:
     controllers:
       atuin:
-        replicas: 1
+        replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -103,7 +103,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: sh.vzkn.eu
+          - host: sh.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

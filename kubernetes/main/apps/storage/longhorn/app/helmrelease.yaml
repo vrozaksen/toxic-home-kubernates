@@ -50,7 +50,7 @@ spec:
       enabled: true
       ingressClassName: internal
       annotations:
-        external-dns.alpha.kubernetes.io/target: internal.vzkn.eu
+        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Storage
         gethomepage.dev/icon: longhorn
@@ -58,10 +58,10 @@ spec:
         gethomepage.dev/pod-selector: app.kubernetes.io/name=longhorn
         #nginx.ingress.kubernetes.io/auth-method: GET
         #nginx.ingress.kubernetes.io/auth-url: http://authelia.security.svc.cluster.local/api/verify
-        #nginx.ingress.kubernetes.io/auth-signin: https://auth.vzkn.eu
+        #nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}
         #nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         #nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-      host: longhorn.vzkn.eu
+      host: longhorn.${SECRET_DOMAIN}
       tls: false
     metrics:
       serviceMonitor:

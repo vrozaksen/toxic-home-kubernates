@@ -46,8 +46,8 @@ spec:
               value: Object.spec.template.spec.volumes{
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "10.0.20.10",
-                  path: "/mnt/user/kubernetes/volsync"
+                  server: "${NAS_IP}",
+                  path: "${SECRET_NFS_VOLSYNC}"
                 }
               }
             }

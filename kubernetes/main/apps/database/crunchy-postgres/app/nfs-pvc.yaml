@@ -9,8 +9,8 @@ spec:
   accessModes: ["ReadWriteMany"]
   storageClassName: nfs-slow #csi-driver-nfs
   nfs:
-    server: 10.0.20.10
-    path: /mnt/user/kubernetes/postgres
+    server: ${NAS_IP}
+    path: ${SECRET_NFS_POSTGRES}
   mountOptions:
     - nfsvers=4.2
     - hard

@@ -23,7 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    replicas: 1
+    replicas: 2
     podAnnotations:
       reloader.stakater.com/auto: "true"
     env:
@@ -32,7 +32,7 @@ spec:
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_COOKIE_SAMESITE: *app
-      GF_SERVER_ROOT_URL: https://grafana.vzkn.eu
+      GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
     envFromSecrets:
       - name: grafana-secret
     grafana.ini:
@@ -41,7 +41,7 @@ spec:
         check_for_plugin_updates: false
         reporting_enabled: false
       auth:
-        signout_redirect_url: https://sso.vzkn.eu/application/o/grafana/end-session/
+        signout_redirect_url: https://sso.${SECRET_DOMAIN}/application/o/grafana/end-session/
         oauth_auto_login: false
         oauth_allow_insecure_email_lookup: true
       auth.anonymous:
@@ -53,9 +53,9 @@ spec:
         name: authentik
         enabled: true
         scopes: openid email profile
-        auth_url: https://sso.vzkn.eu/application/o/authorize/
-        token_url: https://sso.vzkn.eu/application/o/token/
-        api_url: https://sso.vzkn.eu/application/o/userinfo/
+        auth_url: https://sso.${SECRET_DOMAIN}/application/o/authorize/
+        token_url: https://sso.${SECRET_DOMAIN}/application/o/token/
+        api_url: https://sso.${SECRET_DOMAIN}/application/o/userinfo/
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
     deploymentStrategy:
@@ -315,21 +315,21 @@ spec:
           revision: 1
           datasource:
             - { name: DS_VICTORIAMETRICS, value: Prometheus }
-        #ceph-cluster:
-        #  # renovate: depName="Ceph Cluster"
-        #  gnetId: 2842
-        #  revision: 18
-        #  datasource: Prometheus
-        #ceph-osd:
-        #  # renovate: depName="Ceph - OSD (Single)"
-        #  gnetId: 5336
-        #  revision: 9
-        #  datasource: Prometheus
-        #ceph-pools:
-        #  # renovate: depName="Ceph - Pools"
-        #  gnetId: 5342
-        #  revision: 9
-        #  datasource: Prometheus
+        ceph-cluster:
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
+          revision: 18
+          datasource: Prometheus
+        ceph-osd:
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        ceph-pools:
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
+          datasource: Prometheus
         host-overview:
           url: https://raw.githubusercontent.com/ceph/ceph/main/monitoring/ceph-mixin/dashboards_out/hosts-overview.json
           datasource: Prometheus
@@ -407,7 +407,7 @@ spec:
         # gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
         # gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
       hosts:
-        - "{{ .Release.Name }}.vzkn.eu"
+        - "{{ .Release.Name }}.${SECRET_DOMAIN}"
     persistence:
       enabled: false
     topologySpreadConstraints:

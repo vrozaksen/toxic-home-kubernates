@@ -37,7 +37,7 @@ spec:
     server:
       autoscaling:
         enabled: true
-        minReplicas: 1
+        minReplicas: 2
       resources:
         requests:
           cpu: 200m
@@ -61,12 +61,12 @@ spec:
           gethomepage.dev/widget.url: http://authentik-server.security
           gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
         hosts:
-          - sso.vzkn.eu
+          - sso.${SECRET_DOMAIN}
         https: false
     worker:
       autoscaling:
         enabled: true
-        minReplicas: 1
+        minReplicas: 2
       resources:
         requests:
           cpu: 200m

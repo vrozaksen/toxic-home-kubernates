@@ -4,7 +4,6 @@ kind: ConfigMap
 metadata:
   name: cluster-settings
 data:
-  ## Main cluster settings
   CLUSTER: main
   PVC_VOLSYNC_STORAGECLASS: longhorn
   VOLSYNC_SNAPSHOTCLASS: longhorn-snapclass

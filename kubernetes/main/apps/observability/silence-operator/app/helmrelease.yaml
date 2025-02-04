@@ -41,26 +41,26 @@ spec:
       - apiVersion: monitoring.giantswarm.io/v1alpha1
         kind: Silence
         metadata:
-          name: nfsmount-diskspace-warning
+          name: ceph-node-nfsmount-diskspace-warning
           namespace: observability
         spec:
           matchers:
-            #- name: alertname
-            #  value: CephNodeDiskspaceWarning
-            #  isRegex: false
+            - name: alertname
+              value: CephNodeDiskspaceWarning
+              isRegex: false
             - name: mountpoint
               value: /etc/nfsmount.conf
               isRegex: false
       - apiVersion: monitoring.giantswarm.io/v1alpha1
         kind: Silence
         metadata:
-          name: local-diskspace-warning
+          name: ceph-node-local-diskspace-warning
           namespace: observability
         spec:
           matchers:
-            #- name: alertname
-            #  value: CephNodeDiskspaceWarning
-            #  isRegex: false
+            - name: alertname
+              value: CephNodeDiskspaceWarning
+              isRegex: false
             - name: device
               value: /dev/sd.*
               isRegex: true
@@ -75,5 +75,5 @@ spec:
               value: NodeMemoryHighUtilization
               isRegex: false
             - name: instance
-              value: 10.0.20.10:9100
+              value: ${NAS_IP}:9100
               isRegex: false

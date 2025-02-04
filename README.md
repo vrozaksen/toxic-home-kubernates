@@ -63,7 +63,7 @@ There is a template over at [onedr0p/cluster-template](https://github.com/onedr0
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): automatically syncs DNS records from my cluster ingresses to a DNS provider
 - [external-secrets](https://github.com/external-secrets/external-secrets/): managed Kubernetes secrets using [1Password](https://1password.com/).
 - [ingress-nginx](https://github.com/kubernetes/ingress-nginx/): ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer
-- [longhorn](https://longhorn.io/): Cloud native distributed block storage for Kubernetes
+- [rook-ceph](https://rook.io/): Cloud native distributed block storage for Kubernetes
 - [sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): managed secrets for Talos, which are committed to Git
 - [spegel](https://github.com/XenitAB/spegel): stateless cluster local OCI registry mirror
 - [tofu-controller](https://github.com/weaveworks/tf-controller): additional Flux component used to run Terraform from within a Kubernetes cluster.
@@ -85,15 +85,15 @@ This Git repository contains the following directories under [Kubernetes](./kube
 📁 kubernetes
 ├── 📁 main             # main cluster
 │   ├── 📁 apps         # applications
-│   ├── 📁 bootstrap    # bootstrap procedures
 │   ├── 📁 flux         # core flux configuration
+│   ├── 📁 talos        # talos configuration
 ├── 📁 shared           # shared cluster resources
-│   ├── 📁 components   # re-useable components
-│   ├── 📁 repositories # common reusable repositories
+│   ├── 📁 bootstrap    # bootstrap procedures
+│   ├── 📁 meta         # re-useable components
 └── 📁 utility          # utility cluster
     ├── 📁 apps         # applications
-    ├── 📁 bootstrap    # bootstrap procedures
-    └── 📁 flux         # core flux configuration
+    ├── 📁 flux         # core flux configuration
+    └── 📁 talos        # talos configuration
 ```
 
 ### Networking
@@ -113,7 +113,7 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 | Service                                     | Use                                                               | Cost          |
 |---------------------------------------------|-------------------------------------------------------------------|---------------|
 | [Bitwarden](https://bitwarden.com/)         | Secrets with [External Secrets](https://external-secrets.io/)     | ~$10/yr       |
-| [Cloudflare](https://www.cloudflare.com/)   | Domain and R2                                                     | ~$30/yr       |
+| [Cloudflare](https://www.cloudflare.com/)   | Domain, DNS, WAF and R2 bucket (S3 Compatible endpoint)           | ~$30/yr       |
 | [GitHub](https://github.com/)               | Hosting this repository and continuous integration/deployments    | Free          |
 | [Healthchecks.io](https://healthchecks.io/) | Monitoring internet connectivity and external facing applications | Free          |
 |                                             |                                                                   | Total: ~$3,3/mo |
@@ -130,18 +130,18 @@ In my cluster there are two instances of [ExternalDNS](https://github.com/kubern
 
 ### Main Kubernetes Cluster
 
-| Name    | Device       | CPU      | OS Disk   | Data Disk   | RAM  | OS    | Purpose           |
-|---------|--------------|----------|-----------|-------------|------|-------|-------------------|
-| Alfheim | Lenovo M920q | i5-8500T | 480GB SSD | 500GB NVME  | 32GB | Talos | k8s control-plane |
-| Alne    | Lenovo M720q | i5-8500T | 480GB SSD | 500GB NVME  | 16GB | Talos | k8s worker        |
+| Name    | Device       | CPU      | OS Disk   | Data Disk  | RAM  | OS    | Purpose     |
+|---------|--------------|----------|-----------|------------|------|-------|-------------|
+| Alfheim | Lenovo M920q | i5-8500T | 480GB SSD | 500GB NVME | 32GB | Talos | k8s control |
+| Alne    | Lenovo M720q | i5-8500T | 480GB SSD | 500GB NVME | 16GB | Talos | k8s worke   |
 
 Total CPU: 12 threads
 Total RAM: 48GB
 
 ### Utility Kubernetes Cluster
 
-| Name    | Device       | CPU      | OS Disk   | Data Disk   | RAM  | OS    | Purpose           |
-|---------|--------------|----------|-----------|-------------|------|-------|-------------------|
+| Name    | Device       | CPU      | OS Disk   | Data Disk  | RAM  | OS    | Purpose     |
+|---------|--------------|----------|-----------|------------|------|-------|-------------|
 
 Total CPU: 0 threads
 Total RAM: 0GB
@@ -174,4 +174,4 @@ Total RAM: 0GB
 
 ## 🤝 Thanks
 
-Big shout out to original [cluster-template](https://github.com/onedr0p/cluster-template), and the [Home Operations](https://discord.gg/home-operations) Discord community. Be sure to check out [kubesearch.dev](https://kubesearch.dev/) for ideas on how to deploy applications or get ideas on what you may deploy.
+Big shout out to the [cluster-template](https://github.com/onedr0p/cluster-template), and the [Home Operations](https://discord.gg/home-operations) Discord community. Be sure to check out [kubesearch.dev](https://kubesearch.dev/) for ideas on how to deploy applications or get ideas on what you may deploy.

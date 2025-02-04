@@ -36,7 +36,7 @@ spec:
               repository: ghcr.io/vrozaksen/home-assistant
               tag: 2025.1.4@sha256:9ebe49f10b33b2717889eb5a908dc0f72ea26f61113ac9db4334afcd54da9fa2
             env:
-              TZ: Europe/Warsaw
+              TZ: ${TIMEZONE}
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -52,7 +52,7 @@ spec:
               repository: ghcr.io/coder/code-server
               tag: 4.96.4@sha256:f93810f7f6636b3af3b1a750faf612349cddb89fbb6d28d69123a214fc75ee9e
             env:
-              TZ: Europe/Warsaw
+              TZ: ${TIMEZONE}
             args: [
               "--auth", "none",
               "--user-data-dir", "/config/.vscode",
@@ -79,7 +79,7 @@ spec:
         nameOverride: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 10.0.10.233
+          lbipam.cilium.io/ips: ${SVC_HOME_ASSISTANT_ADDR}
         ports:
           http:
             port: 8123
@@ -89,7 +89,7 @@ spec:
       app:
         className: external
         hosts:
-          - host: hass.vzkn.eu
+          - host: hass.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -98,7 +98,7 @@ spec:
       codeserver:
         className: internal
         hosts:
-          - host: hass-code.vzkn.eu
+          - host: hass-code.${SECRET_DOMAIN}
             paths:
             - path: /
               service:

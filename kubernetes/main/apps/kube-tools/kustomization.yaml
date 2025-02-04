@@ -14,5 +14,8 @@ resources:
   - ./spegel/ks.yaml
   - ./system-upgrade-controller/ks.yaml
 components:
+  - ../../flux/meta/components/cluster-vars
   - ../../../shared/meta/components/alerts
+  - ../../../shared/meta/components/global-vars
   - ../../../shared/meta/components/namespace
+  - ../../../shared/meta/components/sops

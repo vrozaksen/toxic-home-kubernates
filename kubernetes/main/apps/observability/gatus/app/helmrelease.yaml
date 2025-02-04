@@ -25,7 +25,7 @@ spec:
   values:
     controllers:
       gatus:
-        replicas: 1
+        replicas: 2
         strategy: RollingUpdate
         labels:
           postgres: "true"
@@ -55,7 +55,7 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.15.0@sha256:45686324db605e57dfa8b0931d8d57fe06298f52685f06aa9654a1f710d461bb
             env:
-              TZ: Europe/Warsaw
+              TZ: ${TIMEZONE}
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               WEB_PORT: &port 80
@@ -106,7 +106,7 @@ spec:
           gethomepage.dev/widget.type: gatus
           gethomepage.dev/widget.url: http://gatus.observability
         hosts:
-          - host: status.vzkn.eu
+          - host: status.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

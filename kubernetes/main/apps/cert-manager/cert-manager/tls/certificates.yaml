@@ -3,11 +3,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "vzkn.eu"
+  name: "${SECRET_DOMAIN}"
 spec:
-  secretName: "vzkn.eu-tls"
+  secretName: "${SECRET_DOMAIN}-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "vzkn.eu"
-  dnsNames: ["vzkn.eu", "*.vzkn.eu"]
+  commonName: "${SECRET_DOMAIN}"
+  dnsNames: ["${SECRET_DOMAIN}", "*.${SECRET_DOMAIN}"]
