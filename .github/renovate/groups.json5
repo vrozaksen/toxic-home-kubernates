@@ -39,15 +39,6 @@
       }
     },
     {
-      "description": ["Longhorn Group"],
-      "groupName": "Longhorn",
-      "matchPackagePatterns": ["longhorn"],
-      "matchDatasources": ["helm"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-    {
       "description": ["Rook-Ceph Group"],
       "groupName": "Rook-Ceph",
       "matchPackagePatterns": ["rook.ceph"],

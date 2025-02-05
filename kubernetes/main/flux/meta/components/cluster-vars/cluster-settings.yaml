@@ -5,7 +5,7 @@ metadata:
   name: cluster-settings
 data:
   CLUSTER: main
-  PVC_VOLSYNC_STORAGECLASS: longhorn
-  VOLSYNC_SNAPSHOTCLASS: longhorn-snapclass
-  VOLSYNC_CACHE_SNAPSHOTCLASS: longhorn-cache
-  VOLSYNC_STORAGECLASS: longhorn-snapshot
+  PVC_VOLSYNC_STORAGECLASS: ceph-block
+  VOLSYNC_SNAPSHOTCLASS: csi-ceph-blockpool
+  VOLSYNC_CACHE_SNAPSHOTCLASS: ceph-block
+  VOLSYNC_STORAGECLASS: ceph-block

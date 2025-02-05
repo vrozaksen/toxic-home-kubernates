@@ -23,8 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: longhorn
-      namespace: storage
+
   values:
     controllers:
       home-assistant:

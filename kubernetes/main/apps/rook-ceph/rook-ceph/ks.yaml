@@ -3,24 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app longhorn
+  name: &app rook-ceph
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../../shared/meta/components/gatus/guarded
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/main/apps/storage/longhorn/app
-  postBuild:
-    substitute:
-      APP: *app
-  prune: true
+  path: ./kubernetes/main/apps/rook-ceph/rook-ceph/app
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: storage
+  targetNamespace: rook-ceph
   timeout: 5m
   wait: false
 ---
@@ -28,21 +26,18 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app storageclass
+  name: &app rook-ceph-cluster
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: longhorn
-      namespace: storage
   interval: 30m
-  path: ./kubernetes/main/apps/storage/longhorn/storageclass
-  prune: true
+  path: ./kubernetes/main/apps/rook-ceph/rook-ceph/cluster
+  prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: storage
-  timeout: 5m
+  targetNamespace: rook-ceph
+  timeout: 15m
   wait: false

@@ -58,7 +58,7 @@ spec:
       accessModes:
         - ReadWriteOnce
       size: 1Gi
-      storageClassName: longhorn
+      storageClassName: ceph-block
     volumeMounts:
       - mountPath: /build/plugins
         name: headlamp-plugins

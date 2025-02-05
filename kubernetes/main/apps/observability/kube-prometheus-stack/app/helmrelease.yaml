@@ -27,8 +27,8 @@ spec:
   dependsOn:
     - name: kube-prometheus-stack-crds
       namespace: observability
-    - name: longhorn
-      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     crds:
       enabled: false
@@ -47,7 +47,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 1Gi
@@ -171,7 +171,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 75Gi
