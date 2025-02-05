@@ -13,6 +13,7 @@ resources:
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
   - ./system-upgrade-controller/ks.yaml
+  - ./goldilocks/ks.yaml
 components:
   - ../../flux/meta/components/cluster-vars
   - ../../../shared/meta/components/alerts
