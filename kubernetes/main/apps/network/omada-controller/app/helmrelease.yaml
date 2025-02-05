@@ -50,8 +50,8 @@ spec:
                 enabled: true
             resources:
               requests:
-                cpu: 500m
-                memory: 1200Mi
+                cpu: 100m
+                memory: 512Mi
               limits:
                 memory: 2000Mi
     service:
