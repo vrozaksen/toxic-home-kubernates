@@ -25,7 +25,8 @@ spec:
   dependsOn:
     - name: mosquitto
       namespace: home-automation
-
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
       zigbee2mqtt:
