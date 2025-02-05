@@ -13,6 +13,3 @@ components:
   - ../../../shared/meta/components/global-vars
   - ../../../shared/meta/components/namespace
   - ../../../shared/meta/components/sops
-metadata:
-  labels:
-    goldilocks.fairwinds.com/enabled: "true"
