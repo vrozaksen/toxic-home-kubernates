@@ -29,30 +29,30 @@ controllers:
           - -c
         args:
           - |
-            apk add --no-cache findutils nvme-cli device-mapper util-linux zfs;
+            apk add --no-cache findutils nvme-cli; # device-mapper util-linux zfs
             DISK="/dev/nvme0n1"
 
-            echo "=== Checking and Destroying Existing ZFS Pools ===";
-            for pool in $(zpool list -H -o name 2>/dev/null); do
-              echo "Destroying ZFS pool: $pool";
-              zpool destroy $pool;
-            done;
+            #echo "=== Checking and Destroying Existing ZFS Pools ===";
+            #for pool in $(zpool list -H -o name 2>/dev/null); do
+            #  echo "Destroying ZFS pool: $pool";
+            #  zpool destroy $pool;
+            #done;
 
-            echo "=== Checking for zd devices and wiping them ===";
-            for zd in $(ls /dev/zd* 2>/dev/null); do
-              echo "Wiping ZFS device: $zd";
-              dd if=/dev/zero of="$zd" bs=1M count=100 oflag=direct || echo "Failed to wipe $zd";
-            done;
+            #echo "=== Checking for zd devices and wiping them ===";
+            #for zd in $(ls /dev/zd* 2>/dev/null); do
+            #  echo "Wiping ZFS device: $zd";
+            #  dd if=/dev/zero of="$zd" bs=1M count=100 oflag=direct || echo "Failed to wipe $zd";
+            #done;
 
             echo "=== Wiping $DISK ===";
-            dd if=/dev/zero of="$DISK" bs=1M count=100 oflag=direct;
-            blkdiscard $DISK || echo "blkdiscard not supported or disk is busy";
-            wipefs -a $DISK || echo "Wipefs failed";
-            partprobe $DISK || echo "Kernel not updated, you might need a reboot";
+            #dd if=/dev/zero of="$DISK" bs=1M count=100 oflag=direct;
+            #blkdiscard $DISK || echo "blkdiscard not supported or disk is busy";
+            #wipefs -a $DISK || echo "Wipefs failed";
+            #partprobe $DISK || echo "Kernel not updated, you might need a reboot";
 
             #echo "=== Wiping $DISK ===";
-            #nvme format --lbaf=1 $DISK --force;
-            #nvme format --block-size=4096 $DISK --force;
+            nvme format --lbaf=1 $DISK --force;
+            nvme format --block-size=4096 $DISK --force;
         securityContext:
           privileged: true
     pod:

@@ -23,6 +23,26 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app cert-manager-selfsigned-issuers
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  path: ./kubernetes/main/apps/cert-manager/cert-manager/selfsigned-issuers
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: cert-manager
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app cert-manager-issuers
 spec:
   commonMetadata:
@@ -66,23 +86,4 @@ spec:
   targetNamespace: cert-manager
   timeout: 5m
   wait: true
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app cert-manager-selfsigned-issuers
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  interval: 30m
-  path: ./kubernetes/main/apps/cert-manager/cert-manager/selfsigned-issuers
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: cert-manager
-  timeout: 5m
-  wait: true
+
