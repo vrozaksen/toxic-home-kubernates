@@ -13,3 +13,4 @@ resources:
   - ./zoriya.yaml
   - ./coder.yaml
   - ./tofu-controller.yaml
+  - ./fairwinds.yaml
