@@ -119,7 +119,7 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /config
-      cache:
+      jellyfin-cache:
         existingClaim: jellyfin-cache
         globalMounts:
           - path: /cache
