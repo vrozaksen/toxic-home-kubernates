@@ -44,9 +44,10 @@ spec:
               DEBUG_LEVEL: info
               RUN_ONLY_ONCE: "True"
               LOGFILE: log.log
+              GENERATE_GUIDS: "True"
               ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
               #LIBRARY_MAPPING: { "Shows": "TV Shows" }
-              #LIBRARY_MAPPING: '{ "Filmy 4K": "Filmy 4k", "Filmy dla dzieci": "Bajki", "Filmy": "Filmy", "Seriale": "Seriale", "Anime": "Anime", "Kreskówki": "Kreskówki", "Stand-up": "Stand-up" }'
+              LIBRARY_MAPPING: '{ "Filmy 4K": "Filmy 4k", "Filmy dla dzieci": "Bajki", "Filmy": "Filmy", "Seriale": "Seriale", "Anime": "Anime", "Kreskówki": "Kreskówki", "Stand-up": "Stand-up" }'
               SSL_BYPASS: "True"
               ## Jellyfin server URL, use hostname or IP address if the hostname is not resolving correctly
               ## Comma seperated list for multiple servers
@@ -56,7 +57,7 @@ spec:
               SYNC_FROM_EMBY_TO_JELLYFIN: "True"
               #WHITELIST_LIBRARY: "Anime,Filmy,Filmy 4k,Filmy dla dzieci,Kreskówki,Seriale,Stand-up"
               BLACKLIST_LIBRARY: "Telewizja,Muzyka,Trailers"
-              WHITELIST_USERS: "vrozaksen"
+              #WHITELIST_USERS: "vrozaksen"
             resources:
               requests:
                 cpu: 50m
