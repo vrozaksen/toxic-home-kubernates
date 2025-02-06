@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: media
 resources:
   - ./jellyfin/ks.yaml
+  - ./jellyplex-watched/ks.yaml
 components:
   - ../../flux/meta/components/cluster-vars
   - ../../../shared/meta/components/alerts
