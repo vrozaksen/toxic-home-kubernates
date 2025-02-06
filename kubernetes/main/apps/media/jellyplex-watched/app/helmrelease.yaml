@@ -54,7 +54,8 @@ spec:
               ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
               #WHITELIST_LIBRARY: Movies,TV Shows,Shows
               SYNC_FROM_EMBY_TO_JELLYFIN: "True"
-              WHITELIST_LIBRARY: "Anime,Filmy,Filmy 4k,Filmy dla dzieci,Kreskówki,Seriale,Stand-up"
+              #WHITELIST_LIBRARY: "Anime,Filmy,Filmy 4k,Filmy dla dzieci,Kreskówki,Seriale,Stand-up"
+              BLACKLIST_LIBRARY: "Telewizja,Muzyka,Trailers"
             resources:
               requests:
                 cpu: 50m
