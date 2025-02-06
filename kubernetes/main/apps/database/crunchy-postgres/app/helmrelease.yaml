@@ -31,3 +31,8 @@ spec:
     install:
       clusterLabels:
         app.kubernetes.io/name: pgo
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+

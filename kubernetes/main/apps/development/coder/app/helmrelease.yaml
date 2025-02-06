@@ -30,10 +30,10 @@ spec:
     coder:
       resources:
         requests:
-          cpu: 50m
-          memory: 1Gi
+          cpu: 10m
+          memory: 400Mi
         limits:
-          memory: 2Gi
+          memory: 1Gi
       env:
         # DB
         - name: CODER_PG_CONNECTION_URL

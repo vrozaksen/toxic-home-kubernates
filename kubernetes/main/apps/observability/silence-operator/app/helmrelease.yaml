@@ -77,3 +77,7 @@ spec:
             - name: instance
               value: ${NAS_IP}:9100
               isRegex: false
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
