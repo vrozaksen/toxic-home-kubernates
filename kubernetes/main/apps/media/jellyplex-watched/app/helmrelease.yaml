@@ -42,7 +42,7 @@ spec:
               DRYRUN: "False"
               DEBUG: "True"
               DEBUG_LEVEL: info
-              RUN_ONLY_ONCE: "True"
+              RUN_ONLY_ONCE: "False"
               LOGFILE: log.log
               ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
               #LIBRARY_MAPPING: { "Shows": "TV Shows" }
@@ -56,6 +56,7 @@ spec:
               SYNC_FROM_EMBY_TO_JELLYFIN: "True"
               #WHITELIST_LIBRARY: "Anime,Filmy,Filmy 4k,Filmy dla dzieci,Kreskówki,Seriale,Stand-up"
               BLACKLIST_LIBRARY: "Telewizja,Muzyka,Trailers"
+              WHITELIST_USERS: "vrozaksen"
             resources:
               requests:
                 cpu: 50m
