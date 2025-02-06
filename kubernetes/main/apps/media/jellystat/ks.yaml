@@ -8,9 +8,16 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../../shared/meta/components/gatus/guarded
+    - ../../../../../shared/meta/components/volsync
   dependsOn:
+    - name: crunchy-postgres-stores
+      namespace: database
     - name: bitwarden-store
       namespace: external-secrets
+    - name: volsync
+      namespace: storage
   interval: 30m
   path: ./kubernetes/main/apps/media/jellystat/app
   postBuild:
