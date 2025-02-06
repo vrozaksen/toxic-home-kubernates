@@ -108,7 +108,7 @@ spec:
           gethomepage.dev/widget.url: http://jellyfin.default.svc.cluster.local:8096
         #  gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}" }}'
         hosts:
-          - host: jf.${DOMAIN}
+          - host: jf.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
