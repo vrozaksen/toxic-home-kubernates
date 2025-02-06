@@ -45,6 +45,7 @@ spec:
               RUN_ONLY_ONCE: "True"
               LOGFILE: log.log
               GENERATE_GUIDS: "True"
+              GENERATE_LOCATIONS: "True"
               ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
               #LIBRARY_MAPPING: { "Shows": "TV Shows" }
               LIBRARY_MAPPING: '{ "Filmy 4K": "Filmy 4k", "Filmy dla dzieci": "Bajki", "Filmy": "Filmy", "Seriale": "Seriale", "Anime": "Anime", "Kreskówki": "Kreskówki", "Stand-up": "Stand-up" }'
