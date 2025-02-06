@@ -46,7 +46,7 @@ spec:
               LOGFILE: log.log
               ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
               #LIBRARY_MAPPING: { "Shows": "TV Shows" }
-              LIBRARY_MAPPING: '{ "Filmy 4K": "Filmy 4k", "Filmy dla dzieci": "Bajki" }'
+              LIBRARY_MAPPING: '{ "Filmy 4K": "Filmy 4k", "Filmy dla dzieci": "Bajki", "Filmy": "Filmy", "Seriale": "Seriale", "Anime": "Anime", "Kreskówki": "Kreskówki", "Stand-up": "Stand-up" }'
               SSL_BYPASS: "True"
               ## Jellyfin server URL, use hostname or IP address if the hostname is not resolving correctly
               ## Comma seperated list for multiple servers
