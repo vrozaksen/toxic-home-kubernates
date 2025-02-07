@@ -18,10 +18,14 @@ repositories:
     url: https://charts.external-secrets.io
 
 releases:
-  - name: kube-prometheus-stack-crds
-    namespace: observability
+  - name: prometheus-operator-crds
+    namespace: kube-system
     chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-    version: 17.0.2
+    version: 18.0.0
+    values:
+      - crds:
+          annotations:
+            helm.sh/resource-policy: keep
 
   - name: cilium
     namespace: kube-system
@@ -32,7 +36,7 @@ releases:
       - events: ['postsync']
         command: bash
         args: ['{{ requiredEnv "SHARED_DIR" }}/bootstrap/scripts/cilium-postsync.sh']
-    needs: ['observability/kube-prometheus-stack-crds']
+    needs: ['kube-system/prometheus-operator-crds']
 
   - name: coredns
     namespace: kube-system

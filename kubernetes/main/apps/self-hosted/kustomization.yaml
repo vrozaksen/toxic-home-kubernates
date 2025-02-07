@@ -3,6 +3,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: self-hosted
+components:
+  - ../../flux/meta/components/common
+  - ../../../shared/meta/components/common
 resources:
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
@@ -15,9 +18,3 @@ resources:
   - ./reactive-resume/ks.yaml
 #  - ./stirling-pdf/ks.yaml
   - ./excalidraw/ks.yaml
-components:
-  - ../../flux/meta/components/cluster-vars
-  - ../../../shared/meta/components/alerts
-  - ../../../shared/meta/components/global-vars
-  - ../../../shared/meta/components/namespace
-  - ../../../shared/meta/components/sops

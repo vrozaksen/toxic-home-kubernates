@@ -1,6 +1,7 @@
 locals {
   oauth_apps = [
     "coder",
+    "dashbrr",
     "grafana",
     "headscale",
     "headlamp",
@@ -37,6 +38,14 @@ locals {
       redirect_uri  = "https://coder.${var.cluster_domain}/api/v2/users/oidc/callback"
       launch_url    = "https://coder.${var.cluster_domain}/"
     },
+    dashbrr = {
+      client_id     = local.parsed_secrets["dashbrr"].client_id
+      client_secret = local.parsed_secrets["dashbrr"].client_secret
+      group         = "downloads"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/dashbrr.png"
+      redirect_uri  = "https://dashbrr.${var.cluster_domain}/api/auth/callback"
+      launch_url    = "https://dashbrr.${var.cluster_domain}/api/auth/callback"
+    },
     grafana = {
       client_id     = local.parsed_secrets["grafana"].client_id
       client_secret = local.parsed_secrets["grafana"].client_secret
@@ -51,7 +60,7 @@ locals {
       group         = "infrastructure"
       icon_url      = "https://raw.githubusercontent.com/headlamp-k8s/headlamp/refs/heads/main/frontend/src/resources/icon-dark.svg"
       redirect_uri  = "https://headlamp.${var.cluster_domain}/oidc-callback"
-      launch_url    = "https://headlamp.${var.cluster_domain}/oidc-callback"
+      launch_url    = "https://headlamp.${var.cluster_domain}/"
     },
     headscale = {
       client_id     = local.parsed_secrets["headscale"].client_id

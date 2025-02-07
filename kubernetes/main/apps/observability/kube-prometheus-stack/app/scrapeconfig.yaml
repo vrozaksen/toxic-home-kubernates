@@ -8,6 +8,7 @@ spec:
   staticConfigs:
     - targets:
         - ${NAS_IP}:9100
+        - 10.0.10.1:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
