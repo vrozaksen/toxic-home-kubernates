@@ -32,8 +32,11 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/flaresolverr/flaresolverr
-              tag: v3.3.21
+              repository: docker.io/21hsmw/flaresolverr
+              tag: nodriver
+            env:
+              TZ: ${TIMEZONE}
+              DRIVER: "nodriver"
             resources:
               requests:
                 cpu: 15m
