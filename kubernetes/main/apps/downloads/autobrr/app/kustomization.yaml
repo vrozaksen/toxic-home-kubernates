@@ -6,10 +6,11 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: recyclarr-configmap
+  - name: autobrr-loki-rules
     files:
-      - recyclarr.yml=./config/recyclarr.yml
+      - autobrr.yaml=./resources/lokirule.yaml
+    options:
+      labels:
+        loki_rule: "true"
 generatorOptions:
   disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled

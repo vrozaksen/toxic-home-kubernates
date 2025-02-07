@@ -1,5 +1,6 @@
 locals {
   oauth_apps = [
+    "autobrr",
     "coder",
     "dashbrr",
     "grafana",
@@ -30,6 +31,14 @@ locals {
 
 locals {
   applications = {
+    autobrr = {
+      client_id     = local.parsed_secrets["autobrr"].client_id
+      client_secret = local.parsed_secrets["autobrr"].client_secret
+      group         = "downloads"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/autobrr.png"
+      redirect_uri  = "https://autobrr.${var.cluster_domain}/api/auth/oidc/callback"
+      launch_url    = "https://autobrr.${var.cluster_domain}/api/auth/oidc/callback"
+    },
     coder = {
       client_id     = local.parsed_secrets["coder"].client_id
       client_secret = local.parsed_secrets["coder"].client_secret

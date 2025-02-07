@@ -34,8 +34,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/joryirving/prowlarr-develop
-              tag: 1.30.2.4939@sha256:68da6723666f87d3a712b770edb1c7b16923d7eed9c6f62a909d3db7885811ba
+              repository: ghcr.io/vrozaksen/prowlarr-develop
+              tag: 1.30.2.4939@sha256:9720073c8dcffa2f1f9ecb2cce2e36aadf1e988e359b3d944b4c556b1bbb8a91
             env:
               TZ: ${TIMEZONE}
               PROWLARR__APP__INSTANCENAME: Prowlarr
@@ -79,7 +79,7 @@ spec:
           gethomepage.dev/description: Torrent/NZB Indexer Management
           gethomepage.dev/widget.type: prowlarr
           gethomepage.dev/widget.url: http://prowlarr.downloads
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
+          #gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
         hosts:
         - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
           paths:

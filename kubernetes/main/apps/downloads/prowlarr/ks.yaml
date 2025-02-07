@@ -15,7 +15,7 @@ spec:
       namespace: database
     - name: crunchy-postgres-stores
       namespace: database
-    - name: onepassword-store
+    - name: bitwarden-store
       namespace: external-secrets
   interval: 30m
   path: ./kubernetes/main/apps/downloads/prowlarr/app

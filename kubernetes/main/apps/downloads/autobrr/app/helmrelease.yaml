@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app readarr
+  name: &app autobrr
 spec:
   interval: 30m
   chart:
@@ -28,35 +28,50 @@ spec:
     namespace: storage
   values:
     controllers:
-      readarr:
+      autobrr:
         labels:
-          nfsMount: "true"
           postgres: "true"
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/joryirving/readarr-develop
-              tag: 0.4.10.2734@sha256:3ba6ee9565e841c3129b72103ffc8b2a94e58fa6e8496f0d8972cb290c6930e6
+              repository: ghcr.io/autobrr/autobrr
+              tag: v1.58.0@sha256:9b11c36605da242933b93dfc0c572bd17fa05af9aba2ae70deafe4977ba8048b
             env:
-              READARR__APP__INSTANCENAME: Readarr
-              READARR__APP__THEME: dark
-              READARR__AUTH__METHOD: External
-              READARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              # READARR__LOG__DBENABLED: "False"
-              READARR__LOG__LEVEL: info
-              READARR__SERVER__PORT: &port 80
-              READARR__UPDATE__BRANCH: develop
+              AUTOBRR__HOST: 0.0.0.0
+              AUTOBRR__PORT: &port 80
+              AUTOBRR__METRICS_ENABLED: true
+              AUTOBRR__METRICS_HOST: 0.0.0.0
+              AUTOBRR__METRICS_PORT: &metricsPort 9094
+              AUTOBRR__CHECK_FOR_UPDATES: false
+              AUTOBRR__LOG_LEVEL: INFO
               TZ: ${TIMEZONE}
             envFrom:
             - secretRef:
-                name: readarr-secret
+                name: autobrr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz/liveness
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 256Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -71,18 +86,16 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
     ingress:
       app:
         className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/name: Readarr
-          gethomepage.dev/icon: readarr.png
-          gethomepage.dev/description: eBook Downloads
-          gethomepage.dev/widget.type: readarr
-          gethomepage.dev/widget.url: http://readarr.downloads
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_READARR_TOKEN}}` }}"
         hosts:
         - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
           paths:
@@ -93,11 +106,8 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      tmp:
+      config-log:
         type: emptyDir
-      data:
-        type: nfs
-        server: voyager.internal
-        path: ${SECRET_NFS_DATA}
         globalMounts:
-        - path: /data
+          - path: /config/log
+

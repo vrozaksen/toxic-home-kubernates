@@ -35,8 +35,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/joryirving/qbittorrent-beta
-              tag: 5.0.3@sha256:cd101841f453494aaa21bb003f18518ba4bc43c3194b9ba9219c2485677bb856
+              repository: ghcr.io/vrozaksen/qbittorrent-beta
+              tag: 5.0.3@sha256:24dab6c41959115371d00cc983e4c3ee6226e95d57cad387a123c82c5e459b98
             env:
               TZ: ${TIMEZONE}
               QBT_WEBUI_PORT: &port 80
@@ -68,17 +68,6 @@ spec:
       terminationGracePeriodSeconds: 120
       nodeSelector:
         topology.kubernetes.io/zone: worker
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values: ["sabnzbd"]
-                topologyKey: kubernetes.io/hostname
     service:
       app:
         controller: *app
@@ -107,8 +96,8 @@ spec:
           gethomepage.dev/description: Torrent Client
           gethomepage.dev/widget.type: qbittorrent
           gethomepage.dev/widget.url: http://qbittorrent.downloads
-          gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}` }}"
-          gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}` }}"
+          #gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}` }}"
+          #gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}` }}"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_hide_header "x-webkit-csp";
             proxy_hide_header "content-security-policy";
@@ -125,7 +114,7 @@ spec:
         existingClaim: *app
       downloads:
         type: nfs
-        server: voyager.internal
+        server: ${NAS_IP}
         path: ${SECRET_NFS_DATA}
         globalMounts:
           - path: /downloads

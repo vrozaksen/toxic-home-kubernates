@@ -36,8 +36,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/joryirving/sonarr-develop
-              tag: 4.0.12.2900@sha256:f017e9e69d561f8050d767f24069e269fe5e0c1f1af2b761c99c567fd883b3af
+              repository: ghcr.io/vrozaksen/sonarr-develop
+              tag: 4.0.12.2900@sha256:f5676425302ff83c72a83ca63bdcd658b63d83775d1434c310b45655fc9e1a85
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: dark
@@ -98,7 +98,7 @@ spec:
           gethomepage.dev/description: TV Downloads
           gethomepage.dev/widget.type: sonarr
           gethomepage.dev/widget.url: http://sonarr.downloads
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SONARR_TOKEN}}` }}"
+          #gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SONARR_TOKEN}}` }}"
         hosts:
         - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
           paths:
@@ -124,7 +124,7 @@ spec:
         type: emptyDir
       data:
         type: nfs
-        server: voyager.internal
+        server: ${NAS_IP}
         path: ${SECRET_NFS_DATA}
         globalMounts:
         - path: /data

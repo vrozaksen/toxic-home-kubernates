@@ -93,6 +93,10 @@ spec:
       password:
         type: AlphaNumeric
     # Media
+    - name: "autobrr"
+      databases: ["autobrr"]
+      password:
+        type: AlphaNumeric
     - name: "bazarr"
       databases: ["bazarr"]
       password:
@@ -115,10 +119,6 @@ spec:
         type: AlphaNumeric
     - name: "radarr"
       databases: ["radarr_main"]
-      password:
-        type: AlphaNumeric
-    - name: "readarr"
-      databases: ["readarr_main", "readarr_cache", "readarr_log"]
       password:
         type: AlphaNumeric
     - name: "sonarr"

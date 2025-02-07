@@ -37,8 +37,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/joryirving/radarr-develop
-              tag: 5.18.4.9674@sha256:df9a9aa35750dea80e05cf13babc566a34d5021661617a35a6eebbfb8f413ebe
+              repository: ghcr.io/vrozaksen/radarr-develop
+              tag: 5.18.4.9674@sha256:9b2f24f96b860daafe6949d03fe71f8dd9609bf74cba9171c4db8499759b09fb
             env:
               RADARR__APP__INSTANCENAME: Radarr
               RADARR__APP__THEME: dark
@@ -99,7 +99,7 @@ spec:
           gethomepage.dev/description: Movie Downloads
           gethomepage.dev/widget.type: radarr
           gethomepage.dev/widget.url: http://radarr.downloads
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_RADARR_TOKEN}}` }}"
+          #gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_RADARR_TOKEN}}` }}"
         hosts:
         - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
           paths:
@@ -114,7 +114,7 @@ spec:
         type: emptyDir
       data:
         type: nfs
-        server: voyager.internal
+        server: ${NAS_IP}
         path: ${SECRET_NFS_DATA}
         globalMounts:
         - path: /data
