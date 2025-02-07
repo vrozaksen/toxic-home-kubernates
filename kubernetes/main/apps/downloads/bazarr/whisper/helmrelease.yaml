@@ -37,10 +37,10 @@ spec:
               ASR_ENGINEL: faster_whisper # openai_whisper, faster_whisper
             resources:
               requests:
-                cpu: 100m
-                memory: 1Gi
+                cpu: 50m
+                memory: 512Gi
               limits:
-                memory: 12Gi
+                memory: 8Gi
     # defaultPodOptions:
     #   securityContext:
     #     runAsNonRoot: true
