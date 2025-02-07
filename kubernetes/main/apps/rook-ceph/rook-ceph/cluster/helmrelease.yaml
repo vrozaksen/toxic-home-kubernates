@@ -89,16 +89,16 @@ spec:
               memory: "512Mi"
         mgr:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 100m
+              memory: 768Mi
         mon:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 100m
+              memory: 512Mi
         osd:
           requests:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: 250m
+              memory: 1024Mi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -154,8 +154,8 @@ spec:
                       app.kubernetes.io/part-of: *cephFileSystemName
             resources:
               requests:
-                cpu: 100m
-                memory: 1Gi
+                cpu: 50m
+                memory: 100Mi
               limits:
                 memory: 4Gi
         storageClass:

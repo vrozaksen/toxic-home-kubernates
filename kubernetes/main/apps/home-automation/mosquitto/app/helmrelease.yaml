@@ -45,9 +45,10 @@ spec:
               tag: 2.0.20
             resources:
               requests:
-                cpu: 5m
+                cpu: 10m
+                memory: 100Mi
               limits:
-                memory: 16Mi
+                memory: 100Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
