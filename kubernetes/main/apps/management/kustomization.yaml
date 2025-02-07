@@ -7,6 +7,6 @@ components:
   - ../../flux/meta/components/common
   - ../../../shared/meta/components/common
 resources:
-  - ./pgadmin/ks.yaml
+#  - ./pgadmin/ks.yaml
   - ./rustdesk/ks.yaml
   - ./sshwifty/ks.yaml
