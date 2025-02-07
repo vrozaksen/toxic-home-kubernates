@@ -6,17 +6,17 @@ namespace: downloads
 components:
   - ../../flux/meta/components/common
   - ../../../shared/meta/components/common
-resources:
-  - ./bazarr/ks.yaml
-  - ./dashbrr/ks.yaml
-  - ./flaresolverr/ks.yaml
-  - ./kapowarr/ks.yaml
-  - ./metube/ks.yaml
-  - ./mylar/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./radarr/ks.yaml
-  - ./readarr/ks.yaml
-  - ./recyclarr/ks.yaml
-  - ./sabnzbd/ks.yaml
-  - ./sonarr/ks.yaml
+resources: []
+  # - ./bazarr/ks.yaml
+  # - ./dashbrr/ks.yaml
+  # - ./flaresolverr/ks.yaml
+  # - ./kapowarr/ks.yaml
+  # - ./metube/ks.yaml
+  # - ./mylar/ks.yaml
+  # - ./prowlarr/ks.yaml
+  # - ./qbittorrent/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./readarr/ks.yaml
+  # - ./recyclarr/ks.yaml
+  # - ./sabnzbd/ks.yaml
+  # - ./sonarr/ks.yaml
