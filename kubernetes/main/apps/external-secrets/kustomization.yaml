@@ -6,6 +6,6 @@ namespace: external-secrets
 components:
   - ../../flux/meta/components/common
   - ../../../shared/meta/components/common
-resources: []
- # - ./external-secrets/ks.yaml
- # - ./bitwarden/ks.yaml
+resources:
+  - ./external-secrets/ks.yaml
+  - ./bitwarden/ks.yaml
