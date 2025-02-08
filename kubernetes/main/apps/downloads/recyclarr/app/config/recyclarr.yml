@@ -24,6 +24,7 @@ sonarr:
           enabled: true
           except:
             - "Language: Polish Only"
+            - "x265 (HD)"
         upgrade:
           allowed: true
           until_quality: WEB 1080p
@@ -46,7 +47,7 @@ sonarr:
     custom_formats:
       - trash_ids:
           - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
-          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
+          # - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
         assign_scores_to:
@@ -54,7 +55,7 @@ sonarr:
           - name: WEB-1080p
 
       - trash_ids:
-          - 1b3994c551cbb92a2c781af061f4ab44 # Scene
+          # - 1b3994c551cbb92a2c781af061f4ab44 # Scene
         assign_scores_to:
           - name: WEB-2160p
           - name: WEB-1080p
