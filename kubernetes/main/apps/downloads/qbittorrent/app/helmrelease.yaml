@@ -64,10 +64,10 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 8Gi
-    defaultPodOptions:
-      terminationGracePeriodSeconds: 120
-      nodeSelector:
-        topology.kubernetes.io/zone: worker
+    # defaultPodOptions:
+    #   terminationGracePeriodSeconds: 120
+    #   nodeSelector:
+    #     topology.kubernetes.io/zone: worker
     service:
       app:
         controller: *app
