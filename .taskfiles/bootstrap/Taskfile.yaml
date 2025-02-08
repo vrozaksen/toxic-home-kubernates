@@ -77,8 +77,7 @@ tasks:
       - export $(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | grep -Ff {{.SHARED_DIR}}/bootstrap/.secrets.env) && minijinja-cli --env {{.SHARED_DIR}}/bootstrap/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
       - sh -c 'for var in $(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | cut -d= -f1); do unset $var; done'
       - helmfile --quiet --file {{.SHARED_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff --kube-context {{.CLUSTER}}
-      - for: ['prometheus-operator-crds', 'wipe-rook']
-        cmd: helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml destroy --selector name={{.ITEM}} --kube-context {{.CLUSTER}} || true
+      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml destroy --selector name=wipe-rook || true
       - '{{if eq .NODE_COUNT 1}}talosctl --talosconfig {{.TALOS_DIR}}/clusterconfig/talosconfig reboot -n {{.TALOS_CONTROLLER}}{{end}}'
     vars:
       TALOS_CONTROLLER:
