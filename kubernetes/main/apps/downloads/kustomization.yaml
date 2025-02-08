@@ -13,7 +13,7 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
   # - ./qbittorrent/ks.yaml
-  - ./radarr/ks.yaml
-  - ./radarr4k/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./radarr4k/ks.yaml
   # - ./recyclarr/ks.yaml
-  - ./sonarr/ks.yaml
+  # - ./sonarr/ks.yaml
