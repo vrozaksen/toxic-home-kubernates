@@ -39,6 +39,7 @@ spec:
               - ipv4.${SECRET_DOMAIN}
               - --provider
               - random
+              - --create-missing
             env:
               ACCOUNT_TOKEN:
                 valueFrom:
