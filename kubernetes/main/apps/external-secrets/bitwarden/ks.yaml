@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: selfsigned-issuer
+    - name: cert-manager-selfsigned-issuer
       namespace: cert-manager
   interval: 30m
   path: ./kubernetes/main/apps/external-secrets/bitwarden/certificates
