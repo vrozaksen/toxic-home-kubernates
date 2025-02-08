@@ -7,23 +7,10 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: vzkn.eu-tls
+  name: cloudflare
   namespace: cert-manager
-  annotations:
-    cert-manager.io/alt-names: '*.vzkn.eu,vzkn.eu'
-    cert-manager.io/certificate-name: vzkn.eu
-    cert-manager.io/common-name: vzkn.eu
-    cert-manager.io/ip-sans: ""
-    cert-manager.io/issuer-group: ""
-    cert-manager.io/issuer-kind: ClusterIssuer
-    cert-manager.io/issuer-name: letsencrypt-production
-    cert-manager.io/uri-sans: ""
-  labels:
-    controller.cert-manager.io/fao: "true"
-type: kubernetes.io/tls
-data:
-  tls.crt: {{ ENV.INGRESS_NGINX_TLS_CRT }}
-  tls.key: {{ ENV.INGRESS_NGINX_TLS_KEY }}
+stringData:
+  CLOUDFLARE_DNS_TOKEN: {{ ENV.CLOUDFLARE_DNS_TOKEN }}
 ---
 apiVersion: v1
 kind: Namespace
