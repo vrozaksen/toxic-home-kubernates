@@ -72,10 +72,12 @@ spec:
           control:
             enabled: true
             port: 64738
+            targetPort: 64738
             protocol: TCP
           voice:
             enabled: true
             port: 64738
+            targetPort: 64738
             protocol: UDP
     ingress:
       app:
