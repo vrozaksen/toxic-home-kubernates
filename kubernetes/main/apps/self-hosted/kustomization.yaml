@@ -19,3 +19,4 @@ resources:
 #  - ./stirling-pdf/ks.yaml
   - ./excalidraw/ks.yaml
   - ./mumble/ks.yaml
+  - ./neko/ks.yaml
