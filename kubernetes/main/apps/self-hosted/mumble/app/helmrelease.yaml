@@ -76,16 +76,6 @@ spec:
             enabled: true
             port: 64738
             protocol: UDP
-    ingress:
-      app:
-        className: external
-        hosts:
-          - host: mumble.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 64738
     persistence:
       config:
         existingClaim: *app
