@@ -1,7 +1,6 @@
 locals {
   oauth_apps = [
     "autobrr",
-    "coder",
     "dashbrr",
     "grafana",
     "headscale",
@@ -38,14 +37,6 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/autobrr.png"
       redirect_uri  = "https://autobrr.${var.cluster_domain}/api/auth/oidc/callback"
       launch_url    = "https://autobrr.${var.cluster_domain}/api/auth/oidc/callback"
-    },
-    coder = {
-      client_id     = local.parsed_secrets["coder"].client_id
-      client_secret = local.parsed_secrets["coder"].client_secret
-      group         = "infrastructure"
-      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/coder-light.png"
-      redirect_uri  = "https://coder.${var.cluster_domain}/api/v2/users/oidc/callback"
-      launch_url    = "https://coder.${var.cluster_domain}/"
     },
     dashbrr = {
       client_id     = local.parsed_secrets["dashbrr"].client_id

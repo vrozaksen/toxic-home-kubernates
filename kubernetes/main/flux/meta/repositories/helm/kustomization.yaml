@@ -11,6 +11,5 @@ resources:
   - ./rook-ceph.yaml
   - ./userinit-controller.yaml
   - ./zoriya.yaml
-  - ./coder.yaml
   - ./tofu-controller.yaml
   - ./fairwinds.yaml
