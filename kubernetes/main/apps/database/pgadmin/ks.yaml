@@ -21,7 +21,7 @@ spec:
     - name: bitwarden-store
       namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/main/apps/management/pgadmin/app
+  path: ./kubernetes/main/apps/database/pgadmin/app
   postBuild:
     substitute:
       APP: *app
@@ -34,6 +34,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: management
+  targetNamespace: database
   timeout: 5m
   wait: false

@@ -39,9 +39,9 @@ spec:
               PGADMIN_CONFIG_ENABLE_PSQL: "True"
               PGADMIN_DISABLE_POSTFIX: "true"
               PGADMIN_LISTEN_PORT: &port 80
-            envFrom:
-              - secretRef:
-                  name: *app
+            # envFrom:
+            #   - secretRef:
+            #       name: *app
             probes:
               liveness: &probes
                 enabled: true
@@ -79,11 +79,11 @@ spec:
         className: internal
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Management
-          gethomepage.dev/name: pgAdmin
-          gethomepage.dev/icon: si-postgresql
-          gethomepage.dev/description: Postgres Database Manager
+          # gethomepage.dev/enabled: "true"
+          # gethomepage.dev/group: Management
+          # gethomepage.dev/name: pgAdmin
+          # gethomepage.dev/icon: si-postgresql
+          # gethomepage.dev/description: Postgres Database Manager
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
