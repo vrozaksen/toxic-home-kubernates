@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TLS_CERT="jory.dev-tls"
+export TLS_CERT="vzkn.eu-tls"
 export TLS_NAMESPACE="cert-manager"
 CERT_DIR="/tmp/cert"
 CERT_TMP="$CERT_DIR/tmp"
@@ -10,7 +10,7 @@ DESTINATION="${2:-caddy}"
 
 # Set default values based on DESTINATION
 if [[ "$DESTINATION" == "caddy" ]]; then
-  SERVER="root@voyager"
+  SERVER="root@aincrad"
   DIR="/mnt/cache/docker/CaddyV2/data/certificates"
 elif [[ "$DESTINATION" == "unifi" ]]; then
   SERVER="root@192.168.1.1"
