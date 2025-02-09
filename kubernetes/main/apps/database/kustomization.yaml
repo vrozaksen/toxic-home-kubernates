@@ -7,6 +7,6 @@ components:
   - ../../flux/meta/components/common
   - ../../../shared/meta/components/common
 resources:
-#  - ./crunchy-postgres/ks.yaml
+  - ./crunchy-postgres/ks.yaml
   - ./dragonfly/ks.yaml
   - ./pgadmin/ks.yaml
