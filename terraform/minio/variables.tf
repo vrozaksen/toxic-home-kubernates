@@ -7,5 +7,5 @@ variable "bw_access_token" {
 variable "minio_url" {
   type        = string
   description = "Minio Server URL"
-  default     = "minio.vrozaksen.eu"
+  default     = "s3.vzkn.eu"
 }

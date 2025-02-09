@@ -187,7 +187,7 @@ spec:
         - name: repo3
           s3: &minio
             bucket: postgresql
-            endpoint: minio.vrozaksen.eu
+            endpoint: s3.${SECRET_DOMAIN}
             region: eu-ne-aincrad-1
           schedules:
             full: "15 1 * * 0" # Sunday at 01:15
@@ -199,9 +199,9 @@ spec:
       configuration: *backupConfig
       global: *backupFlag
       repo:
-        name: repo1
-        volume: *nfs
-        #s3: *minio
+        name: repo3
+        # volume: *nfs
+        s3: *minio
   proxy:
     pgBouncer:
       service:
