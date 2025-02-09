@@ -18,4 +18,4 @@ resources:
   - ./reactive-resume/ks.yaml
 #  - ./stirling-pdf/ks.yaml
   - ./excalidraw/ks.yaml
-#  - ./mumble/ks.yaml
+  - ./mumble/ks.yaml
