@@ -201,7 +201,7 @@ spec:
       repo:
         name: repo3
         # volume: *nfs
-        s3: *minio
+        s3: *r2
   proxy:
     pgBouncer:
       service:
