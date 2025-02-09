@@ -62,23 +62,20 @@ spec:
     service:
       app:
         controller: *app
-        type: LoadBalancer
+        type: ClusterIP
         annotations:
           lbipam.cilium.io/ips: ${SVC_MUMBLE_ADDR}
         ports:
           http:
             port: 80
-          both:
+          control:
             enabled: true
             port: 64738
-          # control:
-          #   enabled: true
-          #   port: 64738
-          #   protocol: TCP
-          # voice:
-          #   enabled: true
-          #   port: 64738
-          #   protocol: UDP
+            protocol: TCP
+          voice:
+            enabled: true
+            port: 64738
+            protocol: UDP
     ingress:
       app:
         className: external
