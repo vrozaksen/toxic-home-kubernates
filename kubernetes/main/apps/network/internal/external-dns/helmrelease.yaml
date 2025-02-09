@@ -35,7 +35,7 @@ spec:
           - name: DOMAIN_FILTER
             value: "${SECRET_DOMAIN}"
           - name: ADGUARD_URL
-            value: http://10.0.10.1:888
+            value: http://10.10.0.1:888
           - name: ADGUARD_USER
             valueFrom:
               secretKeyRef:

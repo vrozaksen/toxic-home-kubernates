@@ -59,7 +59,7 @@ spec:
               CHROME_URL: ws://reactive-resume-chrome.self-hosted.svc.cluster.local.:3000
               # S3
               STORAGE_URL: https://minio.vrozaksen.eu/rresume
-              STORAGE_ENDPOINT: ${NAS_IP}
+              STORAGE_ENDPOINT: aincrad.home.arpa
               STORAGE_PORT: "9000"
               STORAGE_REGION: eu-ne-aincrad-1
               STORAGE_BUCKET: rresume

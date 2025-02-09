@@ -114,7 +114,7 @@ spec:
         existingClaim: *app
       downloads:
         type: nfs
-        server: ${NAS_IP}
+        server: aincrad.home.arpa
         path: ${SECRET_NFS_DATA}
         globalMounts:
           - path: /downloads

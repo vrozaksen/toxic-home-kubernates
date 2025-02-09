@@ -29,7 +29,7 @@ spec:
       create: true
       name: nfs-slow
       parameters:
-        server: ${NAS_IP}
+        server: aincrad.home.arpa
         share: /mnt/user/kubernetes
       mountOptions:
         - nfsvers=4.2

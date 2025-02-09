@@ -107,7 +107,7 @@ spec:
           - path: /data/local
       nas:
         type: nfs
-        server: ${NAS_IP}
+        server: aincrad.home.arpa
         path: ${SECRET_NFS_PAPERLESS}
         globalMounts:
           - path: /data/nas

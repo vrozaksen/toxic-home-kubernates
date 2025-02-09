@@ -115,7 +115,7 @@ spec:
         type: emptyDir
       data:
         type: nfs
-        server: ${NAS_IP}
+        server: aincrad.home.arpa
         path: ${SECRET_NFS_DATA}
         globalMounts:
         - path: /data
