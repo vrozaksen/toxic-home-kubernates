@@ -11,8 +11,8 @@ DESTINATION="${2:-caddy}"
 # Set default values based on DESTINATION
 if [[ "$DESTINATION" == "caddy" ]]; then
   SERVER="root@aincrad"
-  DIR="/mnt/cache/docker/CaddyV2/data/certificates"
-elif [[ "$DESTINATION" == "unifi" ]]; then
+  DIR="/mnt/cache/appdata/caddy/data/certificates"
+elif [[ "$DESTINATION" == "opnsense" ]]; then
   SERVER="root@192.168.1.1"
   DIR="/data/unifi-core/config"
 else

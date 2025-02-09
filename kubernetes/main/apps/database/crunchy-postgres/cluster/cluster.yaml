@@ -188,7 +188,7 @@ spec:
           s3: &minio
             bucket: postgresql
             endpoint: s3.${SECRET_DOMAIN}
-            region: eu-ne-aincrad-1
+            region: main
           schedules:
             full: "15 1 * * 0" # Sunday at 01:15
             differential: "15 1 * * 1-6" # Mon-Sat at 01:15

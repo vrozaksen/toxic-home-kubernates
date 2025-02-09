@@ -11,7 +11,7 @@ spec:
       backend "s3" {
         bucket = "terraform-state"
         key    = "minio/minio.tfstate"
-        region   = "eu-ne-aincrad-1"
+        region   = "main"
         endpoints = {
           s3 = "https://s3.${SECRET_DOMAIN}"
         }
