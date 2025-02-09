@@ -69,6 +69,7 @@ spec:
           http:
             port: 80
           both:
+            enabled: true
             port: 64738
           # control:
           #   enabled: true
