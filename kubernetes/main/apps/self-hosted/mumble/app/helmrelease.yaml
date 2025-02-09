@@ -66,16 +66,28 @@ spec:
         annotations:
           lbipam.cilium.io/ips: ${SVC_MUMBLE_ADDR}
         ports:
-          # http:
-          #   port: 80
-          control:
-            enabled: true
+          http:
+            port: 80
+          both:
             port: 64738
-            protocol: TCP
-          voice:
-            enabled: true
-            port: 64738
-            protocol: UDP
+          # control:
+          #   enabled: true
+          #   port: 64738
+          #   protocol: TCP
+          # voice:
+          #   enabled: true
+          #   port: 64738
+          #   protocol: UDP
+    ingress:
+      app:
+        className: external
+        hosts:
+          - host: mumble.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         existingClaim: *app
