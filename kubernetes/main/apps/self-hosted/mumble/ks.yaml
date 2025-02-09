@@ -11,9 +11,6 @@ spec:
   components:
     - ../../../../../shared/meta/components/gatus/external
     - ../../../../../shared/meta/components/volsync
-  dependsOn:
-    - name: volsync
-      namespace: storage
   interval: 30m
   path: ./kubernetes/main/apps/self-hosted/mumble/app
   postBuild:
