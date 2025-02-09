@@ -35,8 +35,8 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/mumblevoip/mumble-server
-              tag: v1.4.287-4@sha256:dd6cbd5dc981dc0433edebd7f9aee220431d23600b9ef7109dbe24b0feae6ad1
+              repository: ghcr.io/mumble-voip/mumble-server
+              tag: v1.5.735@sha256:e0936b5895359a3f21eb1b4d8c332b412255260eb969f9ef3c50801ddbb20a27
             env:
               TZ: ${TIMEZONE}
             envFrom:
@@ -58,13 +58,17 @@ spec:
     service:
       app:
         controller: *app
-        type: LoadBalancer
-        externalTrafficPolicy: Cluster
-        annotations:
-          io.cilium/lb-ipam-ips: "${SVC_MUMBLE_ADDR}"
+        primary: true
         ports:
           http:
             port: 80
+      controller:
+        controller: *app
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+        annotations:
+          lbipam.cilium.io/ips: ${SVC_MUMBLE_ADDR}
+        ports:
           control:
             enabled: true
             port: 64738
@@ -77,14 +81,14 @@ spec:
       app:
         className: internal
         hosts:
-        - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            service:
-              identifier: app
-              port: http
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         existingClaim: *app
         globalMounts:
-          - path: /data/
+          - path: /data
