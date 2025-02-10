@@ -10,12 +10,12 @@ resources:
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
   - ./homepage/ks.yaml
-  - ./paperless/ks.yaml
+#  - ./paperless/ks.yaml
   - ./free-game-notifier/ks.yaml
 #  - ./meshcentral/ks.yaml
 #  - ./thelounge/ks.yaml
-  - ./outline/ks.yaml
-  - ./reactive-resume/ks.yaml
+#  - ./outline/ks.yaml
+#  - ./reactive-resume/ks.yaml
 #  - ./stirling-pdf/ks.yaml
   - ./excalidraw/ks.yaml
   - ./mumble/ks.yaml

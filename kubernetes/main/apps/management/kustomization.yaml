@@ -6,6 +6,6 @@ namespace: management
 components:
   - ../../flux/meta/components/common
   - ../../../shared/meta/components/common
-resources:
-  - ./rustdesk/ks.yaml
-  - ./sshwifty/ks.yaml
+resources: []
+  # - ./rustdesk/ks.yaml
+  # - ./sshwifty/ks.yaml

@@ -9,11 +9,10 @@ components:
 resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
-  - ./dashbrr/ks.yaml
+  # - ./dashbrr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
-  # - ./radarr4k/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
