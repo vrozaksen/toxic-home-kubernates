@@ -77,7 +77,7 @@ spec:
     minecraftServer:
       eula: true
       version: "1.21.4"
-      type: FABRIC
+      type: PAPER
       overrideServerProperties: true
       jvmXXOpts: "-XX:MaxRAMPercentage=75"
       memory: 8192M
@@ -90,11 +90,12 @@ spec:
       ops: "Vrozaksen"
       motd: "Just Vanilla Survival"
       worldSaveName: survival
-      viewDistance: 12
+      viewDistance: 16
       serviceAnnotations:
         lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       serviceType: LoadBalancer
       spigetResources:
+      - 113160 #Timber
       - 36618 #Prom Exporter
       #- 18494 #DiscordSRV
       rcon:
