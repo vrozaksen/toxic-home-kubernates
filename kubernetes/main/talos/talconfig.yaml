@@ -144,6 +144,7 @@ patches:
           - mitigations=off         # Less security, faster puter
           - security=none           # Less security, faster puter
           - talos.auditd.disabled=1 # Less security, faster puter
+
 controlPlane:
   nodeLabels:
     topology.kubernetes.io/zone: controlPlane

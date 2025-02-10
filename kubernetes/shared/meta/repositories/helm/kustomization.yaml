@@ -28,5 +28,4 @@ resources:
   - ./weave-gitops.yaml
   - ./wiremind.yaml
   - ./bitwarden.yaml
-  - ./kubernetes-sigs-external-dns.yaml
   - ./lwolf-charts.yaml

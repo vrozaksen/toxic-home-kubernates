@@ -117,10 +117,6 @@ spec:
       databases: ["radarr_main"]
       password:
         type: AlphaNumeric
-    - name: "radarr4k"
-      databases: ["radarr4k_main"]
-      password:
-        type: AlphaNumeric
     - name: "sonarr"
       databases: ["sonarr_main"]
       password:
