@@ -84,7 +84,7 @@ spec:
       difficulty: normal
       spawnProtection: 0
       gameMode: survival
-      pvp: false
+      pvp: true
       onlineMode: true
       #whitelist: "Vrozaksen"
       ops: "Vrozaksen"
