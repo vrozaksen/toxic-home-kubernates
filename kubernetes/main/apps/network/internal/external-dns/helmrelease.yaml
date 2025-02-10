@@ -12,13 +12,15 @@ spec:
       version: 1.15.1
       sourceRef:
         kind: HelmRepository
-        name: kubernetes-sigs-external-dns
+        name: external-dns
         namespace: flux-system
   install:
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
@@ -32,22 +34,13 @@ spec:
           tag: v8.0.0
           pullPolicy: IfNotPresent
         env:
-          - name: DOMAIN_FILTER
-            value: "${SECRET_DOMAIN}"
           - name: ADGUARD_URL
             value: http://10.10.0.1:888
-          - name: ADGUARD_USER
-            valueFrom:
-              secretKeyRef:
-                name: *app
-                key: adguard-username
-          - name: ADGUARD_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: *app
-                key: adguard-password
-          - name: DRY_RUN
-            value: "false"
+          - name: DOMAIN_FILTER
+            value: "${SECRET_DOMAIN}"
+        envFrom:
+          - secretRef:
+            name: external-dns-adguard
         livenessProbe:
           httpGet:
             path: /healthz
@@ -63,6 +56,7 @@ spec:
         securityContext:
           readOnlyRootFilesystem: true
     extraArgs:
+      - --webhook-provider-url=http://localhost:8888
       - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
