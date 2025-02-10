@@ -67,9 +67,7 @@ spec:
           readOnlyRootFilesystem: true
     extraArgs:
       - --metrics-address=:7979
-      - --policy=sync
       - --provider=webhook
-      - --registry=txt
       - --interval=2m
       - --ignore-ingress-tls-spec
       - --webhook-provider-url=http://localhost:8888
