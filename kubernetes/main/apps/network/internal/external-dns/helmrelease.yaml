@@ -56,7 +56,6 @@ spec:
         securityContext:
           readOnlyRootFilesystem: true
     extraArgs:
-      - --webhook-provider-url=http://localhost:8888
       - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
