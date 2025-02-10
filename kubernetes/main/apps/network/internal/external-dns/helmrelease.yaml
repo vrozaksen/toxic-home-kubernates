@@ -12,7 +12,7 @@ spec:
       version: 1.15.1
       sourceRef:
         kind: HelmRepository
-        name: kubernetes-sigs-external-dns
+        name: external-dns
         namespace: flux-system
   install:
     remediation:
@@ -41,36 +41,22 @@ spec:
         envFrom:
           - secretRef:
             name: external-dns-adguard
-        ports:
-          - containerPort: 8888
-            name: http
-          - containerPort: 8080
-            name: healthz
         livenessProbe:
           httpGet:
             path: /healthz
-            port: healthz
+            port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /healthz
-            port: healthz
+            port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
         securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          privileged: false
           readOnlyRootFilesystem: true
     extraArgs:
-      - --metrics-address=:7979
-      - --provider=webhook
-      - --interval=2m
       - --ignore-ingress-tls-spec
-      - --webhook-provider-url=http://localhost:8888
     triggerLoopOnEvent: true
     policy: sync
     sources: ["ingress", "service"]
