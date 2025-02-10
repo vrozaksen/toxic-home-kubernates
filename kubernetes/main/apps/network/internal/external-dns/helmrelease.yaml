@@ -15,12 +15,10 @@ spec:
         name: external-dns
         namespace: flux-system
   install:
-    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
@@ -36,29 +34,51 @@ spec:
         env:
           - name: ADGUARD_URL
             value: http://10.10.0.1:888
+          - name: SERVER_HOST
+            value: 0.0.0.0
+          - name: HEALTHZ_HOST
+            value: 0.0.0.0
+          - name: DRY_RUN
+            value: "false"
           - name: DOMAIN_FILTER
             value: "${SECRET_DOMAIN}"
         envFrom:
           - secretRef:
             name: external-dns-adguard
+        ports:
+          - containerPort: 8888
+            name: http
+          - containerPort: 8080
+            name: healthz
         livenessProbe:
           httpGet:
             path: /healthz
-            port: http-webhook
+            port: healthz
           initialDelaySeconds: 10
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /healthz
-            port: http-webhook
+            port: healthz
           initialDelaySeconds: 10
           timeoutSeconds: 5
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
           readOnlyRootFilesystem: true
     extraArgs:
+      - --metrics-address=:7979
+      - --log-level=warning
+      - --log-format=text
+      - --policy=sync
+      - --provider=webhook
+      - --registry=txt
+      - --interval=2m
       - --ignore-ingress-tls-spec
-    triggerLoopOnEvent: true
-    policy: sync
+      - --webhook-provider-url=http://localhost:8888
     sources: ["ingress", "service"]
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.${CLUSTER}.
@@ -67,3 +87,16 @@ spec:
       enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *app
+    resources:
+      requests:
+        cpu: 3m
+        memory: 48Mi
+      limits:
+        cpu: 300m
+        memory: 96Mi
+    serviceAccount:
+      create: true
+      name: external-dns-adguard
+    securityContext:
+      fsGroup: 1001
+      fsGroupChangePolicy: Always
