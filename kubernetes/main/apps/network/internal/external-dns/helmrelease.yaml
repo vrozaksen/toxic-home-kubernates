@@ -12,7 +12,7 @@ spec:
       version: 1.15.1
       sourceRef:
         kind: HelmRepository
-        name: external-dns
+        name: kubernetes-sigs-external-dns
         namespace: flux-system
   install:
     remediation:
@@ -32,16 +32,12 @@ spec:
           tag: v8.0.0
           pullPolicy: IfNotPresent
         env:
-          - name: ADGUARD_URL
-            value: http://10.10.0.1:888
-          - name: SERVER_HOST
-            value: 0.0.0.0
-          - name: HEALTHZ_HOST
-            value: 0.0.0.0
-          - name: DRY_RUN
-            value: "false"
           - name: DOMAIN_FILTER
             value: "${SECRET_DOMAIN}"
+          - name: ADGUARD_URL
+            value: http://10.10.0.1:888
+          - name: DRY_RUN
+            value: "false"
         envFrom:
           - secretRef:
             name: external-dns-adguard
@@ -77,6 +73,8 @@ spec:
       - --interval=2m
       - --ignore-ingress-tls-spec
       - --webhook-provider-url=http://localhost:8888
+    triggerLoopOnEvent: true
+    policy: sync
     sources: ["ingress", "service"]
     txtOwnerId: ${CLUSTER}
     txtPrefix: k8s.${CLUSTER}.
