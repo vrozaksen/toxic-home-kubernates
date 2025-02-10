@@ -71,8 +71,6 @@ spec:
           readOnlyRootFilesystem: true
     extraArgs:
       - --metrics-address=:7979
-      - --log-level=warning
-      - --log-format=text
       - --policy=sync
       - --provider=webhook
       - --registry=txt
