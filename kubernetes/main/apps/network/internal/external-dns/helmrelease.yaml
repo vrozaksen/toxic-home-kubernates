@@ -39,9 +39,16 @@ spec:
             value: http://adguard.home.arpa:888
           - name: DRY_RUN
             value: "false"
-        envFrom:
-          - secretRef:
-            name: external-dns-adguard
+          - name: ADGUARD_USER
+            valueFrom:
+              secretKeyRef:
+                name: &secret external-dns-adguard
+                key: adguard-user
+          - name: ADGUARD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: *secret
+                key: adguard-pass
         livenessProbe:
           httpGet:
             path: /healthz
