@@ -39,6 +39,8 @@ nodes:
             vlanId: 20
             dhcp: true
             mtu: 1500
+            dhcpOptions:
+              routeMetric: 4096
   - hostname: "alne"
     ipAddress: "10.10.0.22"
     installDisk: /dev/sdb
