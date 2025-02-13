@@ -12,7 +12,7 @@ clusterPodNets:
 clusterSvcNets:
   - "10.96.0.0/16"
 additionalApiServerCertSans: &sans
-  - "10.10.0.20"
+  - &vip 10.10.0.20
   - 127.0.0.1 # KubePrism
 additionalMachineCertSans: *sans
 cniConfig:
@@ -22,39 +22,57 @@ nodes:
   - hostname: "alfheim"
     ipAddress: "10.10.0.21"
     installDisk: /dev/sdb
-    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
+    talosImageURL: &talosImage factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
     controlPlane: true
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: f8:75:a4:09:50:fd
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: f8:75:a4:09:50:fd
         dhcp: true
         mtu: 1500
         vip:
-          ip: "10.10.0.20"
+          ip: *vip
+        vlans:
+          - &vlan20
+            vlanId: 20
+            dhcp: true
+            mtu: 1500
   - hostname: "alne"
     ipAddress: "10.10.0.22"
     installDisk: /dev/sdb
-    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
+    talosImageURL: *talosImage
     controlPlane: true
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: e8:6a:64:47:fe:44
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: e8:6a:64:47:fe:44
         dhcp: true
         mtu: 1500
         vip:
-          ip: "10.10.0.20"
+          ip: *vip
+        vlans:
+          - *vlan20
   - hostname: "ainias"
     ipAddress: "10.10.0.23"
     installDisk: /dev/sdb
-    talosImageURL: factory.talos.dev/installer/00058d1df723e50386d6912d3803ffff46978b8f69fdb51c10da7e7d56890510
+    talosImageURL: *talosImage
     controlPlane: true
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 8c:16:45:9d:0e:6f
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: 8c:16:45:9d:0e:6f
         dhcp: true
         mtu: 1500
         vip:
-          ip: "10.10.0.20"
+          ip: *vip
+        vlans:
+          - *vlan20
 patches:
   # Configure containerd
   - |
