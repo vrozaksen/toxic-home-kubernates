@@ -96,7 +96,7 @@ spec:
       serviceType: LoadBalancer
       spigetResources:
       - 36618 #Prom Exporter
-      - 110213 #TreeCuter
+      - 113160 #Timber
       - 105695 #Xaero Map Spigot
       - 31585 #One Player Sleep
       - 12038 #VeinMiner
