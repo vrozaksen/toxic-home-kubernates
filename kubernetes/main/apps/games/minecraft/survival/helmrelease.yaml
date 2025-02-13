@@ -95,8 +95,16 @@ spec:
         lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       serviceType: LoadBalancer
       spigetResources:
-      - 113160 #Timber
       - 36618 #Prom Exporter
+      - 110213 #TreeCuter
+      - 105695 #Xaero Map Spigot
+      - 31585 #One Player Sleep
+      - 12038 #VeinMiner
+      - 64270 #Simple Tpa
+      - 19286 #Minepacks
+      - 59773 #ChestSort
+      - 81534 #Chunky
+      - 57242 #Spark
       #- 18494 #DiscordSRV
       rcon:
         enabled: true
