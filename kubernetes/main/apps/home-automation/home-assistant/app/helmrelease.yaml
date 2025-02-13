@@ -70,7 +70,7 @@ spec:
         k8s.v1.cni.cncf.io/networks: |
           [{
             "name": "multus-iot",
-            "namespace": "networking",
+            "namespace": "network",
             "ips": ["10.20.0.130/24"]
           }]
       securityContext:
