@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kube-tools
+components:
+  - ../../flux/meta/components/common
+  - ../../../shared/meta/components/common
+resources:
+  - ./fstrim/ks.yaml
+  - ./node-feature-discovery/ks.yaml
+  # - ./powertune/ks.yaml
+  - ./reloader/ks.yaml
+  - ./system-upgrade-controller/ks.yaml

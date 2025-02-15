@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.0
+      version: 3.7.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -60,4 +60,3 @@ spec:
         runAsUser: 1000
         runAsGroup: 100
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }

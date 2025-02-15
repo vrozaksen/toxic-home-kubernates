@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.9.3
+talosVersion: v1.9.4
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.32.1
+kubernetesVersion: v1.32.2
 
 clusterName: &cluster main
 endpoint: https://10.10.0.20:6443
@@ -144,7 +144,6 @@ patches:
           - mitigations=off         # Less security, faster puter
           - security=none           # Less security, faster puter
           - talos.auditd.disabled=1 # Less security, faster puter
-
 controlPlane:
   nodeLabels:
     topology.kubernetes.io/zone: controlPlane

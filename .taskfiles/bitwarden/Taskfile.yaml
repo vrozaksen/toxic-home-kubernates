@@ -4,7 +4,7 @@ version: "3"
 tasks:
 
   push:
-    desc: Push all kubeconfig to Secrets Manager
+    desc: Push all kubeconfig to Bitwarden Secrets Manager
     cmds:
       - bws secret edit ffadfa6f-6e02-4873-a7d6-b2550100efb7 --value "$(kubectl config view --flatten)" &>/dev/null
       - bws secret edit 7888f846-9c9d-4849-8ee4-b256018a3883 --value "$(kubectl config view --flatten | base64 -w 0)" &>/dev/null
@@ -14,7 +14,7 @@ tasks:
       - which bws
 
   push-main:
-    desc: Push main kubeconfig/talosconfig to Secrets Manager
+    desc: Push main kubeconfig/talosconfig to Bitwarden Secrets Manager
     cmds:
       - bws secret edit 3e5dc441-3696-4151-9ad6-b25601897b3c --value "$(cat {{.ROOT_DIR}}/kubernetes/main/kubeconfig)" &>/dev/null
       - bws secret edit 76bf4533-0884-4b90-8490-b25601879083 --value "$(cat {{.ROOT_DIR}}/kubernetes/main/bootstrap/talos/clusterconfig/talosconfig)" &>/dev/null
@@ -23,7 +23,7 @@ tasks:
       - which bws
 
   push-utility:
-    desc: Push Utility kubeconfig to Secrets Manager
+    desc: Push Utility kubeconfig to Bitwarden Secrets Manager
     cmds:
       - bws secret edit 691eca9e-39c7-488b-85b7-b256018994fe --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/kubeconfig)" &>/dev/null
       - bws secret edit fc932a13-0221-488d-8dc4-b2560187daf5 --value "$(cat {{.ROOT_DIR}}/kubernetes/utility/bootstrap/talos/clusterconfig/talosconfig)" &>/dev/null
@@ -32,7 +32,7 @@ tasks:
       - which bws
 
   pull:
-    desc: Pull Kubeconfig from Secrets Manager
+    desc: Pull Kubeconfig from Bitwarden Secrets Manager
     cmds:
       - mkdir -p ~/.kube
       - mkdir -p ~/.talos

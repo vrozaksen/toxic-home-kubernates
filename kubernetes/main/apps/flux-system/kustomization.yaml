@@ -9,4 +9,4 @@ components:
 resources:
   - ./flux-operator/ks.yaml
   - ./headlamp/ks.yaml
-  - ./tofu-controller/ks.yaml
+#  - ./tofu-controller/ks.yaml
