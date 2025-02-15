@@ -21,12 +21,12 @@ cniConfig:
 nodes:
   - hostname: "inertia"
     ipAddress: "10.10.0.121"
-    installDisk: /dev/vdisk1
-    talosImageURL: factory.talos.dev/installer/f18daf73e9be2b277891839089fe81b3bd642a462816adf15d3e072bd340961c
+    installDisk: /dev/vda
+    talosImageURL: factory.talos.dev/installer/a65aee79cff7df2651d011e8e52c55659ba2394f10875696abf449f63044378d
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 84:47:09:2d:52:52
+          hardwareAddr: 52:54:00:11:6a:39
         dhcp: true
         mtu: 1500
         vip:
@@ -104,7 +104,7 @@ patches:
   - |-
     machine:
       disks:
-      - device: /dev/vdisk2
+      - device: /dev/vdb
         partitions:
           - mountpoint: /var/lib/csi-local-hostpath
 
