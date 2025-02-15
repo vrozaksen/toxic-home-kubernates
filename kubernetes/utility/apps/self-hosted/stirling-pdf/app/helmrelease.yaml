@@ -41,6 +41,12 @@ spec:
               DOCKER_ENABLE_SECURITY: "false"
               SECURITY_ENABLE_LOGIN: "false"
               INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "true"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
             probes:
               liveness: &probe
                 enabled: true
