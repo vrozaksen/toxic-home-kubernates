@@ -98,7 +98,6 @@ function apply_secrets() {
     gum "${LOG_ARGS[@]}" debug "Exporting secrets from Bitwarden"
     export $(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | grep -Ff {{.SHARED_DIR}}/bootstrap/resources/.secrets.env)
 
-    # Renderuj szablon z użyciem zmiennych środowiskowych
     gum "${LOG_ARGS[@]}" debug "Rendering template"
     if ! resources=$(envsubst < "${secrets_file}"); then
         gum "${LOG_ARGS[@]}" fatal "Failed to render template" file "${secrets_file}"
