@@ -10,7 +10,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../../shared/meta/components/gatus/external
-    - ../../../../../shared/meta/components/volsync
   interval: 30m
   path: ./kubernetes/utility/apps/self-hosted/excalidraw/app
   postBuild:

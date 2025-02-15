@@ -47,7 +47,8 @@ spec:
               type: Prefix
     persistentVolumeClaim:
       enabled: true
-      accessModes: ["ReadWriteMany"]
+      accessModes:
+        - ReadWriteOnce
       size: 1Gi
       storageClassName: local-hostpath
     volumeMounts:

@@ -11,6 +11,5 @@ resources:
   - ./free-game-notifier/ks.yaml
   - ./it-tools/ks.yaml
   - ./meshcentral/ks.yaml
-  - ./mumble/ks.yaml
   - ./stirling-pdf/ks.yaml
   - ./thelounge/ks.yaml

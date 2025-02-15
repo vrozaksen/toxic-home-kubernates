@@ -12,7 +12,7 @@ spec:
     - name: bitwarden-store
       namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/main/apps/observability/kube-prometheus-stack/app
+  path: ./kubernetes/utility/apps/observability/kube-prometheus-stack/app
   prune: true
   sourceRef:
     kind: GitRepository
