@@ -40,7 +40,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/m1k1o/neko/firefox
+              repository: ghcr.io/m1k1o/neko/brave
               tag: "2.8.13"
             env:
               TZ: ${TIMEZONE}
@@ -83,15 +83,7 @@ spec:
                   identifier: app
                   port: http
     persistence:
-      config:
-        name: neko-firefox-config
-        type: configMap
-        advancedMounts:
-          neko:
-            neko:
-              - path: /usr/lib/firefox/distribution/policies.json
-                subPath: policies.json
-      profile:
+      neko:
         existingClaim: *app
         advancedMounts:
           neko:
