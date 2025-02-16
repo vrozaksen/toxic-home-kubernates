@@ -91,9 +91,9 @@ spec:
       motd: "Just Vanilla Survival"
       worldSaveName: survival
       viewDistance: 16
-      serviceAnnotations:
-        lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
-      serviceType: LoadBalancer
+      # serviceAnnotations:
+      #   lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
+      # serviceType: LoadBalancer
       pluginUrls:
       - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar # https://github.com/Norbit4/TreeCuter/releases
       spigetResources:
