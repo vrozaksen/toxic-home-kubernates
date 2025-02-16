@@ -45,7 +45,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
               NEKO_IPFETCH: https://ifconfig.co/ip
-              NEKO_SCREEN: 1280x720@30
+              NEKO_SCREEN: 1920x1080@60
               NEKO_PROXY: "true"
               NEKO_TCPMUX: &mux "5100"
               NEKO_UDPMUX: *mux
