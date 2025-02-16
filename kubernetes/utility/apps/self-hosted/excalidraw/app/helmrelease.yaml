@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: docker.io/excalidraw/excalidraw
-              tag: latest@sha256:7f719f71a068c6c53b515cfcddcd0b41577ed2361f73f113ec8904dd948f0ab6
+              tag: latest@sha256:03146468df779bae984a60b0c88dd00cc66b9bfd3acafb119ec3fd1f27a24d0a
             env:
               TZ: ${TIMEZONE}
               NODE_ENV: production
