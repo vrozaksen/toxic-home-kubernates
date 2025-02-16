@@ -44,7 +44,7 @@ spec:
               tag: "2.8.13"
             env:
               TZ: ${TIMEZONE}
-              NEKO_NAT1TO1: 127.0.0.1
+              NEKO_IPFETCH: https://ifconfig.co/ip
               NEKO_SCREEN: 1280x720@30
               NEKO_PROXY: "true"
               NEKO_TCPMUX: &mux "5100"
