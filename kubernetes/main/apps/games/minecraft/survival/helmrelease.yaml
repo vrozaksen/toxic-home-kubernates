@@ -94,9 +94,11 @@ spec:
       serviceAnnotations:
         lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       serviceType: LoadBalancer
+      pluginUrls:
+      - https://www.curseforge.com/minecraft/bukkit-plugins/treetimber/download/6192405
       spigetResources:
       - 36618 #Prom Exporter
-      - 113160 #Timber
+      #- 113160 #Timber
       - 105695 #Xaero Map Spigot
       - 31585 #One Player Sleep
       - 12038 #VeinMiner
