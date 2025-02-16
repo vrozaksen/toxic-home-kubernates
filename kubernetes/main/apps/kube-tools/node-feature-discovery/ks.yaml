@@ -32,7 +32,7 @@ spec:
     - name: node-feature-discovery
       namespace: kube-tools
   interval: 30m
-  path: ./kubernetes/apps/kube-system/node-feature-discovery/rules
+  path: ./kubernetes/main/apps/kube-system/node-feature-discovery/rules
   prune: true
   sourceRef:
     kind: GitRepository
