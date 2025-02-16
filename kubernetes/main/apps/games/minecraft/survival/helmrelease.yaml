@@ -96,7 +96,7 @@ spec:
       serviceType: LoadBalancer
       pluginUrls:
       - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar # https://github.com/Norbit4/TreeCuter/releases
-      - https://www.spigotmc.org/resources/minepacks-backpack-plugin-mc-1-7-1-21.19286/download?version=571285
+      - https://github.com/GeorgH93/Minepacks/releases/download/v2.4.31.6/Minepacks-2.4.31.6-Release.jar
       spigetResources:
       - 36618 #Prom Exporter
       - 105695 #Xaero Map Spigot
