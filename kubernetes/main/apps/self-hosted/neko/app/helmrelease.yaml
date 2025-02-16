@@ -63,7 +63,9 @@ spec:
     service:
       app:
         controller: *app
-        type: ClusterIP
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: ${SVC_NEKO_ADDR}
         ports:
           http:
             port: 80
