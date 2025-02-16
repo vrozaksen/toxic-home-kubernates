@@ -95,15 +95,14 @@ spec:
         lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       serviceType: LoadBalancer
       pluginUrls:
-      - https://mediafilez.forgecdn.net/files/6192/405/Timber-1.5.9.jar # Timber
+      - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar # https://github.com/Norbit4/TreeCuter/releases
+      - https://www.spigotmc.org/resources/minepacks-backpack-plugin-mc-1-7-1-21.19286/download?version=571285
       spigetResources:
       - 36618 #Prom Exporter
-      #- 113160 #Timber
       - 105695 #Xaero Map Spigot
       - 31585 #One Player Sleep
       - 12038 #VeinMiner
       - 64270 #Simple Tpa
-      - 19286 #Minepacks
       - 59773 #ChestSort
       - 81534 #Chunky
       - 57242 #Spark
