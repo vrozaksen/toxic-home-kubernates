@@ -96,7 +96,14 @@ function apply_secrets() {
     fi
 
     gum "${LOG_ARGS[@]}" debug "Exporting secrets from Bitwarden"
-    export $(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | grep -Ff {{.SHARED_DIR}}/bootstrap/resources/.secrets.env)
+    secrets=$(bws secret list --output env d78877ca-d005-4973-b288-b24e00bdef1d | grep -Ff ${SHARED_DIR}/bootstrap/resources/.secrets.env)
+
+    if [[ -z "${secrets}" ]]; then
+        gum "${LOG_ARGS[@]}" fatal "No secrets found or secrets are empty"
+        exit 1
+    fi
+
+    export ${secrets}
 
     gum "${LOG_ARGS[@]}" debug "Rendering template"
     if ! resources=$(envsubst < "${secrets_file}"); then

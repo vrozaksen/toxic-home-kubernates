@@ -20,6 +20,16 @@ tasks:
       - test -f {{.SHARED_DIR}}/bootstrap/resources/prepare.sh
       - which curl gum jq helmfile kubectl kustomize bws talosctl yq
 
+  # gs:
+  #   desc: Bootstrap the Talos cluster
+  #   cmds:
+  #     - '[ -f /home/vrozaksen/git/home-ops/kubernetes/utility/talos/talsecret.sops.yaml ] || talhelper gensecret | sops --filename-override /home/vrozaksen/git/home-ops/kubernetes/utility/talos/talsecret.sops.yaml --encrypt /dev/stdin > /home/vrozaksen/git/home-ops/kubernetes/utility/talos/talsecret.sops.yaml'
+  #   preconditions:
+  #     - test -f /home/vrozaksen/git/home-ops/.sops.yaml
+  #     - test -f /home/vrozaksen/git/home-ops/age.key
+  #     - test -f /home/vrozaksen/git/home-ops/kubernetes/utility/talos/talconfig.yaml
+  #     - which talhelper sops
+
   gen-secrets:
     desc: Generate the Talos secrets
     cmds:
