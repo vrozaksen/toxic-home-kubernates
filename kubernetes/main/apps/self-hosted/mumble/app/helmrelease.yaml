@@ -63,9 +63,9 @@ spec:
         controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Cluster
-        # annotations:
-        #   lbipam.cilium.io/ips: ${SVC_MUMBLE_ADDR}
-        #   external-dns.alpha.kubernetes.io/hostname: mumble.${SECRET_DOMAIN}
+        annotations:
+          lbipam.cilium.io/ips: ${SVC_MUMBLE_ADDR}
+          external-dns.alpha.kubernetes.io/hostname: mumble.${SECRET_DOMAIN}
         ports:
           http:
             port: 80
