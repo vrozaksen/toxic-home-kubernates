@@ -12,5 +12,5 @@ resources:
   - ./paperless/ks.yaml
   - ./outline/ks.yaml
   - ./reactive-resume/ks.yaml
-  - ./mumble/ks.yaml
+#  - ./mumble/ks.yaml
   - ./neko/ks.yaml
