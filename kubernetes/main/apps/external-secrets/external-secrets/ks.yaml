@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name:  bitwarden-certs
+    - name:  cert-manager-bitwarden-certs
       namespace: external-secrets
   interval: 30m
   path: ./kubernetes/main/apps/external-secrets/external-secrets/app
