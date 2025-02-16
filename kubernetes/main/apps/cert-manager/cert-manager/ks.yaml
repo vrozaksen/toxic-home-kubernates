@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cert-manager-bitwarden-certs
+  name: &app cert-manager-selfsigned-issuer
 spec:
   commonMetadata:
     labels:
@@ -32,7 +32,7 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   interval: 30m
-  path: ./kubernetes/main/apps/cert-manager/cert-manager/bitwarden-certs
+  path: ./kubernetes/main/apps/cert-manager/cert-manager/selfissuers
   prune: true
   sourceRef:
     kind: GitRepository
