@@ -6,8 +6,8 @@ namespace: media
 components:
   - ../../flux/meta/components/common
   - ../../../shared/meta/components/common
-resources: []
-  # - ./jellyfin/ks.yaml
-  # - ./jellyseerr/ks.yaml
-  # - ./jellystat/ks.yaml
-  # - ./wizarr/ks.yaml
+resources:
+  - ./jellyfin/ks.yaml
+  - ./jellyseerr/ks.yaml
+  - ./jellystat/ks.yaml
+  - ./wizarr/ks.yaml
