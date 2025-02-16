@@ -96,16 +96,15 @@ spec:
       serviceType: LoadBalancer
       pluginUrls:
       - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar # https://github.com/Norbit4/TreeCuter/releases
-      - https://github.com/GeorgH93/Minepacks/releases/download/v2.4.31.6/Minepacks-2.4.31.6-Release.jar
       spigetResources:
       - 36618 #Prom Exporter
       - 105695 #Xaero Map Spigot
       - 31585 #One Player Sleep
-      - 12038 #VeinMiner
       - 64270 #Simple Tpa
       - 59773 #ChestSort
       - 81534 #Chunky
       - 57242 #Spark
+      - 118271 #GravesX
       #- 18494 #DiscordSRV
       rcon:
         enabled: true
