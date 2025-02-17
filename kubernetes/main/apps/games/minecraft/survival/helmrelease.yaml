@@ -28,6 +28,26 @@ spec:
   - name: volsync
     namespace: storage
   values:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - ainias
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - minecraft-survival
+            topologyKey: kubernetes.io/hostname
     # deploymentAnnotations:
     #   secret.reloader.stakater.com/reload: minecraft-survival-secret
     image:
@@ -37,7 +57,7 @@ spec:
       requests:
         cpu: 500m
       limits:
-        memory: 6Gi
+        memory: 8Gi
     securityContext:
       runAsUser: 1000
       fsGroup: 100
@@ -96,10 +116,10 @@ spec:
       # serviceType: LoadBalancer
       pluginUrls:
       - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar
-      - https://cdn.modrinth.com/data/BETNSd2r/versions/n8DhYGER/LetUrMemoryRest-4.0.jar
+      #- https://cdn.modrinth.com/data/BETNSd2r/versions/n8DhYGER/LetUrMemoryRest-4.0.jar
       - https://cdn.modrinth.com/data/IEt1Yy3F/versions/QXCh3qCi/SeeMore-1.0.2.jar
       - https://cdn.modrinth.com/data/N38KJjIT/versions/tcbqRM4z/BetterReload-plugin-1.4.0.jar
-      - https://cdn.modrinth.com/data/PviisYrr/versions/HDQLwfeA/LightOptimizer-4.0.2-BETA.jar
+      #- https://cdn.modrinth.com/data/PviisYrr/versions/HDQLwfeA/LightOptimizer-4.0.2-BETA.jar
       - https://cdn.modrinth.com/data/Cz6msz34/versions/12mBIJ2C/AxGraves-1.17.1.jar
       spigetResources:
       - 36618 #Prom Exporter
