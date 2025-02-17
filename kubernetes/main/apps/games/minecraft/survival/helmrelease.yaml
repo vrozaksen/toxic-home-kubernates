@@ -101,9 +101,9 @@ spec:
       - 105695 #Xaero Map Spigot
       - 31585 #One Player Sleep
       - 64270 #Simple Tpa
-      - 59773 #ChestSort
-      - 81534 #Chunky
-      - 57242 #Spark
+      #- 59773 #ChestSort
+      #- 81534 #Chunky
+      #- 57242 #Spark
       - 118271 #GravesX
       #- 18494 #DiscordSRV
       rcon:
