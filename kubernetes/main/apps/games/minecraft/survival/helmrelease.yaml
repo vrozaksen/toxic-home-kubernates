@@ -37,7 +37,7 @@ spec:
       requests:
         cpu: 500m
       limits:
-        memory: 8Gi
+        memory: 6Gi
     securityContext:
       runAsUser: 1000
       fsGroup: 100
@@ -90,7 +90,7 @@ spec:
       ops: "Vrozaksen"
       motd: "Just Vanilla Survival"
       worldSaveName: survival
-      viewDistance: 16
+      viewDistance: 12
       # serviceAnnotations:
       #   lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       # serviceType: LoadBalancer
