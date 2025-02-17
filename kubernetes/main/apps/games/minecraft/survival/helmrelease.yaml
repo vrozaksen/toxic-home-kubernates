@@ -95,7 +95,12 @@ spec:
       #   lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       # serviceType: LoadBalancer
       pluginUrls:
-      - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar # https://github.com/Norbit4/TreeCuter/releases
+      - https://github.com/Norbit4/TreeCuter/releases/download/v1.8.8/TreeCuter-v1.8.8.jar
+      - https://cdn.modrinth.com/data/BETNSd2r/versions/n8DhYGER/LetUrMemoryRest-4.0.jar
+      - https://cdn.modrinth.com/data/IEt1Yy3F/versions/QXCh3qCi/SeeMore-1.0.2.jar
+      - https://cdn.modrinth.com/data/N38KJjIT/versions/tcbqRM4z/BetterReload-plugin-1.4.0.jar
+      - https://cdn.modrinth.com/data/PviisYrr/versions/HDQLwfeA/LightOptimizer-4.0.2-BETA.jar
+      - https://cdn.modrinth.com/data/Cz6msz34/versions/12mBIJ2C/AxGraves-1.17.1.jar
       spigetResources:
       - 36618 #Prom Exporter
       - 105695 #Xaero Map Spigot
@@ -104,7 +109,7 @@ spec:
       #- 59773 #ChestSort
       #- 81534 #Chunky
       #- 57242 #Spark
-      - 118271 #GravesX
+      #- 118271 #GravesX
       #- 18494 #DiscordSRV
       rcon:
         enabled: true
