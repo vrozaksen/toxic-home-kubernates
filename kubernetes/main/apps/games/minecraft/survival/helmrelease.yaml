@@ -110,7 +110,7 @@ spec:
       ops: "Vrozaksen"
       motd: "Just Vanilla Survival"
       worldSaveName: survival
-      viewDistance: 12
+      viewDistance: 16
       # serviceAnnotations:
       #   lbipam.cilium.io/ips: ${SVC_SURVIVAL_ADDR}
       # serviceType: LoadBalancer
@@ -123,6 +123,7 @@ spec:
       - https://cdn.modrinth.com/data/Cz6msz34/versions/12mBIJ2C/AxGraves-1.17.1.jar
       - https://cdn.modrinth.com/data/pZ2wrerK/versions/QaJSSuMq/emotecraft-paper-for-MC1.21.4-2.5.1-b.build.72.jar
       - https://cdn.modrinth.com/data/fALzjamp/versions/ytBhnGfO/Chunky-Bukkit-1.4.28.jar
+      - https://cdn.modrinth.com/data/OhduvhIc/versions/cCaIdWST/veinminer-paper-2.3.2.jar
       spigetResources:
       - 36618 #Prom Exporter
       - 105695 #Xaero Map Spigot
