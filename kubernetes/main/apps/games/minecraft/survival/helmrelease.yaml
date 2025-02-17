@@ -28,7 +28,7 @@ spec:
   - name: volsync
     namespace: storage
   values:
-    affinity:
+    affinity: # TODO Until ainias upgrade
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
@@ -37,7 +37,7 @@ spec:
               operator: NotIn
               values:
               - ainias
-      podAntiAffinity:
+      podAntiAffinity: # TODO Until ainias upgrade
         preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
           podAffinityTerm:
