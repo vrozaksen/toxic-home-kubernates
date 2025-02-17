@@ -122,12 +122,13 @@ spec:
       #- https://cdn.modrinth.com/data/PviisYrr/versions/HDQLwfeA/LightOptimizer-4.0.2-BETA.jar
       - https://cdn.modrinth.com/data/Cz6msz34/versions/12mBIJ2C/AxGraves-1.17.1.jar
       - https://cdn.modrinth.com/data/pZ2wrerK/versions/QaJSSuMq/emotecraft-paper-for-MC1.21.4-2.5.1-b.build.72.jar
+      - https://cdn.modrinth.com/data/fALzjamp/versions/ytBhnGfO/Chunky-Bukkit-1.4.28.jar
       spigetResources:
       - 36618 #Prom Exporter
       - 105695 #Xaero Map Spigot
       - 31585 #One Player Sleep
       - 64270 #Simple Tpa
-      - 81534 #Chunky
+      #- 81534 #Chunky
       #- 18494 #DiscordSRV
       rcon:
         enabled: true
