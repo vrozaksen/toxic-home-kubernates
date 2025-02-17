@@ -55,7 +55,7 @@ spec:
               TZ: "${TIMEZONE}"
               PORT: "3001"
               NODE_ENV: "production"
-              PUBLIC_URL: https://rr.${SECRET_DOMAIN}
+              PUBLIC_URL: http://rr.${SECRET_DOMAIN}
               CHROME_URL: ws://reactive-resume-chrome.self-hosted.svc.cluster.local.:3000
               # S3
               STORAGE_URL: https://s3.${SECRET_DOMAIN}/rresume
